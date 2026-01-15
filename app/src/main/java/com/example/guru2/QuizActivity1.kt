@@ -22,7 +22,6 @@ class QuizActivity1 : AppCompatActivity() {
     var correctAnswer = ""
     var explanation = ""
     var source = ""
-
     var selectedAnswer = ""
 
 
@@ -44,7 +43,7 @@ class QuizActivity1 : AppCompatActivity() {
         btnSub = findViewById<Button>(R.id.btnSub)
 
         //DB 연결
-        dbManager = DBManager(this, "spelling_quiz", null, 1)
+        dbManager = DBManager(this, "spelling_quiz.db", null, 1)
         val db = dbManager.readableDatabase
 
         //DB에서 문제 1개 가져오기
