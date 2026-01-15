@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GURU2</string>
+    <string name="btnQuiz1">맞춤법 퀴즈</string>
+    <string name="btnQuiz2">신조어 퀴즈</string>
 </resources>
