@@ -21,6 +21,9 @@
             android:name=".QuizActivity1"
             android:exported="false" />
         <activity
+            android:name=".CorrectActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
