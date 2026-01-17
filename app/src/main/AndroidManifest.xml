@@ -18,10 +18,10 @@
             android:name=".SlangResultActivity"
             android:exported="false" />
         <activity
-            android:name=".QuizActivity1"
+            android:name=".ResultActivity1"
             android:exported="false" />
         <activity
-            android:name=".CorrectActivity"
+            android:name=".QuizActivity1"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
