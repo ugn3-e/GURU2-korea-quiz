@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/QuizNum"
         android:layout_width="39dp"
         android:layout_height="37dp"
         android:layout_marginBottom="564dp"

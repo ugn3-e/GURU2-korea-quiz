@@ -86,54 +86,54 @@ class QuizActivity1 : AppCompatActivity() {
     }
 
 
-        fun loadNextQuiz() {
-            val db = dbManager.readableDatabase
+    fun loadNextQuiz() {
+        val db = dbManager.readableDatabase
 
-            // ORDER BY id ASC LIMIT 1 OFFSET ?
-            // 순서대로 문제 출력 // ☑️수정
-            // DB에서 문제 1개 가져오기
-            val cursor = db.rawQuery("SELECT * FROM spelling_quiz ORDER BY RANDOM() LIMIT 1",
-                null)
+        // ORDER BY id ASC LIMIT 1 OFFSET ?
+        // 순서대로 문제 출력 // ☑️수정
+        // DB에서 문제 1개 가져오기
+        val cursor = db.rawQuery("SELECT * FROM spelling_quiz ORDER BY RANDOM() LIMIT 1",
+            null)
 
-            if(cursor.moveToFirst()) {
-                // 문제 id 저장하기(문제 순서) // ☑️ 추가
-                currentQuizId = cursor.getInt(
-                    cursor.getColumnIndexOrThrow("id"))
+        if(cursor.moveToFirst()) {
+            // 문제 id 저장하기(문제 순서) // ☑️ 추가
+            currentQuizId = cursor.getInt(
+                cursor.getColumnIndexOrThrow("id"))
 
-                QuizText.text = cursor.getString(
-                    cursor.getColumnIndexOrThrow("sentence"))
+            QuizText.text = cursor.getString(
+                cursor.getColumnIndexOrThrow("sentence"))
 
-                btnChoice1.text = cursor.getString(
-                    cursor.getColumnIndexOrThrow("choice1"))
+            btnChoice1.text = cursor.getString(
+                cursor.getColumnIndexOrThrow("choice1"))
 
-                btnChoice2.text = cursor.getString(
-                    cursor.getColumnIndexOrThrow("choice2"))
+            btnChoice2.text = cursor.getString(
+                cursor.getColumnIndexOrThrow("choice2"))
 
-                btnChoice3.text = cursor.getString(
-                    cursor.getColumnIndexOrThrow("choice3"))
+            btnChoice3.text = cursor.getString(
+                cursor.getColumnIndexOrThrow("choice3"))
 
-                correctAnswer = cursor.getString(
-                    cursor.getColumnIndexOrThrow("correct"))
+            correctAnswer = cursor.getString(
+                cursor.getColumnIndexOrThrow("correct"))
 
 //              explanation = cursor.getString(
 //                  cursor.getColumnIndexOrThrow("explanation"))
-                correct_exp = cursor.getString(
-                    cursor.getColumnIndexOrThrow("correct_exp"))
+            correct_exp = cursor.getString(
+                cursor.getColumnIndexOrThrow("correct_exp"))
 
-                incorrect_exp = cursor.getString(
-                    cursor.getColumnIndexOrThrow("incorrect_exp"))
+            incorrect_exp = cursor.getString(
+                cursor.getColumnIndexOrThrow("incorrect_exp"))
 
 
-                //source = cursor.getString(
-                    //cursor.getColumnIndexOrThrow("source"))
+            //source = cursor.getString(
+            //cursor.getColumnIndexOrThrow("source"))
 
-                selectedAnswer = "";
-            } else {
-                // 문제 다 풀었을 때
-            }
-
-            cursor.close()
-            db.close()
-
+            selectedAnswer = "";
+        } else {
+            // 문제 다 풀었을 때
         }
+
+        cursor.close()
+        db.close()
+
     }
+}
