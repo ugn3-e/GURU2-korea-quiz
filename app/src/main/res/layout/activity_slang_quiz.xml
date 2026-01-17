@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 상단 AppBar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- 메인 툴바 (Quiz) -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/mainToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="#6851A5"
+            android:paddingVertical="8dp"
+            app:title="Quiz"
+            app:titleTextColor="@android:color/white" />
+
+        <!-- 서브 툴바 (신조어 퀴즈) -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/subToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="#D3C5FA"
+            android:paddingHorizontal="16dp"
+            app:title="신조어 퀴즈"
+            app:titleTextColor="@android:color/black" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <!-- Q 번호 -->
+    <TextView
+        android:id="@+id/QText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Q1"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- 질문 -->
+    <TextView
+        android:id="@+id/tvQuestion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        tools:text="신조어 '저메추'의 뜻은?"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/QText"
+        app:layout_constraintTop_toTopOf="@id/QText" />
+
+    <!-- 선택지 버튼들 -->
+    <Button
+        android:id="@+id/btnChoice1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/choice_default"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="3"
+        android:minHeight="48dp"
+        android:padding="12dp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/QText"
+        tools:text="저녁 메뉴 추천" />
+
+    <Button
+        android:id="@+id/btnChoice2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/choice_default"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="3"
+        android:minHeight="48dp"
+        android:padding="12dp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnChoice1"
+        tools:text="저렴한 메뉴 추천" />
+
+    <Button
+        android:id="@+id/btnChoice3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/choice_default"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="3"
+        android:minHeight="48dp"
+        android:padding="12dp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnChoice2"
+        tools:text="저녁에 메뉴를 추가" />
+
+    <Button
+        android:id="@+id/btnChoice4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/choice_default"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="3"
+        android:minHeight="48dp"
+        android:padding="12dp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnChoice3"
+        tools:text="저렴한 메뉴를 추가" />
+
+    <!-- 상황 예시 보기 버튼 -->
+    <TextView
+        android:id="@+id/btnShowExample"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="72dp"
+        android:drawableStart="@android:drawable/ic_menu_add"
+        android:drawablePadding="6dp"
+        android:padding="8dp"
+        android:text="상황 예시 보기"
+        android:textColor="#666666"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnChoice4" />
+
+    <!-- 상황 예시 이미지 -->
+    <ImageView
+        android:id="@+id/imgExample"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="32dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/example_jeomechu"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnChoice4" />
+
+
+    <!-- 확인 버튼 -->
+    <Button
+        android:id="@+id/btnConfirm"
+        android:layout_width="330dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="88dp"
+        android:backgroundTint="@color/choice_default"
+        android:text="확인"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
