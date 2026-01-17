@@ -16,7 +16,6 @@ class ResultActivity1 : AppCompatActivity() {
     lateinit var quizText: TextView
     lateinit var quizAnswer: TextView
     lateinit var btnNext: Button
-
     lateinit var btnSave: Button
 
 
@@ -44,9 +43,13 @@ class ResultActivity1 : AppCompatActivity() {
         val dbManager = DBManager(this, "quiz.db", null, 1)
 
         // 데이터 가져오기
-        val quiz = dbManager.getQuizById(1)
+        // quizId, isCorrect
+        // 문제 순서, 정답/오답 여부 판단 // ☑️ 추가
+        val quizId = intent.getIntExtra("quiz_id", -1)
+        val isCorrect = intent.getBooleanExtra("is_correct", false)
+        val quiz = dbManager.getQuizById(quizId)
 
-        val isCorrect = intent.getBooleanExtra("is_correct", false) // ☑️ 추가
+
 
 
         // 더미데이터 넣기
@@ -64,9 +67,9 @@ class ResultActivity1 : AppCompatActivity() {
 
         }
 
-        // 다음 문제 넘어가기
+        // 다음 문제로 이동
         btnNext.setOnClickListener {
-            // 다음 페이지로 이동 // ☑️추가
+            // 다음 문제로 이동 // ☑️추가
             startActivity(Intent(this, QuizActivity1::class.java))
             finish() // 뒤로 가기 누를 시 퀴즈 화면
 

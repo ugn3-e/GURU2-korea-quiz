@@ -24,7 +24,7 @@ class QuizActivity1 : AppCompatActivity() {
     var incorrect_exp = ""
     //var explanation = ""
     //var source = ""
-    var currentIndex = 0
+    var currentQuizId = 0
     var selectedAnswer = ""
 
 
@@ -73,6 +73,7 @@ class QuizActivity1 : AppCompatActivity() {
             val isCorrect = selectedAnswer == correctAnswer
 
             val intent = Intent(this, ResultActivity1::class.java)
+            intent.putExtra("quiz_id", currentQuizId)
             intent.putExtra("is_correct", isCorrect)
             intent.putExtra("sentence", QuizText.text.toString())
             intent.putExtra("correct", correctAnswer)
@@ -88,13 +89,17 @@ class QuizActivity1 : AppCompatActivity() {
         fun loadNextQuiz() {
             val db = dbManager.readableDatabase
 
-            // ORDER BY RANDOM() LIMIT 1
+            // ORDER BY id ASC LIMIT 1 OFFSET ?
             // 순서대로 문제 출력 // ☑️수정
             // DB에서 문제 1개 가져오기
-            val cursor = db.rawQuery("SELECT * FROM spelling_quiz ORDER BY id ASC LIMIT 1 OFFSET ?",
-                arrayOf(currentIndex.toString()))
+            val cursor = db.rawQuery("SELECT * FROM spelling_quiz ORDER BY RANDOM() LIMIT 1",
+                null)
 
             if(cursor.moveToFirst()) {
+                // 문제 id 저장하기(문제 순서) // ☑️ 추가
+                currentQuizId = cursor.getInt(
+                    cursor.getColumnIndexOrThrow("id"))
+
                 QuizText.text = cursor.getString(
                     cursor.getColumnIndexOrThrow("sentence"))
 
@@ -123,9 +128,8 @@ class QuizActivity1 : AppCompatActivity() {
                     //cursor.getColumnIndexOrThrow("source"))
 
                 selectedAnswer = "";
-                currentIndex++
             } else {
-                //문제 다 풀었을 때 코드 작성 필요
+                // 문제 다 풀었을 때
             }
 
             cursor.close()
