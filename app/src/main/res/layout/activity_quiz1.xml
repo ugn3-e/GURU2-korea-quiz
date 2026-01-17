@@ -56,13 +56,14 @@
         android:id="@+id/QuizText"
         android:layout_width="300dp"
         android:layout_height="30dp"
+        android:layout_marginBottom="59dp"
         android:text="TextView"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btnChoice3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="418dp" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnChoice3"
@@ -78,11 +79,12 @@
         android:id="@+id/btnChoice2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
         android:text="Button"
+        app:layout_constraintBottom_toTopOf="@+id/btnSub"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="507dp" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnChoice1"
