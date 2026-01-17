@@ -1,0 +1,53 @@
+package com.example.guru2
+
+import android.os.Bundle
+import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import android.widget.Button
+import org.w3c.dom.Text
+
+class CorrectActivity : AppCompatActivity() {
+    lateinit var dbManager: DBManager
+    lateinit var quizText: TextView
+    lateinit var quizAnswer: TextView
+    lateinit var btnNext: Button
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_correct)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
+        // ui 연결
+        quizText = findViewById<TextView>(R.id.QuizText)
+        quizAnswer = findViewById<TextView>(R.id.QuizAnswer)
+        btnNext = findViewById<Button>(R.id.btnNext)
+
+        // DBManager
+        val dbManager = DBManager(this, "quiz.db", null, 1)
+
+        // 데이터 가져오기
+        val quiz = dbManager.getQuizById(1)
+
+        // 더미데이터 넣기
+        quiz?.let {
+            quizText.text = it.sentence.replace("____", it.correct)
+            quizAnswer.text = it.correct_exp
+
+        }
+
+        // 다음 문제 넘어가기
+        btnNext.setOnClickListener {
+            // 다음 페이지로 이동하는 코드 작성 필요
+        }
+    }
+}
