@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="choice_default">#D3C5FA</color>   <!-- 기본 -->
+    <color name="choice_selected">#6851A5</color>  <!-- 선택됨 -->
+    <color name="confirm_default">#D3C5FA</color>  <!-- 비활성 -->
+    <color name="confirm_active">#6851A5</color>   <!-- 활성 -->
+
 </resources>

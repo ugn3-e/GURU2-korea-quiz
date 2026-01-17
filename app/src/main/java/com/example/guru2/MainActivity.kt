@@ -10,21 +10,29 @@ import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
     lateinit var btnQuiz1: Button
+    lateinit var btnQuiz2: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        //enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+//            insets
+//        }
 
         btnQuiz1 = findViewById<Button>(R.id.btnQuiz1)
 
         btnQuiz1.setOnClickListener {
             val intent = Intent(this, QuizActivity1::class.java)
+            startActivity(intent)
+        }
+
+        btnQuiz2 = findViewById<Button>(R.id.btnQuiz2)
+
+        btnQuiz2.setOnClickListener {
+            val intent = Intent(this, SlangQuizActivity::class.java)
             startActivity(intent)
         }
     }

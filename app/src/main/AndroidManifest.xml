@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GURU2">
         <activity
+            android:name=".SlangQuizActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SlangResultActivity"
+            android:exported="false" />
+        <activity
             android:name=".QuizActivity1"
             android:exported="false" />
         <activity
