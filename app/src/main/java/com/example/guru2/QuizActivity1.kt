@@ -23,7 +23,8 @@ class QuizActivity1 : AppCompatActivity() {
     var correct_exp = ""
     var incorrect_exp = ""
     //var explanation = ""
-    var source = ""
+    //var source = ""
+    var currentIndex = 0
     var selectedAnswer = ""
 
 
@@ -87,9 +88,11 @@ class QuizActivity1 : AppCompatActivity() {
         fun loadNextQuiz() {
             val db = dbManager.readableDatabase
 
-            //DB에서 문제 1개 가져오기
-            val cursor = db.rawQuery("SELECT * FROM spelling_quiz ORDER BY RANDOM() LIMIT 1",
-                null)
+            // ORDER BY RANDOM() LIMIT 1
+            // 순서대로 문제 출력 // ☑️수정
+            // DB에서 문제 1개 가져오기
+            val cursor = db.rawQuery("SELECT * FROM spelling_quiz ORDER BY id ASC LIMIT 1 OFFSET ?",
+                arrayOf(currentIndex.toString()))
 
             if(cursor.moveToFirst()) {
                 QuizText.text = cursor.getString(
@@ -116,10 +119,13 @@ class QuizActivity1 : AppCompatActivity() {
                     cursor.getColumnIndexOrThrow("incorrect_exp"))
 
 
-                source = cursor.getString(
-                    cursor.getColumnIndexOrThrow("source"))
+                //source = cursor.getString(
+                    //cursor.getColumnIndexOrThrow("source"))
 
                 selectedAnswer = "";
+                currentIndex++
+            } else {
+                //문제 다 풀었을 때 코드 작성 필요
             }
 
             cursor.close()
