@@ -1,6 +1,7 @@
 package com.example.guru2
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -65,7 +66,9 @@ class ResultActivity1 : AppCompatActivity() {
 
         // 다음 문제 넘어가기
         btnNext.setOnClickListener {
-            // 다음 페이지로 이동하는 코드 작성 필요
+            // 다음 페이지로 이동 // ☑️추가
+            startActivity(Intent(this, QuizActivity1::class.java))
+            finish() // 뒤로 가기 누를 시 퀴즈 화면
 
         }
 
