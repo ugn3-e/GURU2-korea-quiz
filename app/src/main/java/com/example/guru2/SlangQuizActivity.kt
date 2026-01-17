@@ -36,7 +36,7 @@ class SlangQuizActivity : AppCompatActivity() {
 
     // 디미 유진_선택지 값
     private var selectedAnswer = ""
-    private lateinit var currentQuiz: QuizData
+    private lateinit var currentQuiz: SlangQuizData
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -151,7 +151,7 @@ class SlangQuizActivity : AppCompatActivity() {
     }
 
     // 디미 유진_선택지 섞기
-    private fun setShuffledChoices(quiz: QuizData) {
+    private fun setShuffledChoices(quiz: SlangQuizData) {
         val choices = mutableListOf(
             quiz.choice1,
             quiz.choice2,

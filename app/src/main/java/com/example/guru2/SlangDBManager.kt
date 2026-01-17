@@ -48,7 +48,7 @@ class SlangDBManager(private val context: Context)
     }
 
     // 디미 유진_신조어 문제 1개 가져오기
-    fun getQuizById(id: Int): QuizData? {
+    fun getQuizById(id: Int): SlangQuizData? {
         val db = openDatabase()
 
         val cursor = db.rawQuery(
@@ -61,11 +61,11 @@ class SlangDBManager(private val context: Context)
             arrayOf(id.toString())
         )
 
-        var quiz: QuizData? = null
+        var quiz: SlangQuizData? = null
 
         // 디미 유진_결과가 있으면 QuizData 객체로 변환
         if (cursor.moveToFirst()) {
-            quiz = QuizData(
+            quiz = SlangQuizData(
                 id = cursor.getInt(0),
                 question = cursor.getString(1),
                 choice1 = cursor.getString(2),
@@ -88,7 +88,7 @@ class SlangDBManager(private val context: Context)
 
 //디미 유진_QuizData
 // slang_quiz 테이블의 1행(문제 1개)을 표현
-data class QuizData(
+data class SlangQuizData(
     val id: Int,
     val question: String,
     val choice1: String,
