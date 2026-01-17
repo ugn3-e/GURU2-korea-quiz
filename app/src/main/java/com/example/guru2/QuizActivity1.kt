@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -73,7 +72,7 @@ class QuizActivity1 : AppCompatActivity() {
                 //나중에 Correct/inCorrect Activity로 이동
                 //Toast.makeText(this, "정답!", Toast.LENGTH_SHORT).show()
                 //loadNextQuiz() // ✅ 추가
-                val intent = Intent(this, CorrectActivity::class.java)
+                val intent = Intent(this, ResultActivity1::class.java)
                 intent.putExtra("sentence", QuizText.text.toString())
                 intent.putExtra("correct", correctAnswer)
                 intent.putExtra("correct_exp", correct_exp)

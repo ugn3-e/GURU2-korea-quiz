@@ -55,11 +55,12 @@ class DBManager(
             quiz = QuizData(
                 sentence = cursor.getString(cursor.getColumnIndexOrThrow("sentence")),
                 correct = cursor.getString(cursor.getColumnIndexOrThrow("correct")),
-                correct_exp = cursor.getString(cursor.getColumnIndexOrThrow("correct_exp"))
+                correct_exp = cursor.getString(cursor.getColumnIndexOrThrow("correct_exp")),
+                incorrect_exp = cursor.getString(cursor.getColumnIndexOrThrow("incorrect_exp"))
             )
         }
         cursor.close()
         return quiz
     }
 }
-data class QuizData(val sentence: String, val correct: String, val correct_exp: String)
+data class QuizData(val sentence: String, val correct: String, val correct_exp: String, val incorrect_exp: String)
