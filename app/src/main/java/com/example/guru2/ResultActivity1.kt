@@ -10,8 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import android.widget.Button
 
 class ResultActivity1 : AppCompatActivity() {
-    lateinit var dbManager: DBManager
-
+    lateinit var DBManager: DBManager
     lateinit var resultText: TextView
     lateinit var quizText: TextView
     lateinit var quizAnswer: TextView
