@@ -44,11 +44,4 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item?.itemId) {
-            R.id.action_survey -> {
-                //작성 예정
-            }
-        }
-    }
 }
