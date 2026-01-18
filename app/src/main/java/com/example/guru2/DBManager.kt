@@ -3,38 +3,40 @@ package com.example.guru2
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 
 class DBManager(
-    context: Context?,
-    name: String?,
-    factory: SQLiteDatabase.CursorFactory?,
-    version: Int
-) : SQLiteOpenHelper(context, name, factory, version) {
+    val context: Context
+) : SQLiteOpenHelper(context, "spelling_quiz.db", null, 2) {
+
+    init {
+        copyDatabase() // ☑️ DB 파일 없으면 복사해오기
+    }
+
+    // ☑️ 추가
+    private fun copyDatabase() {
+        val dbPath = context.getDatabasePath("spelling_quiz.db")
+        if (!dbPath.exists()) {
+            try {
+                val inputStream = context.assets.open("spelling_quiz.db")
+                val outputStream = FileOutputStream(dbPath)
+                val buffer = ByteArray(1024)
+                var length: Int
+                while(inputStream.read(buffer).also { length = it } > 0) {
+                    outputStream.write(buffer, 0, length)
+                }
+                outputStream.flush()
+                outputStream.close()
+                inputStream.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
     override fun onCreate(db: SQLiteDatabase?) {
-
-        db!!.execSQL("""CREATE TABLE spelling_quiz (id INTEGER PRIMARY KEY AUTOINCREMENT,
-            sentence text, 
-            choice1 text, choice2 text, choice3 text, 
-            correct text, 
-            correct_exp text,
-            incorrect_exp text,
-            source text)""".trimIndent())
-
-        //샘플 데이터
-        db.execSQL("""
-            INSERT INTO spelling_quiz
-            VALUES(null, '그건 절대 _____, 내일 다시 해보자.', '안 돼', '안 되', '않되', '안 돼',
-                    '해당 영상은 2017년에 개봉한 한국영화 기생충에 나오는 대사로, 주인공 기우가 ~~~~ 상황에 제자 다혜에게 사용한 말이다.',
-                    '해설: 되다 의 부정은 안 + 되다이므로 안 돼(=안 되다) 처럼 띄어서 사용합니다.', 
-                    '영화<기생충>') 
-        """.trimIndent())
-        db.execSQL("""
-            INSERT INTO spelling_quiz
-            VALUES(null, '____가 없네.', '어의', '어위', '어이', '어이',
-                    '해당 영상은 2015년에 개봉한 한국영화 베테랑에서 나오는 대사로, 조태오가 ~~~ 상황에서 사용한 말이다.',
-                    '해설: 어이없다 는 일이 너무 뜻밖이어서 기가 막힌 상황에 쓰는 말입니다.', 
-                    '영화<베테랑>')
-        """.trimIndent())
+        // ☑️ 파일에 테이블 있으니 비워두기 (없앰)
     }
 
     override fun onUpgrade(
@@ -42,8 +44,9 @@ class DBManager(
         oldVersion: Int,
         newVersion: Int
     ) {
-        db!!.execSQL("DROP TABLE IF EXISTS spelling_quiz")
-        onCreate(db)
+//        db!!.execSQL("DROP TABLE IF EXISTS spelling_quiz")
+//        onCreate(db)
+        // 업데이트 필요하면 파일 다시 복사하거나 로직 추가
     }
 
     fun getQuizById(id: Int) : QuizData? {

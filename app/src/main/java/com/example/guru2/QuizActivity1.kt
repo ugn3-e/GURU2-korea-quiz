@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -18,6 +19,7 @@ class QuizActivity1 : AppCompatActivity() {
     lateinit var btnChoice2: Button
     lateinit var btnChoice3: Button
     lateinit var btnSub: Button
+    lateinit var QuizNum: TextView // ☑️ Q 번호
 
     var correctAnswer = ""
     var correct_exp = ""
@@ -26,6 +28,7 @@ class QuizActivity1 : AppCompatActivity() {
     //var source = ""
     var currentQuizId = 0
     var selectedAnswer = ""
+    var quizCount = 1 // ☑️ Q 번호
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,9 +41,13 @@ class QuizActivity1 : AppCompatActivity() {
             insets
         }
 
+        quizCount = intent.getIntExtra("quiz_count", 1)
+
         initViews() // ✅ 추가
+        QuizNum.text = "Q$quizCount" // ☑️ Q 번호
+
         //DB 연결
-        dbManager = DBManager(this, "spelling_quiz.db", null, 2)
+        dbManager = DBManager(this)
 
         loadNextQuiz() //  ✅ 추가
 
@@ -50,6 +57,7 @@ class QuizActivity1 : AppCompatActivity() {
     private fun initViews() {
         //view 연결
         QuizText = findViewById<TextView>(R.id.QuizText)
+        QuizNum = findViewById<TextView>(R.id.QuizNum)
         btnChoice1 = findViewById<Button>(R.id.btnChoice1)
         btnChoice2 = findViewById<Button>(R.id.btnChoice2)
         btnChoice3 = findViewById<Button>(R.id.btnChoice3)
@@ -73,6 +81,8 @@ class QuizActivity1 : AppCompatActivity() {
             val isCorrect = selectedAnswer == correctAnswer
 
             val intent = Intent(this, ResultActivity1::class.java)
+
+            intent.putExtra("quiz_count", quizCount) // ☑️ Q 번호
             intent.putExtra("quiz_id", currentQuizId)
             intent.putExtra("is_correct", isCorrect)
             intent.putExtra("sentence", QuizText.text.toString())
@@ -92,8 +102,9 @@ class QuizActivity1 : AppCompatActivity() {
         // ORDER BY id ASC LIMIT 1 OFFSET ?
         // 순서대로 문제 출력 // ☑️수정
         // DB에서 문제 1개 가져오기
-        val cursor = db.rawQuery("SELECT * FROM spelling_quiz ORDER BY RANDOM() LIMIT 1",
-            null)
+        val cursor = db.rawQuery("SELECT * FROM spelling_quiz ORDER BY id ASC LIMIT 1 OFFSET ?",
+             arrayOf((quizCount - 1).toString()) // ☑️중복 문제 해결 -> id로 가져오기
+        )
 
         if(cursor.moveToFirst()) {
             // 문제 id 저장하기(문제 순서) // ☑️ 추가
@@ -130,6 +141,9 @@ class QuizActivity1 : AppCompatActivity() {
             selectedAnswer = "";
         } else {
             // 문제 다 풀었을 때
+            Toast.makeText(this, "문제를 다 풀었습니다!", Toast.LENGTH_SHORT).show()
+
+            finish()
         }
 
         cursor.close()

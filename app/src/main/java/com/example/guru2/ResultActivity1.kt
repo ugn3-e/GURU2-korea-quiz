@@ -40,7 +40,7 @@ class ResultActivity1 : AppCompatActivity() {
 
 
         // DBManager
-        val dbManager = DBManager(this, "quiz.db", null, 1)
+        val dbManager = DBManager(this)
 
         // 데이터 가져오기
         // quizId, isCorrect
@@ -48,6 +48,7 @@ class ResultActivity1 : AppCompatActivity() {
         val quizId = intent.getIntExtra("quiz_id", -1)
         val isCorrect = intent.getBooleanExtra("is_correct", false)
         val quiz = dbManager.getQuizById(quizId)
+        val quizCount = intent.getIntExtra("quiz_count", 1)
 
 
 
@@ -69,8 +70,13 @@ class ResultActivity1 : AppCompatActivity() {
 
         // 다음 문제로 이동
         btnNext.setOnClickListener {
+            val intent = Intent(this, QuizActivity1::class.java)
+
             // 다음 문제로 이동 // ☑️추가
-            startActivity(Intent(this, QuizActivity1::class.java))
+            // startActivity(Intent(this, QuizActivity1::class.java))
+            intent.putExtra("quiz_count", quizCount + 1)
+
+            startActivity(intent)
             finish() // 뒤로 가기 누를 시 퀴즈 화면
 
         }
