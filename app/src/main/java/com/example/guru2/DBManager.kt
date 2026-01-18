@@ -18,6 +18,7 @@ class DBManager(
     // ☑️ 추가
     private fun copyDatabase() {
         val dbPath = context.getDatabasePath("spelling_quiz.db")
+
         if (!dbPath.exists()) {
             try {
                 val inputStream = context.assets.open("spelling_quiz.db")

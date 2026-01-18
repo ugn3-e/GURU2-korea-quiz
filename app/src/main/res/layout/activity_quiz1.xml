@@ -21,8 +21,8 @@
 
     <TextView
         android:id="@+id/QuizNum"
-        android:layout_width="39dp"
-        android:layout_height="37dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="564dp"
         android:text="Q1"
         android:textSize="24sp"
@@ -33,14 +33,17 @@
 
     <TextView
         android:id="@+id/Question"
-        android:layout_width="277dp"
-        android:layout_height="50dp"
+        android:layout_width="284dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="26dp"
         android:layout_marginEnd="48dp"
-        android:layout_marginBottom="548dp"
+        android:layout_marginBottom="552dp"
         android:text="다음 빈칸에 들어갈 단어의 올바른 맞춤법 표기를 선택하세요"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.142"
+        app:layout_constraintStart_toEndOf="@+id/QuizNum" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -67,35 +70,39 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btnChoice3"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnChoice1"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="176dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="4dp"
+        android:text="Button1"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintBottom_toTopOf="@+id/btnSub"
+        app:layout_constraintEnd_toStartOf="@+id/btnChoice2"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="80dp"/>
 
     <Button
         android:id="@+id/btnChoice2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
-        android:text="Button"
-        app:layout_constraintBottom_toTopOf="@+id/btnSub"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginEnd="4dp"
+        android:text="Button2"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintBottom_toBottomOf="@+id/btnChoice1"
+        app:layout_constraintEnd_toStartOf="@+id/btnChoice3"
+        app:layout_constraintStart_toEndOf="@+id/btnChoice1" />
 
     <Button
-        android:id="@+id/btnChoice1"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnChoice3"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginBottom="176dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginEnd="16dp"
+        android:text="Button3"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintBottom_toBottomOf="@+id/btnChoice1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnChoice2" />
 
     <Button
         android:id="@+id/btnSub"
