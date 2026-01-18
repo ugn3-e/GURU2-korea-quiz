@@ -2,4 +2,5 @@
     <string name="app_name">GURU2</string>
     <string name="btnQuiz1">맞춤법 퀴즈</string>
     <string name="btnQuiz2">신조어 퀴즈</string>
+    <string name="action_survey">설문조사</string>
 </resources>
