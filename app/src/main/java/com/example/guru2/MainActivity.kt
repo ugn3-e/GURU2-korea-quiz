@@ -7,10 +7,12 @@ import android.view.MenuItem
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
+    lateinit var toolbar: Toolbar
     lateinit var btnQuiz1: Button
     lateinit var btnQuiz2: Button
 
@@ -23,6 +25,10 @@ class MainActivity : AppCompatActivity() {
 //            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
 //            insets
 //        }
+
+        //툴바를 액션바로 연결 // ☑️추가
+        toolbar = findViewById<Toolbar>(R.id.mainToolbar)
+        setSupportActionBar(toolbar)
 
         btnQuiz1 = findViewById<Button>(R.id.btnQuiz1)
 
@@ -39,9 +45,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // 메인화면과 메뉴 연결 //☑️추가
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_survey -> {
+                val intent = Intent(this, SurveyActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }
