@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import android.util.Log
 
 class SlangQuizActivity : AppCompatActivity() {
 
@@ -12,6 +13,10 @@ class SlangQuizActivity : AppCompatActivity() {
     companion object {
         private const val REQ_RESULT = 1001
     }
+
+    // 디미 유진_전체 결과 누적 변수
+    private var totalCount = 0
+    private var correctCount = 0
 
     // 디미 유진_Q 번호
     private var currentQuizId = 1
@@ -91,8 +96,10 @@ class SlangQuizActivity : AppCompatActivity() {
         val quiz = dbManager.getQuizById(currentQuizId)
 
         // 디미 유진_문제 다 풀었을 경우
+        // >> (수정) 마지막 문제 안내 페이지로 연결
         if (quiz == null) {
-            Toast.makeText(this, "모든 문제를 풀었습니다 🎉", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "모든 문제를 풀었습니다 🎉", Toast.LENGTH_SHORT).show()
+            moveToFinalResultPage()
             return
         }
 
@@ -103,10 +110,11 @@ class SlangQuizActivity : AppCompatActivity() {
 
         // 디미 유진_불러온 문제 & 선택지
         tvQuestion.text = quiz.question
-//        btn1.text = quiz.choice1
-//        btn2.text = quiz.choice2
-//        btn3.text = quiz.choice3
-//        btn4.text = quiz.choice4
+
+        // 디미 유진_원본 선택지 로그
+        Log.d("Clog", "Q${quiz.id} 원본 보기 = ${listOf(
+            quiz.choice1, quiz.choice2, quiz.choice3, quiz.choice4
+        )}")
 
         // 디미 유진_선택지 섞기
         setShuffledChoices(quiz)
@@ -161,6 +169,12 @@ class SlangQuizActivity : AppCompatActivity() {
 
         choices.shuffle()
 
+        // 디미 유진_섞인 결과 로그
+        Log.d("Clog", "Q${quiz.id} 섞인 보기 = $choices")
+
+        val answerIndex = choices.indexOf(quiz.answer)
+        Log.d("Clog", "Q${quiz.id} 정답 위치 = ${answerIndex + 1}번")
+
         btn1.text = choices[0]
         btn2.text = choices[1]
         btn3.text = choices[2]
@@ -170,6 +184,10 @@ class SlangQuizActivity : AppCompatActivity() {
     // 디미 유진_결과 화면 이동
     private fun moveToResultPage() {
         val isCorrect = selectedAnswer == currentQuiz.answer
+
+        // 디미 유진_결과 누적
+        totalCount++
+        if (isCorrect) correctCount++
 
         val intent = Intent(this, SlangResultActivity::class.java).apply {
             putExtra("isCorrect", isCorrect)
@@ -193,5 +211,15 @@ class SlangQuizActivity : AppCompatActivity() {
 
             loadQuizFromDB()
         }
+    }
+
+    // 디미 유진_최종 결과 화면 이동
+    private fun moveToFinalResultPage() {
+        val intent = Intent(this, SlangFinalResultActivity::class.java).apply {
+            putExtra("totalCount", totalCount)
+            putExtra("correctCount", correctCount)
+        }
+        startActivity(intent)
+        finish()
     }
 }
