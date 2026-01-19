@@ -80,7 +80,11 @@ class SlangQuizActivity : AppCompatActivity() {
 
         // 디미 유진_상황 예시 이미지 보기
         btnShowExample.setOnClickListener {
-            imgExample.visibility = View.VISIBLE
+            imgExample.visibility =
+                if (imgExample.visibility == View.VISIBLE)
+                    View.GONE
+                else
+                    View.VISIBLE
         }
 
         // 디미 유진_정답 확인 -> 결과 화면 이동
