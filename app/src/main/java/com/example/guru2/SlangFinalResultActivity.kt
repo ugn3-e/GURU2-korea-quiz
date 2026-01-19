@@ -15,7 +15,7 @@ class SlangFinalResultActivity : AppCompatActivity() {
         // 디미 유진_결과 요약 텍스트
         val tvSummary = findViewById<TextView>(R.id.tvSummary)
 
-        // 디미 유진_홈으로 돌아가기 버튼
+        // 디미 유진_이어서 학습하기 버튼
         val btnKeep = findViewById<Button>(R.id.btnKeep)
 
         // 디미 유진_홈으로 돌아가기 버튼

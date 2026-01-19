@@ -44,17 +44,18 @@ class ResultActivity1 : AppCompatActivity() {
 
         // 데이터 가져오기
         // quizId, isCorrect
-        // 문제 순서, 정답/오답 여부 판단 // ☑️ 추가
+        // 문제 순서, 정답/오답 여부 판단
         val quizId = intent.getIntExtra("quiz_id", -1)
         val isCorrect = intent.getBooleanExtra("is_correct", false)
         val quiz = dbManager.getQuizById(quizId)
         val quizCount = intent.getIntExtra("quiz_count", 1)
 
-
-
+        // 누적값 다시 전달 // ☑️ 추가
+        val totalSCount = intent.getIntExtra("totalSCount", 0)
+        val correctSCount = intent.getIntExtra("correctSCount", 0)
 
         // 더미데이터 넣기
-        //isCorrect if문 // ☑️ 추가
+        //isCorrect if문
         quiz?.let {
             quizText.text = it.sentence.replace("____", it.correct)
             if(isCorrect) {
@@ -72,9 +73,13 @@ class ResultActivity1 : AppCompatActivity() {
         btnNext.setOnClickListener {
             val intent = Intent(this, QuizActivity1::class.java)
 
-            // 다음 문제로 이동 // ☑️추가
+            // 다음 문제로 이동
             // startActivity(Intent(this, QuizActivity1::class.java))
             intent.putExtra("quiz_count", quizCount + 1)
+
+            // 누적값 다시 전달 // ☑️ 추가
+            intent.putExtra("totalSCount", totalSCount)
+            intent.putExtra("correctSCount", correctSCount)
 
             startActivity(intent)
             finish() // 뒤로 가기 누를 시 퀴즈 화면

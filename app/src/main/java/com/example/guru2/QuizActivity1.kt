@@ -19,16 +19,22 @@ class QuizActivity1 : AppCompatActivity() {
     lateinit var btnChoice2: Button
     lateinit var btnChoice3: Button
     lateinit var btnSub: Button
-    lateinit var QuizNum: TextView // ☑️ Q 번호
+    lateinit var QuizNum: TextView
 
+    // 정답/오답 판단 변수
     var correctAnswer = ""
     var correct_exp = ""
     var incorrect_exp = ""
     //var explanation = ""
     //var source = ""
+    // 퀴즈 번호
     var currentQuizId = 0
     var selectedAnswer = ""
-    var quizCount = 1 // ☑️ Q 번호
+    var quizCount = 1
+
+    // 전체 결과 누적 변수
+    var totalSCount = 0
+    var correctSCount = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,9 +48,11 @@ class QuizActivity1 : AppCompatActivity() {
         }
 
         quizCount = intent.getIntExtra("quiz_count", 1)
+        totalSCount = intent.getIntExtra("totalSCount", 0)
+        correctSCount = intent.getIntExtra("correctSCount", 0)
 
         initViews() // ✅ 추가
-        QuizNum.text = "Q$quizCount" // ☑️ Q 번호
+        QuizNum.text = "Q$quizCount" // Q 번호
 
         //DB 연결
         dbManager = DBManager(this)
@@ -80,16 +88,25 @@ class QuizActivity1 : AppCompatActivity() {
         btnSub.setOnClickListener {
             val isCorrect = selectedAnswer == correctAnswer
 
+            // 결과 누적 // ☑️ 추가
+            totalSCount++ // 최종 결과
+            if (isCorrect) correctSCount++ // 맞힌 문제 수
+
             val intent = Intent(this, ResultActivity1::class.java)
 
             intent.putExtra("quiz_count", quizCount) // ☑️ Q 번호
             intent.putExtra("quiz_id", currentQuizId)
             intent.putExtra("is_correct", isCorrect)
+            intent.putExtra("isCorrect", isCorrect)
             intent.putExtra("sentence", QuizText.text.toString())
             intent.putExtra("correct", correctAnswer)
             intent.putExtra("correct_exp", correct_exp)
             intent.putExtra("incorrect_exp", incorrect_exp)
             intent.putExtra("selected_answer", selectedAnswer)
+
+            // 누적값 전달 // ☑️ 추가
+            intent.putExtra("totalSCount", totalSCount)
+            intent.putExtra("correctSCount", correctSCount)
 
             startActivity(intent)
         }
@@ -100,14 +117,14 @@ class QuizActivity1 : AppCompatActivity() {
         val db = dbManager.readableDatabase
 
         // ORDER BY id ASC LIMIT 1 OFFSET ?
-        // 순서대로 문제 출력 // ☑️수정
+        // 순서대로 문제 출력
         // DB에서 문제 1개 가져오기
         val cursor = db.rawQuery("SELECT * FROM spelling_quiz ORDER BY id ASC LIMIT 1 OFFSET ?",
-             arrayOf((quizCount - 1).toString()) // ☑️중복 문제 해결 -> id로 가져오기
+             arrayOf((quizCount - 1).toString()) // 중복 문제 해결 -> id로 가져오기
         )
 
         if(cursor.moveToFirst()) {
-            // 문제 id 저장하기(문제 순서) // ☑️ 추가
+            // 문제 id 저장하기(문제 순서)
             currentQuizId = cursor.getInt(
                 cursor.getColumnIndexOrThrow("id"))
 
@@ -141,13 +158,21 @@ class QuizActivity1 : AppCompatActivity() {
             selectedAnswer = "";
         } else {
             // 문제 다 풀었을 때
-            Toast.makeText(this, "문제를 다 풀었습니다!", Toast.LENGTH_SHORT).show()
-
-            finish()
+            moveToSpellFinalResultPage()
         }
 
         cursor.close()
         db.close()
 
+    }
+
+    // 퀴즈 완료 화면으로 이동 // ☑️ 추가
+    private fun moveToSpellFinalResultPage() {
+        val intent = Intent(this, SpellFinalResultActivity::class.java).apply {
+            putExtra("totalSCount", totalSCount)
+            putExtra("correctSCount", correctSCount)
+        }
+        startActivity(intent)
+        finish()
     }
 }
