@@ -60,7 +60,7 @@ class ResultActivity1 : AppCompatActivity() {
             quizText.text = it.sentence.replace("____", it.correct)
             if(isCorrect) {
                 resultText.text = "정답!"
-                quizAnswer.text = it.correct_exp
+                quizAnswer.text = it.incorrect_exp
             } else {
                 resultText.text = "오답"
                 quizAnswer.text = it.incorrect_exp
