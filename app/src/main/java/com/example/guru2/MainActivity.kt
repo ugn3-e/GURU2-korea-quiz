@@ -10,11 +10,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.guru2.ui.quiz.slang.SlangQuizActivity
 
 class MainActivity : AppCompatActivity() {
     lateinit var toolbar: Toolbar
     lateinit var btnQuiz1: Button
     lateinit var btnQuiz2: Button
+    // 디미 유진_오답 버튼
+    lateinit var btnWrong: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +40,16 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // 디미 유진_신조어 퀴즈 연결
         btnQuiz2 = findViewById<Button>(R.id.btnQuiz2)
-
         btnQuiz2.setOnClickListener {
             val intent = Intent(this, SlangQuizActivity::class.java)
             startActivity(intent)
+        }
+        // 디미 유진_오답 연결
+        btnWrong = findViewById(R.id.btnWrong)
+        btnWrong.setOnClickListener {
+            startActivity(Intent(this, WrongNoteActivity::class.java))
         }
     }
 
