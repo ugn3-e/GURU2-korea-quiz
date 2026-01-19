@@ -63,7 +63,7 @@ class SlangDBManager(private val context: Context)
 
         var quiz: SlangQuizData? = null
 
-        // 디미 유진_결과가 있으면 QuizData 객체로 변환
+        // 디미 유진_결과가 있으면 SlangQuizData 객체로 변환
         if (cursor.moveToFirst()) {
             quiz = SlangQuizData(
                 id = cursor.getInt(0),
@@ -86,7 +86,7 @@ class SlangDBManager(private val context: Context)
 }
 
 
-//디미 유진_QuizData
+//디미 유진_SlangQuizData
 // slang_quiz 테이블의 1행(문제 1개)을 표현
 data class SlangQuizData(
     val id: Int,
@@ -100,4 +100,3 @@ data class SlangQuizData(
     val explanation: String,
     val notice: String
 )
-

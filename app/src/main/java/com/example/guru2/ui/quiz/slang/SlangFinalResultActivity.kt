@@ -1,10 +1,11 @@
-package com.example.guru2
+package com.example.guru2.ui.quiz.slang
 
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.example.guru2.R
 
 class SlangFinalResultActivity : AppCompatActivity() {
 

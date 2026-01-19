@@ -1,15 +1,15 @@
-package com.example.guru2
+package com.example.guru2.ui.quiz.slang
 
 import android.content.Intent
-import android.view.View
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import android.util.Log
+import com.example.guru2.R
 
 class SlangResultActivity : AppCompatActivity() {
 

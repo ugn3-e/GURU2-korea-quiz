@@ -1,11 +1,19 @@
-package com.example.guru2
+package com.example.guru2.ui.quiz.slang
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
+import android.view.View
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.example.guru2.R
+import com.example.guru2.SlangDBManager
+import com.example.guru2.ui.quiz.slang.SlangFinalResultActivity
+import com.example.guru2.SlangQuizData
+import com.example.guru2.ui.quiz.slang.SlangResultActivity
+import com.example.guru2.WrongDBManager
 
 class SlangQuizActivity : AppCompatActivity() {
 
@@ -192,6 +200,12 @@ class SlangQuizActivity : AppCompatActivity() {
         // 디미 유진_결과 누적
         totalCount++
         if (isCorrect) correctCount++
+
+        // 디미 유진_오답일 경우 현재 퀴즈 질문과 선택한 답 db에 저장하기
+        if (!isCorrect) {
+            WrongDBManager(this)
+                .saveWrongQuiz(this, currentQuiz.id, selectedAnswer)
+        }
 
         val intent = Intent(this, SlangResultActivity::class.java).apply {
             putExtra("isCorrect", isCorrect)
