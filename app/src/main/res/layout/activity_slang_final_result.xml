@@ -26,15 +26,15 @@
             app:title="Quiz"
             app:titleTextColor="@android:color/white" />
 
-        <!-- 서브 툴바 -->
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/subToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="#D3C5FA"
-            android:paddingHorizontal="16dp"
-            app:title="신조어 퀴즈"
-            app:titleTextColor="@android:color/black" />
+<!--        &lt;!&ndash; 서브 툴바 &ndash;&gt;-->
+<!--        <com.google.android.material.appbar.MaterialToolbar-->
+<!--            android:id="@+id/subToolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:background="#D3C5FA"-->
+<!--            android:paddingHorizontal="16dp"-->
+<!--            app:title="신조어 퀴즈"-->
+<!--            app:titleTextColor="@android:color/black" />-->
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -70,11 +70,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
+    <!-- 이어서 학습하기 버튼 -->
+    <Button
+        android:id="@+id/btnKeep"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="이어서 학습하기"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnFinish"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <!-- 홈으로 돌아가기 버튼 -->
     <Button
         android:id="@+id/btnFinish"
-        android:layout_width="330dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="88dp"
         android:text="홈으로 돌아가기"
         android:textSize="16sp"

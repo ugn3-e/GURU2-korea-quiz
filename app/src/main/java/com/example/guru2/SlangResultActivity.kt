@@ -23,7 +23,7 @@ class SlangResultActivity : AppCompatActivity() {
         val tvNotice = findViewById<TextView>(R.id.tvNotice)
         val imgExample = findViewById<ImageView>(R.id.imgExample)
         val btnNext = findViewById<Button>(R.id.btnNext)
-        val btnSave = findViewById<Button>(R.id.btnSave)
+        //val btnSave = findViewById<Button>(R.id.btnSave)
 
         // 디미 유진_Intent 데이터 받기
         val isCorrect = intent.getBooleanExtra("isCorrect", false)
@@ -84,9 +84,9 @@ class SlangResultActivity : AppCompatActivity() {
             finish()
         }
 
-        // 디미 유진_콘텐츠 저장 (임시)
-        btnSave.setOnClickListener {
-            Toast.makeText(this, "콘텐츠가 저장되었습니다 ⭐", Toast.LENGTH_SHORT).show()
-        }
+//        // 디미 유진_콘텐츠 저장 (임시)
+//        btnSave.setOnClickListener {
+//            Toast.makeText(this, "콘텐츠가 저장되었습니다 ⭐", Toast.LENGTH_SHORT).show()
+//        }
     }
 }

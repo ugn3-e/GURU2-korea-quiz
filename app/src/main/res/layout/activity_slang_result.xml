@@ -27,15 +27,15 @@
             app:title="Quiz"
             app:titleTextColor="@android:color/white" />
 
-        <!-- 서브 툴바 (신조어 퀴즈) -->
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/subToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="#D3C5FA"
-            android:paddingHorizontal="16dp"
-            app:title="신조어 퀴즈"
-            app:titleTextColor="@android:color/black" />
+<!--        &lt;!&ndash; 서브 툴바 (신조어 퀴즈) &ndash;&gt;-->
+<!--        <com.google.android.material.appbar.MaterialToolbar-->
+<!--            android:id="@+id/subToolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:background="#D3C5FA"-->
+<!--            android:paddingHorizontal="16dp"-->
+<!--            app:title="신조어 퀴즈"-->
+<!--            app:titleTextColor="@android:color/black" />-->
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -44,11 +44,10 @@
         android:id="@+id/tvResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
+        android:layout_marginTop="32dp"
         android:text="정답!"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/tvExplanation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBar" />
@@ -68,7 +67,7 @@
     <!-- 해설 -->
     <TextView
         android:id="@+id/tvExplanation"
-        android:layout_width="330dp"
+        android:layout_width="345dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="24dp"
@@ -87,7 +86,7 @@
     <!-- 주의 사항 -->
     <TextView
         android:id="@+id/tvNotice"
-        android:layout_width="330dp"
+        android:layout_width="345dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="168dp"
@@ -103,26 +102,30 @@
     <!-- 다음 퀴즈 버튼 -->
     <Button
         android:id="@+id/btnNext"
-        android:layout_width="330dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="16dp"
-        android:text="다음 퀴즈로 넘어가기"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnSave"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <!-- 콘텐츠 저장 버튼 -->
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="330dp"
-        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="88dp"
-        android:text="콘텐츠 저장하기"
+        android:text="다음 퀴즈로 넘어가기"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+<!--    &lt;!&ndash; 콘텐츠 저장 버튼 &ndash;&gt;-->
+<!--    <Button-->
+<!--        android:id="@+id/btnSave"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="48dp"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:layout_marginBottom="88dp"-->
+<!--        android:text="콘텐츠 저장하기"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 
 class SlangFinalResultActivity : AppCompatActivity() {
 
@@ -13,6 +14,9 @@ class SlangFinalResultActivity : AppCompatActivity() {
 
         // 디미 유진_결과 요약 텍스트
         val tvSummary = findViewById<TextView>(R.id.tvSummary)
+
+        // 디미 유진_홈으로 돌아가기 버튼
+        val btnKeep = findViewById<Button>(R.id.btnKeep)
 
         // 디미 유진_홈으로 돌아가기 버튼
         val btnFinish = findViewById<Button>(R.id.btnFinish)
@@ -28,6 +32,11 @@ class SlangFinalResultActivity : AppCompatActivity() {
             총 문제 수 : $total
             맞힌 문제 수 : $correct
         """.trimIndent()
+
+        // 디미 유진_이어서 학습하기 버튼
+        btnKeep.setOnClickListener {
+            Toast.makeText(this, "이어서 학습하기 버튼", Toast.LENGTH_SHORT).show()
+        }
 
         // 디미 유진_SlangQuizActivity로 이동
         btnFinish.setOnClickListener {
