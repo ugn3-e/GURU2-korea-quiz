@@ -12,19 +12,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GURU2">
         <activity
+            android:name=".WrongDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WrongNoteActivity"
+            android:exported="false" />
+        <activity
             android:name=".SpellFinalResultActivity"
             android:exported="false" />
         <activity
-            android:name=".SlangFinalResultActivity"
+            android:name=".ui.quiz.slang.SlangFinalResultActivity"
             android:exported="false" />
         <activity
             android:name=".SurveyActivity"
             android:exported="false" />
         <activity
-            android:name=".SlangQuizActivity"
+            android:name=".ui.quiz.slang.SlangQuizActivity"
             android:exported="false" />
         <activity
-            android:name=".SlangResultActivity"
+            android:name=".ui.quiz.slang.SlangResultActivity"
             android:exported="false" />
         <activity
             android:name=".ResultActivity1"
