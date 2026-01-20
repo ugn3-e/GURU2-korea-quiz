@@ -12,25 +12,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GURU2">
         <activity
-            android:name=".ui.wrong.WrongDetailActivity"
+            android:name=".SavedDetail"
             android:exported="false" />
         <activity
-            android:name=".ui.wrong.WrongNoteActivity"
+            android:name=".SavedDailyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SavedQuizActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SavedContentActivity"
             android:exported="false" />
         <activity
             android:name=".SpellFinalResultActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.quiz.slang.SlangFinalResultActivity"
+            android:name=".SlangFinalResultActivity"
             android:exported="false" />
         <activity
             android:name=".SurveyActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.quiz.slang.SlangQuizActivity"
+            android:name=".SlangQuizActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.quiz.slang.SlangResultActivity"
+            android:name=".SlangResultActivity"
             android:exported="false" />
         <activity
             android:name=".ResultActivity1"

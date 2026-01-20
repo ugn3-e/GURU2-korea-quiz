@@ -5,17 +5,17 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.example.guru2.ui.quiz.slang.SlangQuizActivity
-import com.example.guru2.ui.wrong.WrongNoteActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
     lateinit var toolbar: Toolbar
     lateinit var btnQuiz1: Button
     lateinit var btnQuiz2: Button
-    // 디미 유진_오답 버튼
-    lateinit var btnWrong: Button
+    lateinit var btnSaved: Button // ✅ '콘텐츠 저장하기' 페이지 연결 (유빈 추가)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,16 +38,18 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 디미 유진_신조어 퀴즈 연결
         btnQuiz2 = findViewById<Button>(R.id.btnQuiz2)
+
         btnQuiz2.setOnClickListener {
             val intent = Intent(this, SlangQuizActivity::class.java)
             startActivity(intent)
         }
-        // 디미 유진_오답 연결
-        btnWrong = findViewById(R.id.btnWrong)
-        btnWrong.setOnClickListener {
-            startActivity(Intent(this, WrongNoteActivity::class.java))
+
+        // ✅ '콘텐츠 저장하기' 페이지 연결 (유빈 추가)
+        btnSaved = findViewById<Button>(R.id.btnSaved)
+        btnSaved.setOnClickListener {
+            val intent = Intent(this, SavedContentActivity::class.java)
+            startActivity(intent)
         }
     }
 

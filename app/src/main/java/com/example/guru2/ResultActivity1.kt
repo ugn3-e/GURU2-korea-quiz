@@ -3,18 +3,32 @@ package com.example.guru2
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.Button
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import android.widget.Toast
+import android.widget.FrameLayout
+import android.widget.ImageView
+import androidx.fragment.app.FragmentContainer
 
 class ResultActivity1 : AppCompatActivity() {
     lateinit var DBManager: DBManager
     lateinit var resultText: TextView
     lateinit var quizText: TextView
     lateinit var quizAnswer: TextView
+    lateinit var bubbleOverlay: FrameLayout
+    lateinit var infoText: TextView
+    lateinit var btnInfo: TextView
+    lateinit var imgDog: ImageView
+    lateinit var bubbleContainer: FrameLayout
+
     lateinit var btnNext: Button
     lateinit var btnSave: Button
 
@@ -38,6 +52,13 @@ class ResultActivity1 : AppCompatActivity() {
         btnNext = findViewById<Button>(R.id.btnNext)
         btnSave = findViewById<Button>(R.id.btnSave)
 
+        // 콘텐츠 정보 보기 연결
+        bubbleOverlay = findViewById<FrameLayout>(R.id.bubbleOverlay)
+        bubbleContainer = findViewById<FrameLayout>(R.id.bubbleContainer)
+        infoText = findViewById<TextView>(R.id.infoText)
+        btnInfo = findViewById<TextView>(R.id.btnInfo)
+        imgDog = findViewById<ImageView>(R.id.imgDog)
+
 
         // DBManager
         val dbManager = DBManager(this)
@@ -49,6 +70,9 @@ class ResultActivity1 : AppCompatActivity() {
         val isCorrect = intent.getBooleanExtra("is_correct", false)
         val quiz = dbManager.getQuizById(quizId)
         val quizCount = intent.getIntExtra("quiz_count", 1)
+
+        // 콘텐츠 정보 불러오기
+        val correctExp = intent.getStringExtra("correct_exp") ?: ""
 
         // 누적값 다시 전달 // ☑️ 추가
         val totalSCount = intent.getIntExtra("totalSCount", 0)
@@ -69,6 +93,43 @@ class ResultActivity1 : AppCompatActivity() {
 
         }
 
+        // 콘텐츠 정보 보기
+        btnInfo.setOnClickListener {
+            // 보였다 ↔ 숨겼다
+            btnInfo.visibility = View.GONE
+            bubbleOverlay.visibility = View.VISIBLE
+
+            // 말풍선 안 텍스트 설정
+            infoText.text = correctExp
+
+            bubbleOverlay.visibility = View.VISIBLE
+
+            // 강아지 위치 얻기 (화면 기준)
+            // 말풍선을 화면 위에 띄움(Overlay 유지) + 모든 기기에서 똑같은 위치
+            val location = IntArray(2)
+            imgDog.getLocationOnScreen(location)
+
+            // 말풍선을 강아지 위쪽에 배치
+            bubbleContainer.post {
+                val dogX = imgDog.x
+                val dogY = imgDog.y
+
+                bubbleContainer.x =
+                    dogX + imgDog.width.toFloat() * 0.6f
+
+                bubbleContainer.y =
+                    dogY - bubbleContainer.height.toFloat() + 120f
+            }
+        }
+
+        // 말풍선 눌렀을 때 숨겨짐
+        infoText.setOnClickListener {
+            // 보였다 ↔ 숨겼다
+            bubbleOverlay.visibility = View.GONE
+            btnInfo.visibility = View.VISIBLE
+        }
+
+
         // 다음 문제로 이동
         btnNext.setOnClickListener {
             val intent = Intent(this, QuizActivity1::class.java)
@@ -88,7 +149,19 @@ class ResultActivity1 : AppCompatActivity() {
 
         // 콘텐츠 저장
         btnSave.setOnClickListener {
-            // 콘텐츠 저장
+            if (quizId != -1) {
+                // 1. 현재 날짜 포맷팅 (디자인에 맞춘 "25\nJan" 형식)
+                val sdf = java.text.SimpleDateFormat("dd\nMMM", java.util.Locale.ENGLISH)
+                val currentDate = sdf.format(java.util.Date())
+
+                // 2. DB에 저장 상태 업데이트
+                dbManager.saveQuizContent(quizId, currentDate)
+
+                // 3. 알림 메시지 및 버튼 처리
+                android.widget.Toast.makeText(this, "보관함에 저장되었습니다.", android.widget.Toast.LENGTH_SHORT).show()
+                btnSave.isEnabled = false
+                btnSave.text = "저장됨"
+            }
         }
     }
 }
