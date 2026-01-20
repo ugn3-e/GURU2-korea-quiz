@@ -204,7 +204,7 @@ class SlangQuizActivity : AppCompatActivity() {
         // 디미 유진_오답일 경우 현재 퀴즈 질문과 선택한 답 db에 저장하기
         if (!isCorrect) {
             WrongDBManager(this)
-                .saveWrongQuiz(this, currentQuiz.id, selectedAnswer)
+                .saveSlangWrong(this, currentQuiz.id, selectedAnswer)
         }
 
         val intent = Intent(this, SlangResultActivity::class.java).apply {

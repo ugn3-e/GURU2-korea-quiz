@@ -110,6 +110,11 @@ class QuizActivity1 : AppCompatActivity() {
 
             val isCorrect = selectedAnswer == correctAnswer
 
+            if (!isCorrect) {
+                WrongDBManager(this)
+                    .saveSpellingWrong(this, currentQuizId, selectedAnswer)
+            }
+
             // 결과 누적 // ☑️ 추가
             totalSCount++ // 최종 결과
             if (isCorrect) correctSCount++ // 맞힌 문제 수
