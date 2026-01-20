@@ -12,6 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GURU2">
         <activity
+            android:name=".SavedDetail"
+            android:exported="false" />
+        <activity
+            android:name=".SavedDailyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SavedQuizActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SavedContentActivity"
+            android:exported="false" />
+        <activity
             android:name=".SpellFinalResultActivity"
             android:exported="false" />
         <activity

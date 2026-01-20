@@ -10,6 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.Button
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import android.widget.Toast
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.fragment.app.FragmentContainer
@@ -145,7 +149,19 @@ class ResultActivity1 : AppCompatActivity() {
 
         // 콘텐츠 저장
         btnSave.setOnClickListener {
-            // 콘텐츠 저장
+            if (quizId != -1) {
+                // 1. 현재 날짜 포맷팅 (디자인에 맞춘 "25\nJan" 형식)
+                val sdf = java.text.SimpleDateFormat("dd\nMMM", java.util.Locale.ENGLISH)
+                val currentDate = sdf.format(java.util.Date())
+
+                // 2. DB에 저장 상태 업데이트
+                dbManager.saveQuizContent(quizId, currentDate)
+
+                // 3. 알림 메시지 및 버튼 처리
+                android.widget.Toast.makeText(this, "보관함에 저장되었습니다.", android.widget.Toast.LENGTH_SHORT).show()
+                btnSave.isEnabled = false
+                btnSave.text = "저장됨"
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var toolbar: Toolbar
     lateinit var btnQuiz1: Button
     lateinit var btnQuiz2: Button
+    lateinit var btnSaved: Button // ✅ '콘텐츠 저장하기' 페이지 연결 (유빈 추가)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +42,13 @@ class MainActivity : AppCompatActivity() {
 
         btnQuiz2.setOnClickListener {
             val intent = Intent(this, SlangQuizActivity::class.java)
+            startActivity(intent)
+        }
+
+        // ✅ '콘텐츠 저장하기' 페이지 연결 (유빈 추가)
+        btnSaved = findViewById<Button>(R.id.btnSaved)
+        btnSaved.setOnClickListener {
+            val intent = Intent(this, SavedContentActivity::class.java)
             startActivity(intent)
         }
     }
