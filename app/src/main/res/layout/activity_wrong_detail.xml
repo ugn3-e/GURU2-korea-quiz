@@ -42,7 +42,8 @@
             android:background="@color/choice_default"
             android:gravity="center"
             android:text="맞춤법 퀴즈"
-            android:textColor="#555555" />
+            android:textColor="#555555"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/btnSlang"
