@@ -59,8 +59,8 @@ class DBManager(
             quiz = QuizData(
                 sentence = cursor.getString(cursor.getColumnIndexOrThrow("sentence")),
                 correct = cursor.getString(cursor.getColumnIndexOrThrow("correct")),
-                correct_exp = cursor.getString(cursor.getColumnIndexOrThrow("correct_exp")),
-                incorrect_exp = cursor.getString(cursor.getColumnIndexOrThrow(("incorrect_exp"))) // ☑️ 오답 추가
+                correct_exp = cursor.getString(cursor.getColumnIndexOrThrow("correct_exp")), // 작품 설명
+                incorrect_exp = cursor.getString(cursor.getColumnIndexOrThrow(("incorrect_exp"))) // 해설
             )
         }
         cursor.close()
