@@ -1,10 +1,12 @@
-package com.example.guru2
+package com.example.guru2.ui.wrong
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.guru2.R
+import com.example.guru2.WrongDBManager
 
 // 디미 유진_오답 퀴즈 목록 RecyclerView 어댑터
 class WrongQuizAdapter(

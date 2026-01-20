@@ -1,4 +1,4 @@
-package com.example.guru2
+package com.example.guru2.ui.wrong
 
 import android.graphics.Color
 import android.os.Bundle
@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.guru2.R
+import com.example.guru2.WrongDBManager
 
 // 디미 유진_오답 노트
 class WrongNoteActivity : AppCompatActivity() {
@@ -21,24 +23,23 @@ class WrongNoteActivity : AppCompatActivity() {
         val btnGrammar = findViewById<TextView>(R.id.btnGrammar)
         val btnClearWrong = findViewById<Button>(R.id.btnClearWrong)
 
-        // 최초 화면: 신조어 오답 목록
-        showFragment(WrongListFragment())
+        // 최초 화면: 신조어 오답
+        showFragment(WrongListFragment.newSlangInstance())
         selectTab(isSlang = true)
 
-        // 신조어 퀴즈 탭 클릭
+        // 신조어 탭
         btnSlang.setOnClickListener {
-            showFragment(WrongListFragment())
+            showFragment(WrongListFragment.newSlangInstance())
             selectTab(isSlang = true)
         }
 
-        // 맞춤법 퀴즈 탭 클릭
+        // 맞춤법 탭
         btnGrammar.setOnClickListener {
-            // 아직 Fragment 없으면 임시 Fragment 사용
-            Toast.makeText(this, "맞춤법 오답은 준비 중입니다", Toast.LENGTH_SHORT).show()
+            showFragment(WrongListFragment.newSpellingInstance())
             selectTab(isSlang = false)
         }
 
-        // 오답 초기화 버튼
+        // 오답 초기화
         btnClearWrong.setOnClickListener {
             showClearDialog()
         }
@@ -69,9 +70,9 @@ class WrongNoteActivity : AppCompatActivity() {
     private fun showClearDialog() {
         AlertDialog.Builder(this)
             .setTitle("오답 초기화")
-            .setMessage("오답 내역을 모두 삭제할까요?\n(문제는 삭제되지 않습니다)")
+            .setMessage("오답 내역을 모두 삭제할까요?\n(문제 원본은 삭제되지 않습니다)")
             .setPositiveButton("삭제") { _, _ ->
-                WrongDBManager(this).clearWrongForDebug(this)
+                WrongDBManager(this).clearAllWrong(this)
                 Toast.makeText(this, "오답이 초기화되었습니다", Toast.LENGTH_SHORT).show()
                 recreate()
             }

@@ -1,4 +1,4 @@
-package com.example.guru2
+package com.example.guru2.ui.wrong
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
