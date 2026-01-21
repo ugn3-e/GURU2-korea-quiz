@@ -47,9 +47,14 @@ class SlangFinalResultActivity : AppCompatActivity() {
             finish()
         }
 
-        // 디미 유진_SlangQuizActivity로 이동
+        // 디미 유진_(수정) MainActivity로 이동 (뒤로 가기 눌러도 이전 퀴즈 화면으로 돌아가지 않음)
         btnFinish.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
             finish()
+
         }
     }
 }
