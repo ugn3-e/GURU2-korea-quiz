@@ -1,6 +1,8 @@
 package com.example.guru2
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -27,12 +29,21 @@ class WrongDetailActivity : AppCompatActivity() {
             val resId = resources.getIdentifier(quiz.exampleImage, "drawable", packageName)
             if (resId != 0) img.setImageResource(resId)
 
-            findViewById<Button>(R.id.btnBack).setOnClickListener { finish() }
+            //findViewById<Button>(R.id.btnBack).setOnClickListener { finish() }
+            val backClick = View.OnClickListener {
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                startActivity(intent)
+                finish()
+            }
+
+            findViewById<Button>(R.id.btnBack).setOnClickListener(backClick)
+
 
         } else {
             setContentView(R.layout.activity_wrong_detail_spelling)
 
-            val quiz = DBManager(this).getQuizById(quizId) ?: return
+            val quiz = SpellDBManager(this).getQuizById(quizId) ?: return
 
             findViewById<TextView>(R.id.tvCorrect).text = quiz.correct
             findViewById<TextView>(R.id.tvSentence).text = quiz.sentence

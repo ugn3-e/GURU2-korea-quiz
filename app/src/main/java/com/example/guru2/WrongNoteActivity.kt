@@ -18,6 +18,8 @@ class WrongNoteActivity : AppCompatActivity() {
         val btnSlang = findViewById<TextView>(R.id.btnSlang)
         val btnGrammar = findViewById<TextView>(R.id.btnGrammar)
         val btnClearWrong = findViewById<Button>(R.id.btnClearWrong)
+        val btnGoHome = findViewById<Button>(R.id.btnGoHome)
+
         val viewPager = findViewById<ViewPager2>(R.id.viewPager)
 
         viewPager.adapter = WrongPagerAdapter(this)
@@ -36,6 +38,10 @@ class WrongNoteActivity : AppCompatActivity() {
         }
 
         btnClearWrong.setOnClickListener { showClearDialog() }
+
+        btnGoHome.setOnClickListener {
+            finish()
+        }
 
         selectTab(true)
     }
