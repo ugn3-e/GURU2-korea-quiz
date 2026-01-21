@@ -1,5 +1,6 @@
 package com.example.guru2
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -35,7 +36,15 @@ class SlangFinalResultActivity : AppCompatActivity() {
 
         // 디미 유진_이어서 학습하기 버튼
         btnKeep.setOnClickListener {
-            Toast.makeText(this, "이어서 학습하기 버튼", Toast.LENGTH_SHORT).show()
+            val pref = getSharedPreferences("slang_quiz", MODE_PRIVATE)
+            val lastQuizId = pref.getInt("lastQuizId", 0)
+
+            val intent = Intent(this, SlangQuizActivity::class.java).apply {
+                putExtra("startQuizId", lastQuizId + 1)
+            }
+
+            startActivity(intent)
+            finish()
         }
 
         // 디미 유진_SlangQuizActivity로 이동
