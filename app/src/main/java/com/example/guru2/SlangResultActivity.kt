@@ -30,6 +30,7 @@ class SlangResultActivity : AppCompatActivity() {
         val notice = intent.getStringExtra("notice") ?: ""
         val exampleImage = intent.getStringExtra("exampleImage") ?: ""
         val nextQuizId = intent.getIntExtra("nextQuizId", -1)
+        val isEndOfPart = intent.getBooleanExtra("isEndOfPart", false)
 
         // 디미 유진_상황 예시 이미지 잘 받았나 확인용 코드
         Log.d("RESULT", "exampleImage = [$exampleImage]")
@@ -78,6 +79,7 @@ class SlangResultActivity : AppCompatActivity() {
         btnNext.setOnClickListener {
             val resultIntent = Intent().apply {
                 putExtra("nextQuizId", nextQuizId)
+                putExtra("isEndOfPart", isEndOfPart) // ☑️
             }
             setResult(RESULT_OK, resultIntent)
             finish()
