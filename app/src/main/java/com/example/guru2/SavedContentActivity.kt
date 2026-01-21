@@ -12,9 +12,9 @@ class SavedContentActivity : AppCompatActivity() {
         setContentView(R.layout.activity_saved_content)
 
         // DB 가져오기
-        val dbManager = DBManager(this)
+        val spellDbManager = SpellDBManager(this)
 
-        val allQuizzes = dbManager.getSavedQuizzes()
+        val allQuizzes = spellDbManager.getSavedQuizzes()
 
         // 저장되었는지 로그 확인
         android.util.Log.d("DB_CHECK", "가져온 저장 데이터 개수: ${allQuizzes.size}")

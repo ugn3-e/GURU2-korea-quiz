@@ -5,11 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class SpellFinalResultActivity : AppCompatActivity() {
     lateinit var sSummary: TextView
@@ -46,7 +42,7 @@ class SpellFinalResultActivity : AppCompatActivity() {
             val pref = getSharedPreferences("spell_quiz_pref", MODE_PRIVATE)
             val lastQuizOffset = pref.getInt("last_quiz_offset", 0) // 마지막 퀴즈 id
 
-            val intent = Intent(this, QuizActivity1::class.java)
+            val intent = Intent(this, SpellQuizActivity::class.java)
             intent.putExtra("quiz_count", 1) // QuizActivity1에서 퀴즈 카운트는 1부터 시작
             intent.putExtra("last_quiz_offset", lastQuizOffset) // 마지막 위치 전달
             //intent.putExtra("totalSCount", 0)

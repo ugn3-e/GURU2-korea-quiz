@@ -5,11 +5,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
     lateinit var toolbar: Toolbar
@@ -37,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         btnQuiz1 = findViewById<Button>(R.id.btnQuiz1)
 
         btnQuiz1.setOnClickListener {
-            val intent = Intent(this, QuizActivity1::class.java)
+            val intent = Intent(this, SpellQuizActivity::class.java)
             startActivity(intent)
         }
 

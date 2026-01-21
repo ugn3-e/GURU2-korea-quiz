@@ -45,10 +45,10 @@
             android:name=".SlangResultActivity"
             android:exported="false" />
         <activity
-            android:name=".ResultActivity1"
+            android:name=".SpellResultActivity"
             android:exported="false" />
         <activity
-            android:name=".QuizActivity1"
+            android:name=".SpellQuizActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
