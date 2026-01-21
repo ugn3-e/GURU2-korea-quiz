@@ -6,7 +6,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import org.w3c.dom.Text
 
 class SavedDetail : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,8 +27,8 @@ class SavedDetail : AppCompatActivity() {
         val quizId = intent.getIntExtra("quiz_id", -1)
 
         if(quizId != -1) {
-            val dbManager = DBManager(this)
-            val quiz = dbManager.getQuizById(quizId)
+            val spellDbManager = SpellDBManager(this)
+            val quiz = spellDbManager.getQuizById(quizId)
 
             quiz?.let {
                 tvTitle.text = it.source ?: "출처 정보 없음"

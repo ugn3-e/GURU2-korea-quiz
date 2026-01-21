@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-class QuizActivity1 : AppCompatActivity() {
-    lateinit var dbManager: DBManager
+class SpellQuizActivity : AppCompatActivity() {
+    lateinit var spellDbManager: SpellDBManager
     lateinit var sqlitedb: SQLiteDatabase
     lateinit var QuizText: TextView
     lateinit var btnChoice1: Button
@@ -69,7 +69,7 @@ class QuizActivity1 : AppCompatActivity() {
         initViews() // ✅ 추가
 
         //DB 연결
-        dbManager = DBManager(this)
+        spellDbManager = SpellDBManager(this)
 
         //초기화
         QuizNum.text = "Q$quizCount" // Q 번호
@@ -114,7 +114,7 @@ class QuizActivity1 : AppCompatActivity() {
             totalSCount++ // 최종 결과
             if (isCorrect) correctSCount++ // 맞힌 문제 수
 
-            val intent = Intent(this, ResultActivity1::class.java)
+            val intent = Intent(this, SpellResultActivity::class.java)
 
             intent.putExtra("quiz_count", quizCount) // ☑️ Q 번호
             intent.putExtra("quiz_id", currentQuizId)
@@ -150,7 +150,7 @@ class QuizActivity1 : AppCompatActivity() {
 
 
     fun loadNextQuiz() {
-        val db = dbManager.readableDatabase
+        val db = spellDbManager.readableDatabase
 
         // ORDER BY id ASC LIMIT 1 OFFSET ?
         // 순서대로 문제 출력

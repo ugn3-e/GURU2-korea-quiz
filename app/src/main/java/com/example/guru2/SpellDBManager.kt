@@ -3,11 +3,9 @@ package com.example.guru2
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import java.io.File
 import java.io.FileOutputStream
-import java.io.InputStream
 
-class DBManager(
+class SpellDBManager(
     val context: Context
 ) : SQLiteOpenHelper(context, "spelling_quiz.db", null, 2) {
 

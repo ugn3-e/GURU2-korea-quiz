@@ -10,16 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.Button
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import android.widget.Toast
 import android.widget.FrameLayout
 import android.widget.ImageView
-import androidx.fragment.app.FragmentContainer
 
-class ResultActivity1 : AppCompatActivity() {
-    lateinit var DBManager: DBManager
+class SpellResultActivity : AppCompatActivity() {
+    lateinit var SpellDBManager: SpellDBManager
     lateinit var resultText: TextView
     lateinit var quizText: TextView
     lateinit var quizAnswer: TextView
@@ -61,14 +56,14 @@ class ResultActivity1 : AppCompatActivity() {
 
 
         // DBManager
-        val dbManager = DBManager(this)
+        val spellDbManager = SpellDBManager(this)
 
         // 데이터 가져오기
         // quizId, isCorrect
         // 문제 순서, 정답/오답 여부 판단
         val quizId = intent.getIntExtra("quiz_id", -1)
         val isCorrect = intent.getBooleanExtra("is_correct", false)
-        val quiz = dbManager.getQuizById(quizId)
+        val quiz = spellDbManager.getQuizById(quizId)
         val quizCount = intent.getIntExtra("quiz_count", 1)
 
         // 콘텐츠 정보 불러오기
@@ -132,7 +127,7 @@ class ResultActivity1 : AppCompatActivity() {
 
         // 다음 문제로 이동
         btnNext.setOnClickListener {
-            val intent = Intent(this, QuizActivity1::class.java)
+            val intent = Intent(this, SpellQuizActivity::class.java)
 
             // 다음 문제로 이동
             // startActivity(Intent(this, QuizActivity1::class.java))
@@ -155,7 +150,7 @@ class ResultActivity1 : AppCompatActivity() {
                 val currentDate = sdf.format(java.util.Date())
 
                 // 2. DB에 저장 상태 업데이트
-                dbManager.saveQuizContent(quizId, currentDate)
+                spellDbManager.saveQuizContent(quizId, currentDate)
 
                 // 3. 알림 메시지 및 버튼 처리
                 android.widget.Toast.makeText(this, "보관함에 저장되었습니다.", android.widget.Toast.LENGTH_SHORT).show()
