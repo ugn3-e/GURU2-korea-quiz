@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="바른 표현"
-            android:textSize="22sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -113,7 +113,8 @@
             android:text="문장 예시"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="14sp"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imgPlaceholder" />
