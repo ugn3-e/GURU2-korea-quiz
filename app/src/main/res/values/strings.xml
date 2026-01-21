@@ -5,4 +5,17 @@
     <string name="action_survey">설문조사</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="genders">
+        <item>남</item>
+        <item>여</item>
+        <item>기타</item>
+    </string-array>
+
+    <string-array name="countries">
+        <item>KR</item>
+        <item>JP</item>
+        <item>US</item>
+    </string-array>
+
 </resources>
