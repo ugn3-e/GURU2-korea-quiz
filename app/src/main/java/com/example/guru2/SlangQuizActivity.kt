@@ -91,7 +91,7 @@ class SlangQuizActivity : AppCompatActivity() {
             moveToResultPage()
         }
 
-        // 이어서 학습하기 선택
+        // 이어서 학습하기 선택 ☑️
         val startId = intent.getIntExtra("startQuizId", -1)
         if (startId != -1) {
             currentQuizId = startId
@@ -107,6 +107,9 @@ class SlangQuizActivity : AppCompatActivity() {
         val dbManager = SlangDBManager(this)
         val quiz = dbManager.getQuizById(currentQuizId)
 
+        // Q1~5만 반복 ☑️
+        val qNumber = ((currentQuizId - 1) % 5) + 1
+
         // 디미 유진_문제 다 풀었을 경우
         // >> (수정) 마지막 문제 안내 페이지로 연결
         if (quiz == null) {
@@ -118,7 +121,7 @@ class SlangQuizActivity : AppCompatActivity() {
         currentQuiz = quiz
 
         // 디미 유진_불러온 Q 번호
-        tvQNumber.text = "Q${quiz.id}"
+        tvQNumber.text = "Q$qNumber"
 
         // 디미 유진_불러온 문제 & 선택지
         tvQuestion.text = quiz.question
@@ -207,17 +210,11 @@ class SlangQuizActivity : AppCompatActivity() {
                 .saveSlangWrong(this, currentQuiz.id, selectedAnswer)
         }
 
-        // 마지막으로 푼 문제 ID 저장
+        // 마지막으로 푼 문제 ID 저장 ☑️
         val pref = getSharedPreferences("slang_quiz", MODE_PRIVATE)
         pref.edit()
             .putInt("lastQuizId", currentQuizId)
             .apply()
-
-        // 5문제마다 최종 결과 화면으로 이동
-        if (totalCount % 5 == 0) {
-            moveToFinalResultPage()
-            return
-        }
 
         val intent = Intent(this, SlangResultActivity::class.java).apply {
             putExtra("isCorrect", isCorrect)
@@ -225,6 +222,8 @@ class SlangQuizActivity : AppCompatActivity() {
             putExtra("notice", currentQuiz.notice)
             putExtra("exampleImage", currentQuiz.exampleImage)
             putExtra("nextQuizId", currentQuizId + 1)
+            // 5문제마다 최종 결과 화면으로 이동 ☑️
+            putExtra("isEndOfPart", totalCount % 5 == 0)
         }
 
         startActivityForResult(intent, REQ_RESULT)
@@ -235,6 +234,14 @@ class SlangQuizActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQ_RESULT && resultCode == RESULT_OK) {
+            // finalresult 이동 판단 ☑️
+            val isEndOfPart = data?.getBooleanExtra("isEndOfPart", false) ?: false
+
+            if (isEndOfPart) {
+                moveToFinalResultPage()
+                return
+            }
+
             currentQuizId =
                 data?.getIntExtra("nextQuizId", currentQuizId + 1)
                     ?: (currentQuizId + 1)
@@ -249,10 +256,9 @@ class SlangQuizActivity : AppCompatActivity() {
             putExtra("totalCount", totalCount)
             putExtra("correctCount", correctCount)
         }
-        // 맞힌 문제 초기화
+        // 맞힌 문제 초기화 ☑️
         correctCount = 0
 
         startActivity(intent)
-        finish()
     }
 }
