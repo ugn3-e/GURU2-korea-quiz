@@ -36,11 +36,9 @@ class SpellQuizActivity : AppCompatActivity() {
     // 전체 결과 누적 변수 // ☑️ 추가
     var totalSCount = 0
     var correctSCount = 0
-    val PREF_LAST_OFFSET = "last_quiz_offset"
+    val PREF_LAST_OFFSET = "last_quiz_offset" // 이어서 학습
 
     var setCorrectCount = 0 // 5문제만 계산
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +70,10 @@ class SpellQuizActivity : AppCompatActivity() {
 
         initViews() // ✅ 추가
 
+        // 제출 버튼 초기 상태
+        btnSub.isEnabled = false
+        btnSub.setBackgroundColor(getColor(R.color.choice_default))
+
         //DB 연결
         spellDbManager = SpellDBManager(this)
 
@@ -92,26 +94,42 @@ class SpellQuizActivity : AppCompatActivity() {
         btnSub = findViewById<Button>(R.id.btnSub)
     }
 
+    // 선택지 초기 상태
+    private fun selectChoiceButton(selected: Button) {
+        val defaultColor = getColor(R.color.choice_default)
+        val selectedColor = getColor(R.color.choice_selected)
+
+        btnChoice1.setBackgroundColor(defaultColor)
+        btnChoice2.setBackgroundColor(defaultColor)
+        btnChoice3.setBackgroundColor(defaultColor)
+
+        selected.setBackgroundColor(selectedColor)
+    }
+
+    private fun enableSubmitButton() {
+        btnSub.isEnabled = true
+        btnSub.setBackgroundColor(getColor(R.color.choice_selected))
+    }
     private fun setClickListeners() {
         //보기 선택
         btnChoice1.setOnClickListener {
             selectedAnswer = btnChoice1.text.toString()
+            selectChoiceButton(btnChoice1)
+            enableSubmitButton()
         }
         btnChoice2.setOnClickListener {
             selectedAnswer = btnChoice2.text.toString()
+            selectChoiceButton(btnChoice2)
+            enableSubmitButton()
         }
         btnChoice3.setOnClickListener {
             selectedAnswer = btnChoice3.text.toString()
+            selectChoiceButton(btnChoice3)
+            enableSubmitButton()
         }
 
         //ResultActivity1로 이동
         btnSub.setOnClickListener {
-            // 답을 선택했을 때만 다음 문제로 넘어가기 // ☑️ 추가
-            if (selectedAnswer.isEmpty()) {
-                Toast.makeText(this, "보기를 선택하세요!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
             val isCorrect = selectedAnswer == correctAnswer
 
             // 결과 누적 // ☑️ 추가
@@ -143,25 +161,6 @@ class SpellQuizActivity : AppCompatActivity() {
 
             // 맞힌 수
             intent.putExtra("setCorrectCount", setCorrectCount)
-
-            // 5문제 풀었을 때 종료 // ☑️ 추가
-            if (quizCount > 5) {
-                val finalIntent = Intent(this, SpellFinalResultActivity::class.java)
-
-                finalIntent.putExtra("totalSCount", totalSCount)
-                finalIntent.putExtra("correctSCount", correctSCount)
-                finalIntent.putExtra("setCorrectCount", setCorrectCount)
-
-                // 현재까지 푼 퀴즈 누적 저장
-                val pref = getSharedPreferences("spell_quiz_pref", MODE_PRIVATE)
-                pref.edit()
-                    .putInt(PREF_LAST_OFFSET, quizId - 1)
-                    .apply()
-
-                startActivity(finalIntent)
-                finish()
-                return@setOnClickListener
-            }
 
             startActivity(intent)
         }
@@ -209,6 +208,14 @@ class SpellQuizActivity : AppCompatActivity() {
 
             //source = cursor.getString(
             //cursor.getColumnIndexOrThrow("source"))
+
+            selectChoiceButton(btnChoice1)
+            btnChoice1.setBackgroundColor(getColor(R.color.choice_default))
+            btnChoice2.setBackgroundColor(getColor(R.color.choice_default))
+            btnChoice3.setBackgroundColor(getColor(R.color.choice_default))
+
+            btnSub.isEnabled = false
+            btnSub.setBackgroundColor(getColor(R.color.choice_default))
 
             selectedAnswer = "";
         } else {
