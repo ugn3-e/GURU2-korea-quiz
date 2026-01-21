@@ -31,15 +31,14 @@ class SpellQuizActivity : AppCompatActivity() {
     var currentQuizId = 0
     var selectedAnswer = ""
     var quizCount = 1
+    var quizId = 0
 
     // 전체 결과 누적 변수 // ☑️ 추가
     var totalSCount = 0
     var correctSCount = 0
+    val PREF_LAST_OFFSET = "last_quiz_offset"
 
-    // 퀴즈 수 5개 제한 변수 // ☑️ 추가
-    val quizLimit = 5
-    val prefName = "spell_quiz_pref"
-    val lastOffset = "last_quiz_offset"
+    var setCorrectCount = 0 // 5문제만 계산
 
 
 
@@ -54,17 +53,22 @@ class SpellQuizActivity : AppCompatActivity() {
         }
 
         // 마지막 퀴즈 위치 불러오기 // ☑️추가
-        val pref = getSharedPreferences(prefName, MODE_PRIVATE)
-        val lastOffset = pref.getInt(lastOffset, 0)
+        quizId = intent.getIntExtra("quiz_id", 1)
+        quizCount = intent.getIntExtra("quiz_count", 1)
 
-        // 마지막으로 푼 퀴즈에서 시작 // ☑️ 추가
-        currentQuizId = lastOffset
-        quizCount = 1
+        if (quizId == -1) {
+            // 최초 시작 or 이어서 학습
+            val pref = getSharedPreferences("spell_quiz_pref", MODE_PRIVATE)
+            val lastOffset = pref.getInt(PREF_LAST_OFFSET, 0)
+            quizId = lastOffset + 1
+        }
 
         // 누적 값
-        quizCount = intent.getIntExtra("quiz_count", 1)
         totalSCount = intent.getIntExtra("totalSCount", 0)
         correctSCount = intent.getIntExtra("correctSCount", 0)
+
+        // 5문제만 계산
+        setCorrectCount = intent.getIntExtra("setCorrectCount", 0)
 
         initViews() // ✅ 추가
 
@@ -117,7 +121,10 @@ class SpellQuizActivity : AppCompatActivity() {
 
             // 결과 누적 // ☑️ 추가
             totalSCount++ // 최종 결과
-            if (isCorrect) correctSCount++ // 맞힌 문제 수
+            if (isCorrect) {
+                correctSCount++ // 전체 누적 맞힌 수
+                setCorrectCount++ // 세트 전용 맞힌 수
+            }
 
             val intent = Intent(this, SpellResultActivity::class.java)
 
@@ -136,16 +143,28 @@ class SpellQuizActivity : AppCompatActivity() {
             intent.putExtra("correctSCount", correctSCount)
 
             // 다음 문제 준비
-            //currentQuizId++
             quizCount++
+            quizId++
+
+            // 맞힌 수
+            intent.putExtra("setCorrectCount", setCorrectCount)
 
             // 5문제 풀었을 때 종료 // ☑️ 추가
-            if (quizCount > quizLimit) {
-                // 마지막 퀴즈 위치 저장
-                val pref = getSharedPreferences(prefName, MODE_PRIVATE)
-                pref.edit().putInt(lastOffset, currentQuizId).apply()
+            if (quizCount > 5) {
+                val finalIntent = Intent(this, SpellFinalResultActivity::class.java)
 
-                moveToSpellFinalResultPage()
+                finalIntent.putExtra("totalSCount", totalSCount)
+                finalIntent.putExtra("correctSCount", correctSCount)
+                finalIntent.putExtra("setCorrectCount", setCorrectCount)
+
+                // 현재까지 푼 퀴즈 누적 저장
+                val pref = getSharedPreferences("spell_quiz_pref", MODE_PRIVATE)
+                pref.edit()
+                    .putInt(PREF_LAST_OFFSET, quizId - 1)
+                    .apply()
+
+                startActivity(finalIntent)
+                finish()
                 return@setOnClickListener
             }
 
@@ -160,8 +179,8 @@ class SpellQuizActivity : AppCompatActivity() {
         // ORDER BY id ASC LIMIT 1 OFFSET ?
         // 순서대로 문제 출력
         // DB에서 문제 1개 가져오기
-        val cursor = db.rawQuery("SELECT * FROM spelling_quiz ORDER BY id ASC LIMIT 1 OFFSET ?",
-             arrayOf((quizCount - 1).toString()) // 중복 문제 해결 -> id로 가져오기
+        val cursor = db.rawQuery( "SELECT * FROM spelling_quiz WHERE id = ?",
+            arrayOf(quizId.toString()) // 중복 문제 해결 -> id로 가져오기
         )
 
         if(cursor.moveToFirst()) {
@@ -212,6 +231,7 @@ class SpellQuizActivity : AppCompatActivity() {
         val intent = Intent(this, SpellFinalResultActivity::class.java).apply {
             putExtra("totalSCount", totalSCount)
             putExtra("correctSCount", correctSCount)
+            putExtra("setCorrectCount", setCorrectCount)
         }
         startActivity(intent)
         finish()

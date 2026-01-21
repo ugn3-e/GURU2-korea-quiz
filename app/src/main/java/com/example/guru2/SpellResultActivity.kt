@@ -69,6 +69,9 @@ class SpellResultActivity : AppCompatActivity() {
         // 콘텐츠 정보 불러오기
         val correctExp = intent.getStringExtra("correct_exp") ?: ""
 
+        // 맞힌 수
+        val setCorrectCount = intent.getIntExtra("setCorrectCount", 0)
+
         // 누적값 다시 전달 // ☑️ 추가
         val totalSCount = intent.getIntExtra("totalSCount", 0)
         val correctSCount = intent.getIntExtra("correctSCount", 0)
@@ -127,11 +130,26 @@ class SpellResultActivity : AppCompatActivity() {
 
         // 다음 문제로 이동
         btnNext.setOnClickListener {
+            // 5문제마다 결과 화면
+            if (totalSCount > 0 && totalSCount % 5 == 0) {
+                val intent = Intent(this, SpellFinalResultActivity::class.java)
+
+                intent.putExtra("totalSCount", totalSCount)
+                intent.putExtra("correctSCount", correctSCount)
+
+                startActivity(intent)
+                finish()
+                return@setOnClickListener
+            }
+
             val intent = Intent(this, SpellQuizActivity::class.java)
 
             // 다음 문제로 이동
             // startActivity(Intent(this, QuizActivity1::class.java))
+            intent.putExtra("quiz_id", quizId + 1)
             intent.putExtra("quiz_count", quizCount + 1)
+
+            intent.putExtra("setCorrectCount", setCorrectCount)
 
             // 누적값 다시 전달 // ☑️ 추가
             intent.putExtra("totalSCount", totalSCount)
