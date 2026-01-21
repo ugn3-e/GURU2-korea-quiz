@@ -4,8 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+
 
 class SlangFinalResultActivity : AppCompatActivity() {
 
@@ -56,5 +58,20 @@ class SlangFinalResultActivity : AppCompatActivity() {
             finish()
 
         }
+
+        // 디미 유진_뒤로가기 막기
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    Toast.makeText(
+                        this@SlangFinalResultActivity,
+                        "이어 학습하기 버튼이나 \n홈 버튼을 눌러주세요!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        )
+
     }
 }

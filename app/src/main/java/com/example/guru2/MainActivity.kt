@@ -7,6 +7,9 @@ import android.view.MenuItem
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+
 
 class MainActivity : AppCompatActivity() {
     lateinit var toolbar: Toolbar
@@ -15,6 +18,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var btnSaved: Button // ✅ '콘텐츠 저장하기' 페이지 연결 (유빈 추가)
     // 디미 유진_오답 버튼
     lateinit var btnWrong: Button
+
+    // 디미 유진_뒤로가기 시간 체크 변수
+    private var backPressedTime = 0L
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +65,33 @@ class MainActivity : AppCompatActivity() {
         btnWrong.setOnClickListener {
             startActivity(Intent(this, WrongNoteActivity::class.java))
         }
+
+        // 디미 유진_뒤로가기 두 번 누르면 앱 종료
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    val currentTime = System.currentTimeMillis()
+
+                    if (currentTime - backPressedTime < 2000) {
+                        // 디미 유진_2초 이내 두 번째 뒤로가기 -> 앱 종료
+                        finish()
+
+                        // 디미 유진_앱 완전 종료
+                        //finishAffinity()
+                    } else {
+                        // 디미 유진_첫 번째 뒤로가기
+                        backPressedTime = currentTime
+                        Toast.makeText(
+                            this@MainActivity,
+                            "뒤로가기를 한 번 더 누르면 \n앱이 종료됩니다",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        )
+
 
     }
 

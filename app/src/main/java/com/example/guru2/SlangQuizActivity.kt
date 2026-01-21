@@ -8,6 +8,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.OnBackPressedCallback
+import android.widget.Toast
 
 class SlangQuizActivity : AppCompatActivity() {
 
@@ -100,6 +102,19 @@ class SlangQuizActivity : AppCompatActivity() {
         // 디미 유진_DB에서 문제 불러오기
         loadQuizFromDB()
 
+        // 디미 유진_뒤로가기 막기
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    Toast.makeText(
+                        this@SlangQuizActivity,
+                        "퀴즈를 완료해야 홈으로 돌아갈 수 있어요!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        )
     }
 
     // 디미 유진_DB에서 문제 1개 가져오기

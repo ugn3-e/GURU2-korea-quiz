@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.activity.OnBackPressedCallback
+import android.widget.Toast
 
 class SlangResultActivity : AppCompatActivity() {
 
@@ -89,5 +91,20 @@ class SlangResultActivity : AppCompatActivity() {
 //        btnSave.setOnClickListener {
 //            Toast.makeText(this, "콘텐츠가 저장되었습니다 ⭐", Toast.LENGTH_SHORT).show()
 //        }
+
+        // 디미 유진_뒤로가기 막기
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    Toast.makeText(
+                        this@SlangResultActivity,
+                        "다음 버튼을 눌러 진행해주세요!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        )
+
     }
 }
