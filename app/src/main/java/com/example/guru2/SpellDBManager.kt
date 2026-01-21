@@ -61,7 +61,8 @@ class SpellDBManager(
                 correct_exp = cursor.getString(cursor.getColumnIndexOrThrow("correct_exp")),
                 incorrect_exp = cursor.getString(cursor.getColumnIndexOrThrow("incorrect_exp")), // 괄호 정리
                 source = cursor.getString(cursor.getColumnIndexOrThrow("source")), // source 추가
-                saved_date = cursor.getString(cursor.getColumnIndexOrThrow("saved_date")) // saved_date 추가
+                saved_date = cursor.getString(cursor.getColumnIndexOrThrow("saved_date")), // saved_date 추가
+                image_path = cursor.getString(cursor.getColumnIndexOrThrow("image_path"))
             )
         }
         cursor.close()
@@ -82,7 +83,8 @@ class SpellDBManager(
                     correct_exp = cursor.getString(cursor.getColumnIndexOrThrow("correct_exp")),
                     incorrect_exp = cursor.getString(cursor.getColumnIndexOrThrow("incorrect_exp")),
                     source = cursor.getString(cursor.getColumnIndexOrThrow("source")),
-                    saved_date = cursor.getString(cursor.getColumnIndexOrThrow("saved_date"))
+                    saved_date = cursor.getString(cursor.getColumnIndexOrThrow("saved_date")),
+                    image_path = cursor.getString(cursor.getColumnIndexOrThrow("image_path"))
                 ))
             } while (cursor.moveToNext())
         }
@@ -105,7 +107,8 @@ class SpellDBManager(
                     source = cursor.getString(cursor.getColumnIndexOrThrow("source")),
                     saved_date = cursor.getString(cursor.getColumnIndexOrThrow("saved_date")),
                     correct_exp = cursor.getString(cursor.getColumnIndexOrThrow("correct_exp")),
-                    incorrect_exp = cursor.getString(cursor.getColumnIndexOrThrow("incorrect_exp"))
+                    incorrect_exp = cursor.getString(cursor.getColumnIndexOrThrow("incorrect_exp")),
+                    image_path = cursor.getString(cursor.getColumnIndexOrThrow("image_path"))
                 ))
             } while (cursor.moveToNext())
         }

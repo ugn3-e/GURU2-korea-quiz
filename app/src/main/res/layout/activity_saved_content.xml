@@ -21,6 +21,7 @@
             android:layout_height="70dp"
             android:background="#6851A5"
             android:paddingVertical="8dp"
+            app:menu="@menu/menu_main"
             app:title="저장한 콘텐츠"
             app:titleTextColor="@android:color/white" />
 

@@ -138,6 +138,10 @@ class SpellResultActivity : AppCompatActivity() {
                 intent.putExtra("correctSCount", correctSCount)
                 intent.putExtra("setCorrectCount", setCorrectCount)
 
+                // ✅ [추가-유빈] 다음 문제 번호, 카운트를 계산해서 넘겨줌
+                intent.putExtra("next_quiz_id", quizId + 1) // 5번 풀었으면 6번을 저장
+                intent.putExtra("next_quiz_count", 1)
+
                 startActivity(intent)
                 finish()
                 return@setOnClickListener

@@ -28,7 +28,15 @@ class SavedQuizDBManager(private val quizList: List<QuizData>) :
         holder.title.text = item.source ?: "출처 없음"
         holder.ref.text = item.sentence
 
-        holder.img.setImageResource(R.drawable.ic_launcher_foreground) // Db에 이미지 없어서 일단 기본 이미지
+        if (!item.image_path.isNullOrEmpty()) {
+            com.bumptech.glide.Glide.with(holder.itemView.context)
+                .load("file:///android_asset/images/${item.image_path}")
+                .error(R.drawable.ic_launcher_foreground) // 이미지 로딩 실패 시 기본 이미지
+                .into(holder.img)
+        } else {
+            // 이미지가 없을 경우 기본 이미지 설정
+            holder.img.setImageResource(R.drawable.ic_launcher_foreground)
+        }
 
         holder.root.setOnClickListener {
             val context = holder.itemView.context
