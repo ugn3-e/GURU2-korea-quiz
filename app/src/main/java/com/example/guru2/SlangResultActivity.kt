@@ -1,4 +1,4 @@
-package com.example.guru2.ui.quiz.slang
+package com.example.guru2
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.example.guru2.R
 
 class SlangResultActivity : AppCompatActivity() {
 

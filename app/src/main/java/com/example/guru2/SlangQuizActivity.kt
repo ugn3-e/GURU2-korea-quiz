@@ -1,4 +1,4 @@
-package com.example.guru2.ui.quiz.slang
+package com.example.guru2
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,12 +8,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.guru2.R
-import com.example.guru2.SlangDBManager
-import com.example.guru2.ui.quiz.slang.SlangFinalResultActivity
-import com.example.guru2.SlangQuizData
-import com.example.guru2.ui.quiz.slang.SlangResultActivity
-import com.example.guru2.WrongDBManager
 
 class SlangQuizActivity : AppCompatActivity() {
 

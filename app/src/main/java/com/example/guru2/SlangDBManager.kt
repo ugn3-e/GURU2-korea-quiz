@@ -54,7 +54,7 @@ class SlangDBManager(private val context: Context)
         val cursor = db.rawQuery(
             """
             SELECT id, question, choice1, choice2, choice3, choice4,
-                   answer, example_image, explanation, notice
+                   answer, example_image, explanation, notice, slang_word
             FROM slang_quiz
             WHERE id = ?
             """.trimIndent(),
@@ -75,7 +75,8 @@ class SlangDBManager(private val context: Context)
                 answer = cursor.getString(6),
                 exampleImage = cursor.getString(7),
                 explanation = cursor.getString(8),
-                notice = cursor.getString(9)
+                notice = cursor.getString(9),
+                slangWord = cursor.getString(10)
             )
         }
 
@@ -98,5 +99,6 @@ data class SlangQuizData(
     val answer: String,
     val exampleImage: String,
     val explanation: String,
-    val notice: String
+    val notice: String,
+    val slangWord: String
 )
