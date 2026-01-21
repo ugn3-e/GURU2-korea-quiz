@@ -71,9 +71,6 @@ class SlangQuizActivity : AppCompatActivity() {
         btnConfirm.setBackgroundColor(getColor(R.color.confirm_default))
         imgExample.visibility = View.GONE
 
-        // 디미 유진_DB에서 문제 불러오기
-        loadQuizFromDB()
-
         // 디미 유진_선택지 클릭 이벤트
         btn1.setOnClickListener { onChoiceSelected(btn1) }
         btn2.setOnClickListener { onChoiceSelected(btn2) }
@@ -93,6 +90,15 @@ class SlangQuizActivity : AppCompatActivity() {
         btnConfirm.setOnClickListener {
             moveToResultPage()
         }
+
+        // 이어서 학습하기 선택
+        val startId = intent.getIntExtra("startQuizId", -1)
+        if (startId != -1) {
+            currentQuizId = startId
+        }
+
+        // 디미 유진_DB에서 문제 불러오기
+        loadQuizFromDB()
 
     }
 
@@ -201,6 +207,18 @@ class SlangQuizActivity : AppCompatActivity() {
                 .saveSlangWrong(this, currentQuiz.id, selectedAnswer)
         }
 
+        // 마지막으로 푼 문제 ID 저장
+        val pref = getSharedPreferences("slang_quiz", MODE_PRIVATE)
+        pref.edit()
+            .putInt("lastQuizId", currentQuizId)
+            .apply()
+
+        // 5문제마다 최종 결과 화면으로 이동
+        if (totalCount % 5 == 0) {
+            moveToFinalResultPage()
+            return
+        }
+
         val intent = Intent(this, SlangResultActivity::class.java).apply {
             putExtra("isCorrect", isCorrect)
             putExtra("explanation", currentQuiz.explanation)
@@ -231,6 +249,9 @@ class SlangQuizActivity : AppCompatActivity() {
             putExtra("totalCount", totalCount)
             putExtra("correctCount", correctCount)
         }
+        // 맞힌 문제 초기화
+        correctCount = 0
+
         startActivity(intent)
         finish()
     }

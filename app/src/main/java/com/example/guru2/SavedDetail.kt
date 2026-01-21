@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
+
 class SavedDetail : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,13 +32,22 @@ class SavedDetail : AppCompatActivity() {
             val quiz = spellDbManager.getQuizById(quizId)
 
             quiz?.let {
+                android.util.Log.d("IMG_CHECK", "DB에서 가져온 파일명: ${it.image_path}")
                 tvTitle.text = it.source ?: "출처 정보 없음"
 
                 tvSentence.text = it.sentence.replace("____", it.correct)
 
                 tvExp.text = it.correct_exp
 
-                ivImg.setImageResource(R.drawable.ic_launcher_foreground)
+                if (!it.image_path.isNullOrEmpty()) {
+                    // Glide를 사용하여 assets/images/ 폴더 내의 파일 로드
+                    com.bumptech.glide.Glide.with(this)
+                        .load("file:///android_asset/images/${it.image_path}")
+                        .into(ivImg)
+                } else {
+                    // 이미지가 없을 경우 기본 이미지 설정
+                    ivImg.setImageResource(R.drawable.ic_launcher_foreground)
+                }
             }
         }
 

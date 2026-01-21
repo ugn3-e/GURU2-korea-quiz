@@ -9,7 +9,8 @@ data class QuizData(
     val incorrect_exp: String? = null,
     val source: String? = null,
     val saved_date: String? = null,
-    val is_saved: Int = 0
+    val is_saved: Int = 0,
+    val image_path: String? = null
 )
 
 // 날짜별로 묶어서 세로 리스트에 보낼 정보
