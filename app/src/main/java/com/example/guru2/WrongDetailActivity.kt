@@ -73,8 +73,14 @@ class WrongDetailActivity : AppCompatActivity() {
             // 디미 유진_정답 단어 표시
             findViewById<TextView>(R.id.tvCorrect).text = quiz.correct
 
+오            // 빈칸("____")을 정답으로 치환
+            val filledSentence = quiz.sentence.replace("____", quiz.correct)
+
+            // 문장 TextView에 표시
+            findViewById<TextView>(R.id.tvSentence).text = filledSentence
+
             // 디미 유진_문장 예시 표시
-            findViewById<TextView>(R.id.tvSentence).text = quiz.sentence
+            //findViewById<TextView>(R.id.tvSentence).text = quiz.sentence
 
             // 디미 유진_오답 설명 표시
             findViewById<TextView>(R.id.tvIncorrectExp).text = quiz.incorrect_exp
