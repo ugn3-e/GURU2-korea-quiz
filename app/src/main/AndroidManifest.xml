@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GURU2">
         <activity
+            android:name=".WrongDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WrongNoteActivity"
+            android:exported="false" />
+        <activity
             android:name=".SavedDetail"
             android:exported="false" />
         <activity
