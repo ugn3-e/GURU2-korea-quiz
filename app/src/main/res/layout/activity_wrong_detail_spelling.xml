@@ -6,9 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- =========================
-         1️⃣ 상단 Toolbar
-    ========================= -->
+    <!-- 상단 Toolbar -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -20,9 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- =========================
-         2️⃣ SubBar
-    ========================= -->
+    <!-- SubBar -->
     <LinearLayout
         android:id="@+id/subBar"
         android:layout_width="0dp"
@@ -56,7 +52,7 @@
             android:textColor="#555555"/>
     </LinearLayout>
 
-    <!-- 🔹 뒤로가기 버튼 -->
+    <!-- 뒤로가기 버튼 -->
     <Button
         android:id="@+id/btnBack"
         android:layout_width="0dp"
@@ -69,9 +65,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- =========================
-         3️⃣ Content 영역 (자유 배치)
-    ========================= -->
+    <!-- Content 영역 (자유 배치) -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contentArea"
         android:layout_width="0dp"
@@ -82,7 +76,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- 🔹 정답 단어 -->
+        <!-- 정답 단어 -->
         <TextView
             android:id="@+id/tvCorrect"
             android:layout_width="wrap_content"
@@ -95,7 +89,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- 🔹 이미지 영역 (placeholder) -->
+        <!-- 이미지 영역 (placeholder) -->
         <View
             android:id="@+id/imgPlaceholder"
             android:layout_width="0dp"
@@ -108,7 +102,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvCorrect" />
 
-        <!-- 🔹 문장 -->
+        <!-- 문장 -->
         <TextView
             android:id="@+id/tvSentence"
             android:layout_width="0dp"
@@ -124,7 +118,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imgPlaceholder" />
 
-        <!-- 🔹 오답 설명 -->
+        <!-- 오답 설명 -->
         <TextView
             android:id="@+id/tvIncorrectExp"
             android:layout_width="0dp"

@@ -6,9 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- =========================
-         1️⃣ Toolbar
-    ========================= -->
+    <!-- Toolbar -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -20,9 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- =========================
-         2️⃣ SubBar (탭 영역)
-    ========================= -->
+    <!-- SubBar (탭 영역) -->
     <LinearLayout
         android:id="@+id/subBar"
         android:layout_width="0dp"
@@ -56,7 +52,7 @@
             android:textStyle="bold"/>
     </LinearLayout>
 
-    <!-- 🔹 뒤로가기 버튼 -->
+    <!-- 뒤로가기 버튼 -->
     <Button
         android:id="@+id/btnBack"
         android:layout_width="0dp"
@@ -69,9 +65,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- =========================
-         3️⃣ Content 영역 (자유 배치)
-    ========================= -->
+    <!-- Content 영역 (자유 배치) -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contentArea"
         android:layout_width="0dp"
@@ -82,7 +76,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/subBar">
 
-        <!-- 🔹 단어 -->
+        <!-- 단어 -->
         <TextView
             android:id="@+id/tvSlangWord"
             android:layout_width="wrap_content"
@@ -95,7 +89,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- 🔹 예시 이미지 -->
+        <!-- 예시 이미지 -->
         <ImageView
             android:id="@+id/ivExample"
             android:layout_width="0dp"
@@ -108,7 +102,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvExplanation" />
 
-        <!-- 🔹 설명 -->
+        <!-- 설명 -->
         <TextView
             android:id="@+id/tvExplanation"
             android:layout_width="0dp"
@@ -124,7 +118,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvSlangWord" />
 
-        <!-- 🔹 참고 -->
+        <!-- 참고 -->
         <TextView
             android:id="@+id/tvNotice"
             android:layout_width="0dp"
@@ -139,7 +133,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivExample" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

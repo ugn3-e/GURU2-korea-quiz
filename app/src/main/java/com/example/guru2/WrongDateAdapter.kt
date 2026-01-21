@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 //날짜별 오답 그룹을 보여주는 RecyclerView 어댑터
 //세로 RecyclerView
-//각 아이템 안에 가로 RecyclerView(해당 날짜의 오답 문제 목록)를 포함한다
+//각 아이템 안에 가로 RecyclerView(해당 날짜의 오답 문제 목록) 포함
+
 class WrongDateAdapter(
     // 디미 유진_날짜별 오답 그룹 리스트
     private val list: List<WrongDateGroup>,
