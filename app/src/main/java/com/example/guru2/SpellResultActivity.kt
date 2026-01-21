@@ -136,6 +136,7 @@ class SpellResultActivity : AppCompatActivity() {
 
                 intent.putExtra("totalSCount", totalSCount)
                 intent.putExtra("correctSCount", correctSCount)
+                intent.putExtra("setCorrectCount", setCorrectCount)
 
                 startActivity(intent)
                 finish()
