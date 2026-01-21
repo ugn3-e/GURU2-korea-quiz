@@ -1,0 +1,57 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="20dp"
+    android:paddingBottom="16dp"
+    android:layout_marginStart="24dp"
+    android:layout_marginEnd="16dp">
+
+    <!-- 📅 날짜 + 타임라인 -->
+    <LinearLayout
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="top|center_horizontal">
+
+        <!-- Day -->
+        <TextView
+            android:id="@+id/tvDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- Month -->
+        <TextView
+            android:id="@+id/tvMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jan"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- 🔥 날짜 아래 세로선 -->
+        <View
+            android:id="@+id/timelineLine"
+            android:layout_width="2dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="6dp"
+            android:background="#DDDDDD" />
+    </LinearLayout>
+
+    <!-- 👉 단어 가로 스크롤 (세로선 중간에 위치) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="80dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

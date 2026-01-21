@@ -1,4 +1,4 @@
-package com.example.guru2.ui.wrong
+package com.example.guru2
 
 import android.graphics.Color
 import android.os.Bundle
@@ -7,52 +7,40 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.example.guru2.R
-import com.example.guru2.WrongDBManager
+import androidx.viewpager2.widget.ViewPager2
 
-// 디미 유진_오답 노트
 class WrongNoteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wrong_note)
 
-        // 디미 유진_View 참조
         val btnSlang = findViewById<TextView>(R.id.btnSlang)
         val btnGrammar = findViewById<TextView>(R.id.btnGrammar)
         val btnClearWrong = findViewById<Button>(R.id.btnClearWrong)
+        val viewPager = findViewById<ViewPager2>(R.id.viewPager)
 
-        // 최초 화면: 신조어 오답
-        showFragment(WrongListFragment.newSlangInstance())
-        selectTab(isSlang = true)
+        viewPager.adapter = WrongPagerAdapter(this)
 
-        // 신조어 탭
+        // ⭐ 핵심: 스와이프 금지
+        viewPager.isUserInputEnabled = false
+
         btnSlang.setOnClickListener {
-            showFragment(WrongListFragment.newSlangInstance())
-            selectTab(isSlang = true)
+            viewPager.setCurrentItem(0, false)
+            selectTab(true)
         }
 
-        // 맞춤법 탭
         btnGrammar.setOnClickListener {
-            showFragment(WrongListFragment.newSpellingInstance())
-            selectTab(isSlang = false)
+            viewPager.setCurrentItem(1, false)
+            selectTab(false)
         }
 
-        // 오답 초기화
-        btnClearWrong.setOnClickListener {
-            showClearDialog()
-        }
+        btnClearWrong.setOnClickListener { showClearDialog() }
+
+        selectTab(true)
     }
 
-    // Fragment 교체
-    private fun showFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.contentContainer, fragment)
-            .commit()
-    }
 
-    // 서브바 선택 상태 표시
     private fun selectTab(isSlang: Boolean) {
         val btnSlang = findViewById<TextView>(R.id.btnSlang)
         val btnGrammar = findViewById<TextView>(R.id.btnGrammar)
@@ -66,11 +54,10 @@ class WrongNoteActivity : AppCompatActivity() {
         }
     }
 
-    // 오답 초기화 다이얼로그
     private fun showClearDialog() {
         AlertDialog.Builder(this)
             .setTitle("오답 초기화")
-            .setMessage("오답 내역을 모두 삭제할까요?\n(문제 원본은 삭제되지 않습니다)")
+            .setMessage("오답 내역을 모두 삭제할까요?")
             .setPositiveButton("삭제") { _, _ ->
                 WrongDBManager(this).clearAllWrong(this)
                 Toast.makeText(this, "오답이 초기화되었습니다", Toast.LENGTH_SHORT).show()

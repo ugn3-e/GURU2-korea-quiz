@@ -1,11 +1,10 @@
 package com.example.guru2
 
 import android.content.Context
+import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-// 오답 전용 DB
-// 신조어 문제 DB(slang_quiz.db), 맞춤법 DB(spelling_quiz.db)와 분리
 class WrongDBManager(context: Context)
     : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
@@ -19,22 +18,15 @@ class WrongDBManager(context: Context)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // 버전이 올라가도 테이블 항상 보장
         createTables(db)
     }
 
-    // ⭐ 핵심 수정 ⭐
-    // DB 파일이 이미 존재해도 테이블 생성 보장
     override fun onOpen(db: SQLiteDatabase) {
         super.onOpen(db)
         createTables(db)
     }
 
-    // =========================================================
-    // 테이블 생성 (항상 안전)
-    // =========================================================
     private fun createTables(db: SQLiteDatabase) {
-
         db.execSQL(
             """
             CREATE TABLE IF NOT EXISTS slang_wrong (
@@ -44,7 +36,7 @@ class WrongDBManager(context: Context)
                 user_answer TEXT,
                 wrong_time INTEGER
             )
-            """
+            """.trimIndent()
         )
 
         db.execSQL(
@@ -56,142 +48,127 @@ class WrongDBManager(context: Context)
                 user_answer TEXT,
                 wrong_time INTEGER
             )
-            """
+            """.trimIndent()
         )
     }
 
-    // =========================================================
-    // 공통 모델
-    // =========================================================
-    data class WrongQuiz(
-        val quizId: Int,
-        val question: String,
-        val date: String
-    )
+    // ===============================
+    // ✅ 신조어 오답 (중복 제거)
+    // ===============================
+    fun getSlangWrongGrouped(
+        context: Context,
+        slangDB: SlangDBManager
+    ): List<WrongDateGroup> {
 
-    // =========================================================
-    // 신조어 오답 저장
-    // =========================================================
+        val userId = UserManager.getUserId(context)
+        val db = readableDatabase
+        val map = linkedMapOf<String, MutableList<WrongItem>>()
+
+        val cursor = db.rawQuery(
+            """
+            SELECT quiz_id,
+                   date(wrong_time,'unixepoch') AS wrong_date,
+                   MAX(wrong_time) AS last_time
+            FROM slang_wrong
+            WHERE user_id = ?
+            GROUP BY quiz_id, wrong_date
+            ORDER BY last_time DESC
+            """.trimIndent(),
+            arrayOf(userId)
+        )
+
+        while (cursor.moveToNext()) {
+            val quizId = cursor.getInt(0)
+            val date = cursor.getString(1)
+
+            val quiz = slangDB.getQuizById(quizId)
+            if (quiz != null) {
+                map.getOrPut(date) { mutableListOf() }
+                    .add(WrongItem(quizId, quiz.slangWord))
+            }
+        }
+
+        cursor.close()
+        db.close()
+
+        return map.map { WrongDateGroup(it.key, it.value) }
+    }
+
+    // ===============================
+    // ✅ 맞춤법 오답 (중복 제거)
+    // ===============================
+    fun getSpellingWrongGrouped(
+        context: Context,
+        dbManager: DBManager
+    ): List<WrongDateGroup> {
+
+        val userId = UserManager.getUserId(context)
+        val db = readableDatabase
+        val map = linkedMapOf<String, MutableList<WrongItem>>()
+
+        val cursor = db.rawQuery(
+            """
+            SELECT quiz_id,
+                   date(wrong_time,'unixepoch') AS wrong_date,
+                   MAX(wrong_time) AS last_time
+            FROM spelling_wrong
+            WHERE user_id = ?
+            GROUP BY quiz_id, wrong_date
+            ORDER BY last_time DESC
+            """.trimIndent(),
+            arrayOf(userId)
+        )
+
+        while (cursor.moveToNext()) {
+            val quizId = cursor.getInt(0)
+            val date = cursor.getString(1)
+
+            val quiz = dbManager.getQuizById(quizId)
+            if (quiz != null) {
+                map.getOrPut(date) { mutableListOf() }
+                    .add(WrongItem(quizId, quiz.correct))
+            }
+        }
+
+        cursor.close()
+        db.close()
+
+        return map.map { WrongDateGroup(it.key, it.value) }
+    }
+
+    // ===============================
+    // 저장 로직 (그대로)
+    // ===============================
     fun saveSlangWrong(context: Context, quizId: Int, userAnswer: String) {
         val userId = UserManager.getUserId(context)
         val db = writableDatabase
 
-        db.execSQL(
-            "DELETE FROM slang_wrong WHERE user_id = ? AND quiz_id = ?",
-            arrayOf(userId, quizId)
-        )
+        val values = ContentValues().apply {
+            put("user_id", userId)
+            put("quiz_id", quizId)
+            put("user_answer", userAnswer)
+            put("wrong_time", System.currentTimeMillis() / 1000)
+        }
 
-        db.execSQL(
-            """
-            INSERT INTO slang_wrong (user_id, quiz_id, user_answer, wrong_time)
-            VALUES (?, ?, ?, strftime('%s','now'))
-            """,
-            arrayOf(userId, quizId, userAnswer)
-        )
-
+        db.insert("slang_wrong", null, values)
         db.close()
     }
 
-    // =========================================================
-    // 맞춤법 오답 저장
-    // =========================================================
     fun saveSpellingWrong(context: Context, quizId: Int, userAnswer: String) {
         val userId = UserManager.getUserId(context)
         val db = writableDatabase
 
-        db.execSQL(
-            "DELETE FROM spelling_wrong WHERE user_id = ? AND quiz_id = ?",
-            arrayOf(userId, quizId)
-        )
-
-        db.execSQL(
-            """
-            INSERT INTO spelling_wrong (user_id, quiz_id, user_answer, wrong_time)
-            VALUES (?, ?, ?, strftime('%s','now'))
-            """,
-            arrayOf(userId, quizId, userAnswer)
-        )
-
-        db.close()
-    }
-
-    // =========================================================
-    // 신조어 오답 목록
-    // =========================================================
-    fun getSlangWrongList(
-        context: Context,
-        slangDB: SlangDBManager
-    ): List<WrongQuiz> {
-
-        val userId = UserManager.getUserId(context)
-        val list = mutableListOf<WrongQuiz>()
-        val db = readableDatabase
-
-        val cursor = db.rawQuery(
-            """
-            SELECT quiz_id, date(wrong_time,'unixepoch')
-            FROM slang_wrong
-            WHERE user_id = ?
-            GROUP BY quiz_id
-            ORDER BY wrong_time DESC
-            """,
-            arrayOf(userId)
-        )
-
-        while (cursor.moveToNext()) {
-            val quizId = cursor.getInt(0)
-            val date = cursor.getString(1)
-            val quiz = slangDB.getQuizById(quizId)
-            if (quiz != null) {
-                list.add(WrongQuiz(quiz.id, quiz.question, date))
-            }
+        val values = ContentValues().apply {
+            put("user_id", userId)
+            put("quiz_id", quizId)
+            put("user_answer", userAnswer)
+            put("wrong_time", System.currentTimeMillis() / 1000)
         }
 
-        cursor.close()
+        db.insert("spelling_wrong", null, values)
         db.close()
-        return list
     }
 
-    // =========================================================
-    // 맞춤법 오답 목록
-    // =========================================================
-    fun getSpellingWrongList(
-        context: Context,
-        dbManager: DBManager
-    ): List<WrongQuiz> {
-
-        val userId = UserManager.getUserId(context)
-        val list = mutableListOf<WrongQuiz>()
-        val db = readableDatabase
-
-        val cursor = db.rawQuery(
-            """
-            SELECT quiz_id, date(wrong_time,'unixepoch')
-            FROM spelling_wrong
-            WHERE user_id = ?
-            GROUP BY quiz_id
-            ORDER BY wrong_time DESC
-            """,
-            arrayOf(userId)
-        )
-
-        while (cursor.moveToNext()) {
-            val quizId = cursor.getInt(0)
-            val date = cursor.getString(1)
-            val quiz = dbManager.getQuizById(quizId)
-            if (quiz != null) {
-                list.add(WrongQuiz(quizId, quiz.sentence, date))
-            }
-        }
-
-        cursor.close()
-        db.close()
-        return list
-    }
-
-    // =========================================================
-    // 오답 전체 초기화 (기존 기능 유지)
-    // =========================================================
     fun clearAllWrong(context: Context) {
         val userId = UserManager.getUserId(context)
         val db = writableDatabase

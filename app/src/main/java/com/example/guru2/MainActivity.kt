@@ -16,6 +16,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var btnQuiz1: Button
     lateinit var btnQuiz2: Button
     lateinit var btnSaved: Button // ✅ '콘텐츠 저장하기' 페이지 연결 (유빈 추가)
+    // 디미 유진_오답 버튼
+    lateinit var btnWrong: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +54,14 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SavedContentActivity::class.java)
             startActivity(intent)
         }
+
+        // 디미 유진_오답 연결
+        btnWrong = findViewById(R.id.btnWrong)
+
+        btnWrong.setOnClickListener {
+            startActivity(Intent(this, WrongNoteActivity::class.java))
+        }
+
     }
 
     // 메인화면과 메뉴 연결 //☑️추가
