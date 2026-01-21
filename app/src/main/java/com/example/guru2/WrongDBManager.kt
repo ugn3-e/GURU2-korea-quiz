@@ -5,18 +5,27 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
+
+// 오답 전용 DB 매니저
+// 신조어(slang) / 맞춤법(spelling) 오답을 별도 DB로 관리
+// 날짜별 그룹화 + 중복 제거 조회 지원
+
 class WrongDBManager(context: Context)
     : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
     companion object {
+        // 오답 전용 DB 파일명
         private const val DB_NAME = "wrong_note.db"
+        // DB 버전 (테이블 구조 변경 시 증가)
         private const val DB_VERSION = 2
     }
 
+    //
     override fun onCreate(db: SQLiteDatabase) {
         createTables(db)
     }
 
+    // DB 버전 변경 시 호출
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         createTables(db)
     }

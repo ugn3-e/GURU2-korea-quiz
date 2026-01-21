@@ -17,7 +17,7 @@ object UserManager {
         val pref = context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
         var userId = pref.getString(KEY_USER_ID, null)
 
-        // 디미 유진_최초 실행 시 사용자 ID 생성
+        // 디미 유진_최초 실행 시(user_id 없음) 사용자 ID 생성
         if (userId == null) {
             userId = "local_" + UUID.randomUUID().toString()
             pref.edit().putString(KEY_USER_ID, userId).apply()
