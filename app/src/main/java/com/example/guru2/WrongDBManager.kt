@@ -99,7 +99,7 @@ class WrongDBManager(context: Context)
     // ===============================
     fun getSpellingWrongGrouped(
         context: Context,
-        dbManager: DBManager
+        dbManager: SpellDBManager
     ): List<WrongDateGroup> {
 
         val userId = UserManager.getUserId(context)

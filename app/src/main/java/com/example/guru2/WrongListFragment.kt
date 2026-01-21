@@ -31,7 +31,7 @@ class WrongListFragment : Fragment(R.layout.fragment_wrong_list) {
         val groups = if (type == "slang") {
             wrongDB.getSlangWrongGrouped(requireContext(), SlangDBManager(requireContext()))
         } else {
-            wrongDB.getSpellingWrongGrouped(requireContext(), DBManager(requireContext()))
+            wrongDB.getSpellingWrongGrouped(requireContext(), SpellDBManager(requireContext()))
         }
 
         recycler.adapter = WrongDateAdapter(groups) { quizId ->
