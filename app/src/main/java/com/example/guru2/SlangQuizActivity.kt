@@ -12,6 +12,8 @@ import androidx.activity.OnBackPressedCallback
 import android.widget.Toast
 import com.example.guru2.auth.AuthRepository
 import com.example.guru2.auth.SQLiteAuthDataSource
+import com.example.guru2.fire.FirestoreProgress
+
 
 class SlangQuizActivity : AppCompatActivity() {
 
@@ -62,12 +64,24 @@ class SlangQuizActivity : AppCompatActivity() {
 
         // 이어서 학습하기
         val startId = intent.getIntExtra("startQuizId", -1)
+        val progressStore = FirestoreProgress()
+
         if (startId != -1) {
+            // Final → 이어하기
             currentQuizId = startId
+            loadQuizFromDB()
         } else {
-            val pref = getSharedPreferences("slang_quiz", MODE_PRIVATE)
-            val nextQuizId = pref.getInt("nextQuizId", 0)
-            currentQuizId = nextQuizId
+            // 홈 → 퀴즈 버튼
+            progressStore.loadSlangNextQuizId(
+                onResult = { nextId ->
+                    currentQuizId = nextId
+                    loadQuizFromDB()
+                },
+                onError = {
+                    currentQuizId = 1
+                    loadQuizFromDB()
+                }
+            )
         }
 
         // 디미 유진_View 연결
@@ -110,9 +124,6 @@ class SlangQuizActivity : AppCompatActivity() {
         btnConfirm.setOnClickListener {
             moveToResultPage()
         }
-
-        // 디미 유진_DB에서 문제 불러오기
-        loadQuizFromDB()
 
         // 디미 유진_뒤로가기 막기
         onBackPressedDispatcher.addCallback(
@@ -247,10 +258,8 @@ class SlangQuizActivity : AppCompatActivity() {
 
 
         // 다음에 풀 문제 ID 저장 ☑️
-        val pref = getSharedPreferences("slang_quiz", MODE_PRIVATE)
-        pref.edit()
-            .putInt("nextQuizId", currentQuizId + 1)
-            .apply()
+        val progressStore = FirestoreProgress()
+        progressStore.saveSlangNextQuizId(currentQuizId + 1)
 
         val intent = Intent(this, SlangResultActivity::class.java).apply {
             putExtra("isCorrect", isCorrect)
