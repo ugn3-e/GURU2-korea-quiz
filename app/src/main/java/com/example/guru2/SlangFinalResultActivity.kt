@@ -39,10 +39,15 @@ class SlangFinalResultActivity : AppCompatActivity() {
         // 디미 유진_이어서 학습하기 버튼
         btnKeep.setOnClickListener {
             val pref = getSharedPreferences("slang_quiz", MODE_PRIVATE)
-            val lastQuizId = pref.getInt("lastQuizId", 0)
+            val lastQuizId = pref.getInt("nextQuizId", 0)
+
+            // 로그인 때 저장해둔 user_id 꺼내오기 (너희 앱 구조 기준)
+            val userId = getSharedPreferences("auth", MODE_PRIVATE)
+                .getLong("user_id", -1L)
 
             val intent = Intent(this, SlangQuizActivity::class.java).apply {
                 putExtra("startQuizId", lastQuizId + 1)
+                putExtra("user_id", userId)
             }
 
             startActivity(intent)

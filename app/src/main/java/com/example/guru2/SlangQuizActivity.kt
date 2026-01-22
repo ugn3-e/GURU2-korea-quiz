@@ -60,6 +60,16 @@ class SlangQuizActivity : AppCompatActivity() {
         // 디미 유진_유저 아이디 연결
         userId = intent.getLongExtra("user_id", -1L)
 
+        // 이어서 학습하기
+        val startId = intent.getIntExtra("startQuizId", -1)
+        if (startId != -1) {
+            currentQuizId = startId
+        } else {
+            val pref = getSharedPreferences("slang_quiz", MODE_PRIVATE)
+            val nextQuizId = pref.getInt("nextQuizId", 0)
+            currentQuizId = nextQuizId
+        }
+
         // 디미 유진_View 연결
         tvQNumber = findViewById(R.id.QText)
         tvQuestion = findViewById(R.id.tvQuestion)
@@ -99,12 +109,6 @@ class SlangQuizActivity : AppCompatActivity() {
         // 디미 유진_정답 확인 -> 결과 화면 이동
         btnConfirm.setOnClickListener {
             moveToResultPage()
-        }
-
-        // 이어서 학습하기 선택 ☑️
-        val startId = intent.getIntExtra("startQuizId", -1)
-        if (startId != -1) {
-            currentQuizId = startId
         }
 
         // 디미 유진_DB에서 문제 불러오기
@@ -242,10 +246,10 @@ class SlangQuizActivity : AppCompatActivity() {
         }
 
 
-        // 마지막으로 푼 문제 ID 저장 ☑️
+        // 다음에 풀 문제 ID 저장 ☑️
         val pref = getSharedPreferences("slang_quiz", MODE_PRIVATE)
         pref.edit()
-            .putInt("lastQuizId", currentQuizId)
+            .putInt("nextQuizId", currentQuizId + 1)
             .apply()
 
         val intent = Intent(this, SlangResultActivity::class.java).apply {
