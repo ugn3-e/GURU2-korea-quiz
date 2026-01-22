@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class SpellFinalResultActivity : AppCompatActivity() {
@@ -42,6 +43,18 @@ class SpellFinalResultActivity : AppCompatActivity() {
         """.trimIndent()
 
         btnQKeep.setOnClickListener {
+            val nextQuizId = intent.getIntExtra("next_quiz_id", -1)
+
+            // DB에 nextQuizId 문제가 실제로 존재하는지 확인
+            val spellDb = SpellDBManager(this)
+            val nextQuiz = spellDb.getQuizById(nextQuizId)
+
+            // 모든 학습 완료
+            if (nextQuiz == null) {
+                Toast.makeText(this, "모든 학습을 완료하였습니다!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val intent = Intent(this, SpellQuizActivity::class.java)
 
             intent.putExtra("quiz_id", nextQuizId) // QuizActivity1에서 퀴즈 카운트는 1부터 시작

@@ -46,6 +46,19 @@ class SlangFinalResultActivity : AppCompatActivity() {
             val progressStore = FirestoreProgress()
             progressStore.loadSlangNextQuizId(
                 onResult = { nextId ->
+                    // 로컬 DB에 다음 문제가 있는지 확인
+                    val slangDb = SlangDBManager(this)
+                    val nextQuiz = slangDb.getQuizById(nextId)
+
+                    // 다음 문제가 없으면 → Toast만
+                    if (nextQuiz == null) {
+                        Toast.makeText(
+                            this,
+                            "모든 학습을 완료하였습니다!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@loadSlangNextQuizId
+                    }
                     val intent = Intent(this, SlangQuizActivity::class.java).apply {
                         putExtra("startQuizId", nextId)   // 다음에 풀 문제
                         putExtra("user_id", userId)
