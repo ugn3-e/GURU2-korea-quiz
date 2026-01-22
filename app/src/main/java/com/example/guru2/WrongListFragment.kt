@@ -38,29 +38,62 @@ class WrongListFragment : Fragment(R.layout.fragment_wrong_list) {
 
         // 디미 유진_Fragment 생성 시 전달받은 타입 ("slang" / "spelling")
         val type = arguments?.getString(ARG_TYPE) ?: "slang"
+        val store = com.example.guru2.fire.FirestoreWrongNote()
 
-        // 디미 유진_오답 전용 DB 매니저
-        val wrongDB = WrongDBManager(requireContext())
+        // 신조어 or 맞춤법
+        val firestoreType = if (type == "slang") "slang" else "spell"
 
-        // 디미 유진_타입에 따라 조회할 오답 데이터 분기
-        // 디미 유진_신조어 오답 조회
-        val groups = if (type == "slang") {
-            wrongDB.getSlangWrongGrouped(requireContext(), SlangDBManager(requireContext()))
+        store.loadWrongs(
+            type = firestoreType,
+            onResult = { records ->
 
-        // 디미 유진_맞춤법 오답 조회
-        } else {
-            wrongDB.getSpellingWrongGrouped(requireContext(), SpellDBManager(requireContext()))
-        }
+                // 중복 제거하면서 가장 마지막 wrongAt만 남기기 ☑️
+                val dedup = linkedMapOf<String, com.example.guru2.fire.WrongRecord>()
+                for (r in records) {
+                    val key = "${r.quizId}_${r.wrongDate}"
+                    val prev = dedup[key]
+                    if (prev == null || r.wrongAt > prev.wrongAt) {
+                        dedup[key] = r
+                    }
+                }
 
-        // 디미 유진_날짜별 RecyclerView 어댑터 연결
-        recycler.adapter = WrongDateAdapter(groups) { quizId ->
+                // 최신순 정렬
+                val filtered = dedup.values.sortedByDescending { it.wrongAt }
 
-            // 디미 유진_오답 단어 클릭 시 상세 화면으로 이동
-            startActivity(
-                Intent(requireContext(), WrongDetailActivity::class.java)
-                    .putExtra("quiz_id", quizId)  // 디미 유진_
-                    .putExtra("quiz_type", type)  // 디미 유진_
-            )
-        }
+                // 날짜별 그룹 만들기
+                val map = linkedMapOf<String, MutableList<WrongItem>>()
+
+                // 신조어
+                if (type == "slang") {
+                    val slangDB = SlangDBManager(requireContext())
+                    filtered.forEach { r ->
+                        val quiz = slangDB.getQuizById(r.quizId) ?: return@forEach
+                        map.getOrPut(r.wrongDate) { mutableListOf() }
+                            .add(WrongItem(r.quizId, quiz.slangWord))
+                    }
+                } else {
+                    // 맞춤법
+                    val spellDB = SpellDBManager(requireContext())
+                    filtered.forEach { r ->
+                        val quiz = spellDB.getQuizById(r.quizId) ?: return@forEach
+                        map.getOrPut(r.wrongDate) { mutableListOf() }
+                            .add(WrongItem(r.quizId, quiz.correct))
+                    }
+                }
+
+                val groups = map.map { WrongDateGroup(it.key, it.value) }
+
+                recycler.adapter = WrongDateAdapter(groups) { quizId ->
+                    startActivity(
+                        Intent(requireContext(), WrongDetailActivity::class.java)
+                            .putExtra("quiz_id", quizId)
+                            .putExtra("quiz_type", type)
+                    )
+                }
+            },
+            onFail = { e ->
+                android.util.Log.e("WRONG_FIRE", "오답 불러오기 실패: ${e.message}")
+            }
+        )
     }
 }

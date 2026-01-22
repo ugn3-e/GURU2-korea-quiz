@@ -13,6 +13,7 @@ import android.widget.Toast
 import com.example.guru2.auth.AuthRepository
 import com.example.guru2.auth.SQLiteAuthDataSource
 import com.example.guru2.fire.FirestoreProgress
+import com.example.guru2.fire.FirestoreWrongNote
 
 
 class SlangQuizActivity : AppCompatActivity() {
@@ -246,6 +247,13 @@ class SlangQuizActivity : AppCompatActivity() {
         if (!isCorrect) {
             WrongDBManager(this)
                 .saveSlangWrong(this, currentQuiz.id, selectedAnswer)
+
+            // Firestore ☑️
+            FirestoreWrongNote().addWrong(
+                type = "slang",
+                quizId = currentQuiz.id,
+                userAnswer = selectedAnswer
+            )
         }
 
         // 디미 유진_유저 레벨, solvedCount +1

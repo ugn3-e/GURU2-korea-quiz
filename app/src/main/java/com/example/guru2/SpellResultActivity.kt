@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import com.example.guru2.fire.FirestoreProgress
+import com.example.guru2.fire.FirestoreSavedContent
 
 import org.w3c.dom.Text
 
@@ -193,17 +194,27 @@ class SpellResultActivity : AppCompatActivity() {
         // 콘텐츠 저장
         btnSave.setOnClickListener {
             if (quizId != -1) {
-                // 1. 현재 날짜 포맷팅 (디자인에 맞춘 "25\nJan" 형식)
+                // 현재 날짜 포맷팅 (디자인에 맞춘 "25\nJan" 형식)
                 val sdf = java.text.SimpleDateFormat("dd\nMMM", java.util.Locale.ENGLISH)
                 val currentDate = sdf.format(java.util.Date())
 
-                // 2. DB에 저장 상태 업데이트
+                // DB에 저장 상태 업데이트
                 spellDbManager.saveQuizContent(quizId, currentDate)
 
-                // 3. 알림 메시지 및 버튼 처리
-                android.widget.Toast.makeText(this, "보관함에 저장되었습니다.", android.widget.Toast.LENGTH_SHORT).show()
-                btnSave.isEnabled = false
-                btnSave.text = "저장됨"
+                // Firestore에도 저장
+                val store = FirestoreSavedContent()
+                store.saveSpell(
+                    quizId = quizId,
+                    savedDate = currentDate,
+                    onSuccess = {
+                        Toast.makeText(this, "보관함에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+                        btnSave.isEnabled = false
+                        btnSave.text = "저장됨"
+                    },
+                    onFail = { e ->
+                        Toast.makeText(this, "저장 실패: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+                )
             }
         }
 
