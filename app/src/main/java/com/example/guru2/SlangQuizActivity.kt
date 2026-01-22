@@ -12,6 +12,7 @@ import androidx.activity.OnBackPressedCallback
 import android.widget.Toast
 import com.example.guru2.auth.AuthRepository
 import com.example.guru2.auth.SQLiteAuthDataSource
+import com.example.guru2.fire.FirestoreLevelStore
 import com.example.guru2.fire.FirestoreProgress
 import com.example.guru2.fire.FirestoreWrongNote
 
@@ -262,6 +263,19 @@ class SlangQuizActivity : AppCompatActivity() {
             authRepo.increaseSolvedCount(userId)
         } else {
             Log.e("LEVEL_CHECK", "SlangQuiz userId == -1L, 증가 실패")
+        }
+
+        try {
+            FirestoreLevelStore().addSolved1(
+                onSuccess = { level, totalSolved ->
+                    Log.d("FIRE_LEVEL", "slang +1 -> totalSolved=$totalSolved, level=$level")
+                },
+                onFail = { e ->
+                    Log.e("FIRE_LEVEL", "slang update failed", e)
+                }
+            )
+        } catch (e: Exception) {
+            Log.e("FIRE_LEVEL", "slang auth null?", e)
         }
 
 

@@ -15,6 +15,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.guru2.auth.AuthRepository
 import com.example.guru2.auth.SQLiteAuthDataSource
+import com.example.guru2.fire.FirestoreLevelStore
 import com.example.guru2.fire.FirestoreProgress
 import com.example.guru2.fire.FirestoreWrongNote
 
@@ -190,6 +191,19 @@ class SpellQuizActivity : AppCompatActivity() {
                     .increaseSolvedCount(userId)
             } else {
                 Log.e("LEVEL_CHECK", "SpellingQuiz userId == -1L, 증가 실패")
+            }
+
+            try {
+                FirestoreLevelStore().addSolved1(
+                    onSuccess = { level, totalSolved ->
+                        Log.d("FIRE_LEVEL", "spell +1 -> totalSolved=$totalSolved, level=$level")
+                    },
+                    onFail = { e ->
+                        Log.e("FIRE_LEVEL", "spell update failed", e)
+                    }
+                )
+            } catch (e: Exception) {
+                Log.e("FIRE_LEVEL", "spell auth null?", e)
             }
 
             // 결과 누적 // ☑️ 추가
