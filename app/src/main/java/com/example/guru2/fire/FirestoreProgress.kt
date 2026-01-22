@@ -13,7 +13,7 @@ class FirestoreProgress (
             ?: throw IllegalStateException("로그인된 사용자가 없습니다")
     }
 
-    // 이어서 학습 불러오기
+    // 맞춤법 퀴즈_이어서 학습 불러오기
     fun loadSpellNextQuizId(
         onResult: (Int) -> Unit,
         onError: () -> Unit
@@ -33,7 +33,7 @@ class FirestoreProgress (
             }
     }
 
-    // 이어서 학습 저장
+    // 맞춤법 퀴즈_이어서 학습 저장
     fun saveSpellNextQuizId(
         nextQuizId: Int,
         onSuccess: () -> Unit = {},
@@ -51,5 +51,38 @@ class FirestoreProgress (
             .set(data)
             .addOnSuccessListener { onSuccess() }
             .addOnFailureListener { e -> onFail(e) }
+    }
+
+    // 신조어 퀴즈_이어서 학습 불러오기
+    fun loadSlangNextQuizId(
+        onResult: (Int) -> Unit,
+        onError: () -> Unit
+    ) {
+        db.collection("users")
+            .document(uid())
+            .collection("progress")
+            .document("slang")
+            .get()
+            .addOnSuccessListener { doc ->
+                val nextQuizId = doc.getLong("nextQuizId")?.toInt() ?: 1
+                onResult(nextQuizId)
+            }
+            .addOnFailureListener {
+                onError()
+            }
+    }
+
+    // 신조어 퀴즈_이어서 학습 저장
+    fun saveSlangNextQuizId(nextQuizId: Int) {
+        val data = hashMapOf(
+            "nextQuizId" to nextQuizId,
+            "updatedAt" to System.currentTimeMillis()
+        )
+
+        db.collection("users")
+            .document(uid())
+            .collection("progress")
+            .document("slang")
+            .set(data)
     }
 }

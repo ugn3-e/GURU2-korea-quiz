@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import com.example.guru2.fire.FirestoreProgress
 
 
 class SlangFinalResultActivity : AppCompatActivity() {
@@ -38,20 +39,29 @@ class SlangFinalResultActivity : AppCompatActivity() {
 
         // 디미 유진_이어서 학습하기 버튼
         btnKeep.setOnClickListener {
-            val pref = getSharedPreferences("slang_quiz", MODE_PRIVATE)
-            val lastQuizId = pref.getInt("nextQuizId", 0)
-
             // 로그인 때 저장해둔 user_id 꺼내오기 (너희 앱 구조 기준)
             val userId = getSharedPreferences("auth", MODE_PRIVATE)
                 .getLong("user_id", -1L)
 
-            val intent = Intent(this, SlangQuizActivity::class.java).apply {
-                putExtra("startQuizId", lastQuizId + 1)
-                putExtra("user_id", userId)
-            }
-
-            startActivity(intent)
-            finish()
+            val progressStore = FirestoreProgress()
+            progressStore.loadSlangNextQuizId(
+                onResult = { nextId ->
+                    val intent = Intent(this, SlangQuizActivity::class.java).apply {
+                        putExtra("startQuizId", nextId)   // 다음에 풀 문제
+                        putExtra("user_id", userId)
+                    }
+                    startActivity(intent)
+                    finish()
+                },
+                onError = {
+                    val intent = Intent(this, SlangQuizActivity::class.java).apply {
+                        putExtra("startQuizId", 1)
+                        putExtra("user_id", userId)
+                    }
+                    startActivity(intent)
+                    finish()
+                }
+            )
         }
 
         // 디미 유진_(수정) MainActivity로 이동 (뒤로 가기 눌러도 이전 퀴즈 화면으로 돌아가지 않음)
