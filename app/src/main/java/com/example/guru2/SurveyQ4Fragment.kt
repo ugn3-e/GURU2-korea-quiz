@@ -7,10 +7,13 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 
 class SurveyQ4Fragment : Fragment(R.layout.fragment_survey_q4) {
+
+    private var selectedAnswer: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,15 +48,19 @@ class SurveyQ4Fragment : Fragment(R.layout.fragment_survey_q4) {
         // 마지막 설문 → 홈화면으로 돌아가기
         btnSubmit.setOnClickListener {
             // 제출 완료 토스트 문구
-            android.widget.Toast.makeText(
+            val answer = editText.text.toString()
+
+            val activity = requireActivity() as SurveyActivity
+            activity.saveAnswer("q4", answer)
+            activity.submitSurvey()
+
+            Toast.makeText(
                 requireContext(),
                 "소중한 의견 감사합니다!",
-                android.widget.Toast.LENGTH_SHORT
+                Toast.LENGTH_SHORT
             ).show()
 
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            startActivity(intent)
-
+            startActivity(Intent(requireContext(), MainActivity::class.java))
             // 설문 액티비티 종료 (뒤로 가기 방지)
             requireActivity().finish()
         }
