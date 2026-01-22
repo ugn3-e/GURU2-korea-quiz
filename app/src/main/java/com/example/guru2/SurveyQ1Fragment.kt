@@ -25,7 +25,7 @@ class SurveyQ1Fragment : Fragment(R.layout.fragment_survey_q1) {
         val defaultColor =
             ContextCompat.getColorStateList(requireContext(), R.color.choice_default)
         val selectedColor =
-            ContextCompat.getColorStateList(requireContext(), R.color.choice_selected)
+            ContextCompat.getColorStateList(requireContext(), R.color.confirm_active)
 
         // 선택지 초기 상태 (색 없음)
         buttons.forEach {

@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         // 툴바를 액션바로 연결
         toolbar = findViewById<Toolbar>(R.id.mainToolbar)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false) // 기존 AppName 없애기
 
         levelText = findViewById(R.id.tvCharacterLevel)
         progressBar = findViewById(R.id.levelProgressBar)

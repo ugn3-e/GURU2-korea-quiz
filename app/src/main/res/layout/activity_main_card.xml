@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="28.dp"
     app:cardElevation="0.dp"
-    app:cardBackgroundColor="#F8F0F0"
+    app:cardBackgroundColor="#FFF"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground">
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16.dp"
             android:text="맞춤법 퀴즈"
-            android:textColor="#333333"
+            android:textColor="#323234"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Spelling Quiz"
-            android:textColor="#A0A0A0"
+            android:textColor="#97989B"
             android:textSize="13sp" />
 
     </LinearLayout>
