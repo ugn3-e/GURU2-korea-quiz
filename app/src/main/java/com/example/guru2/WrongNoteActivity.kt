@@ -8,11 +8,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.example.guru2.fire.FirestoreWrongNote
 
 // 오답 노트 메인 화면 Activity
 // 신조어 / 맞춤법 오답 탭 전환 및 초기화 기능 담당
 
 class WrongNoteActivity : AppCompatActivity() {
+    private var currentType: String = "slang"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,12 +41,14 @@ class WrongNoteActivity : AppCompatActivity() {
 
         // 디미 유진_신조어 탭 클릭
         btnSlang.setOnClickListener {
+            currentType = "slang"
             viewPager.setCurrentItem(0, false)
             selectTab(true)
         }
 
         // 디미 유진_맞춤법 탭 클릭
         btnGrammar.setOnClickListener {
+            currentType = "spell"
             viewPager.setCurrentItem(1, false)
             selectTab(false)
         }
@@ -85,14 +89,28 @@ class WrongNoteActivity : AppCompatActivity() {
             .setMessage("오답 내역을 모두 삭제할까요?")
             .setPositiveButton("삭제") { _, _ ->
 
-                // 디미 유진_현재 사용자 오답 전체 삭제
+                // 로컬(SQLite) 삭제
                 WrongDBManager(this).clearAllWrong(this)
 
-                // 디미 유진_삭제 완료 안내 메시지
-                Toast.makeText(this, "오답이 초기화되었습니다", Toast.LENGTH_SHORT).show()
+                // Firestore 삭제
+                FirestoreWrongNote().clearAll(
+                    type = currentType,
+                    onSuccess = {
+                        runOnUiThread {
+                            Toast.makeText(this, "오답이 초기화되었습니다", Toast.LENGTH_SHORT).show()
 
-                // 디미 유진_화면 새로고침 (Fragment 재생성)
-                recreate()
+                            // 🔥 recreate()도 되지만, ViewPager 어댑터 재세팅이 더 확실
+                            val viewPager = findViewById<ViewPager2>(R.id.viewPager)
+                            viewPager.adapter = WrongPagerAdapter(this)
+                            viewPager.setCurrentItem(if (currentType == "slang") 0 else 1, false)
+                        }
+                    },
+                    onFail = { e ->
+                        runOnUiThread {
+                            Toast.makeText(this, "Firestore 초기화 실패: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                )
             }
             .setNegativeButton("취소", null)
             .show()
