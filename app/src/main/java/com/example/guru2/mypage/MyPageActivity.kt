@@ -51,7 +51,7 @@ class MyPageActivity : AppCompatActivity() {
                 if (!doc.exists()) {
                     tvNickname.text = "-"
                     tvLevel.text = "Lv.1"
-                    tvProgress.text = "0%"
+                    tvProgress.text = "0" // 푼 문제 값
                     progressLevel.progress = 0
                     return@addOnSuccessListener
                 }
