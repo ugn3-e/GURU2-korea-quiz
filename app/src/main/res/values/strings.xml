@@ -12,10 +12,4 @@
         <item>기타</item>
     </string-array>
 
-    <string-array name="countries">
-        <item>KR</item>
-        <item>JP</item>
-        <item>US</item>
-    </string-array>
-
 </resources>
