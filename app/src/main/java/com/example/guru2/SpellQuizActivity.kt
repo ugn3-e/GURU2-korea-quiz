@@ -90,9 +90,6 @@ class SpellQuizActivity : AppCompatActivity() {
         loadNextQuiz() //  ✅ 추가
 
         setClickListeners()
-
-        // 🔥 유저 아이디 받기 (이거 없어서 안 됐던 거)
-        //userId = intent.getLongExtra("user_id", -1L)
     }
 
     private fun initViews() {
