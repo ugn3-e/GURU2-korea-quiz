@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.guru2.auth.AuthRepository
 import com.example.guru2.auth.SQLiteAuthDataSource
 import com.example.guru2.fire.FirestoreProgress
+import com.example.guru2.fire.FirestoreWrongNote
 
 class SpellQuizActivity : AppCompatActivity() {
 
@@ -172,6 +173,14 @@ class SpellQuizActivity : AppCompatActivity() {
             if (!isCorrect) {
                 WrongDBManager(this)
                     .saveSpellingWrong(this, currentQuizId, selectedAnswer)
+
+                // Firestore ☑️
+                val wrongStore = FirestoreWrongNote()
+                wrongStore.addWrong(
+                    type = "spell",
+                    quizId = currentQuizId,
+                    userAnswer = selectedAnswer
+                )
             }
 
             // 디미 유진_레벨, solved_count +1
