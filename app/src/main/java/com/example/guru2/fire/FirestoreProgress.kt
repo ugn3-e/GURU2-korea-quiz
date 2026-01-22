@@ -34,7 +34,11 @@ class FirestoreProgress (
     }
 
     // 이어서 학습 저장
-    fun saveSpellNextQuizId(nextQuizId: Int) {
+    fun saveSpellNextQuizId(
+        nextQuizId: Int,
+        onSuccess: () -> Unit = {},
+        onFail: (Exception) -> Unit = {}
+    ) {
         val data = hashMapOf(
             "nextQuizId" to nextQuizId,
             "updatedAt" to System.currentTimeMillis()
@@ -45,5 +49,7 @@ class FirestoreProgress (
             .collection("progress")
             .document("spell")
             .set(data)
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { e -> onFail(e) }
     }
 }

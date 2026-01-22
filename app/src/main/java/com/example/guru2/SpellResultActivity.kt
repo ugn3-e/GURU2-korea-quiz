@@ -151,8 +151,10 @@ class SpellResultActivity : AppCompatActivity() {
             if (totalSCount > 0 && totalSCount % 5 == 0) {
                 // 이어하기 저장: 다음에 풀 문제 id 저장
                 val progressStore = FirestoreProgress()
+                val nextPartStartId = ((quizId - 1) / 5 + 1) * 5 + 1
+
                 progressStore.saveSpellNextQuizId(
-                    nextQuizId = quizId + 1
+                    nextQuizId = nextPartStartId
                 )
 
                 val intent = Intent(this, SpellFinalResultActivity::class.java)

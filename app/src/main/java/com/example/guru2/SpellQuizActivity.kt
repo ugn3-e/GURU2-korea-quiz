@@ -190,6 +190,15 @@ class SpellQuizActivity : AppCompatActivity() {
                 setCorrectCount++ // 세트 전용 맞힌 수
             }
 
+            if (quizId % 5 == 0) {
+                val progressStore = FirestoreProgress()
+                progressStore.saveSpellNextQuizId(
+                    nextQuizId = quizId + 1,
+                    onSuccess = { Log.d("FIRE_SAVE", "spell nextQuizId saved = ${quizId + 1}") },
+                    onFail = { e -> Log.e("FIRE_SAVE", "spell save failed", e) }
+                )
+            }
+
             val intent = Intent(this, SpellResultActivity::class.java)
 
             intent.putExtra("quiz_count", quizCount) // ☑️ Q 번호
