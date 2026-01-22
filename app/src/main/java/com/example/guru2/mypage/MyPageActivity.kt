@@ -2,18 +2,14 @@ package com.example.guru2.mypage
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.guru2.MainActivity
 import com.example.guru2.R
 import com.example.guru2.login.LoginActivity
-import com.example.guru2.util.LevelUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import android.view.View
 
 class MyPageActivity : AppCompatActivity() {
 
@@ -39,34 +35,40 @@ class MyPageActivity : AppCompatActivity() {
         tvNotice.text =
             "꾸준한 학습 기록이 레벨을 유지합니다.\nKoready가 당신의 한국어 학습을 응원합니다!"
 
-        // ===== 현재 로그인 유저 =====
+        // ===== 로그인 유저 확인 =====
         val uid = auth.currentUser?.uid
         if (uid == null) {
             goLogin(clearTask = true)
             return
         }
 
-        // ===== Firestore에서 사용자 정보 로드 =====
+        // =====================================================
+        // ✅ Firestore → 메인과 동일한 레벨 / 게이지 로직
+        // =====================================================
         firestore.collection("users").document(uid).get()
             .addOnSuccessListener { doc ->
                 if (!doc.exists()) {
                     tvNickname.text = "-"
                     tvLevel.text = "Lv.1"
-                    tvProgress.text = "0" // 푼 문제 값
+                    tvProgress.text = "0%"
                     progressLevel.progress = 0
                     return@addOnSuccessListener
                 }
 
-                val nickname = doc.getString("nickname") ?: "-"
-                val solvedCount = doc.getLong("solved_count")?.toInt() ?: 0
+                val nickname = doc.getString("nickname") ?: "사용자"
 
-                val level = LevelUtil.calculateLevel(solvedCount)
-                val progressPercent = (solvedCount % 10) * 10
+                // ✅ [메인 기준 적용]
+                val level = doc.getLong("level") ?: 1L
+                val totalSolved = doc.getLong("totalSolved") ?: 0L
+
+                val progressPercent =
+                    if (totalSolved >= 60) 100
+                    else ((totalSolved / 60.0) * 100).toInt()
 
                 // ===== UI 반영 =====
                 tvNickname.text = nickname
                 tvLevel.text = "Lv.$level"
-                tvProgress.text = "$progressPercent"
+                tvProgress.text = "$progressPercent%"
                 progressLevel.progress = progressPercent
             }
             .addOnFailureListener {
@@ -94,10 +96,9 @@ class MyPageActivity : AppCompatActivity() {
             goLogin(clearTask = true)
         }
 
-        // 프로필 정보 수정 (아직 화면 없으면 토스트)
+        // 프로필 수정
         cardEditProfile.setOnClickListener {
-            Toast.makeText(this, "프로필 수정은 준비 중입니다.", Toast.LENGTH_SHORT).show()
-            // TODO: EditProfileActivity 연결
+            startActivity(Intent(this, EditProfileActivity::class.java))
         }
     }
 

@@ -187,7 +187,7 @@
                 android:id="@+id/btnLogout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:drawableStart="@drawable/outline_logout_gray"
                 android:drawablePadding="6dp"
                 android:gravity="center"
@@ -204,9 +204,8 @@
             <Button
                 android:id="@+id/btnHome"
                 android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="88dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="72dp"
                 android:backgroundTint="#1F3BD1"
                 android:text="홈으로 이동"
                 android:textColor="@android:color/white"
@@ -214,8 +213,7 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnLogout" />
+                app:layout_constraintStart_toStartOf="parent" />
 
 
 
