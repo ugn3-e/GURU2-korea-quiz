@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.widget.Toast
@@ -13,12 +15,10 @@ import androidx.activity.OnBackPressedCallback
 
 class MainActivity : AppCompatActivity() {
     lateinit var toolbar: Toolbar
-    lateinit var btnQuiz1: Button
-    lateinit var btnQuiz2: Button
-    lateinit var btnSaved: Button // ✅ '콘텐츠 저장하기' 페이지 연결 (유빈 추가)
-    // 디미 유진_오답 버튼
-    lateinit var btnWrong: Button
-
+    lateinit var btnQuiz1: android.view.View
+    lateinit var btnQuiz2: android.view.View
+    lateinit var btnSaved: android.view.View
+    lateinit var btnWrong: android.view.View
     // 디미 유진_뒤로가기 시간 체크 변수
     private var backPressedTime = 0L
 
@@ -34,34 +34,51 @@ class MainActivity : AppCompatActivity() {
 //            insets
 //        }
 
+        val userId = intent.getIntExtra("user_id", -1)
+        val userLevel = intent.getStringExtra("user_level") ?: "Lv.1"
+
+// 확인용 토스트
+        Toast.makeText(this, "환영합니다! ID: $userId, 레벨: $userLevel", Toast.LENGTH_SHORT).show()
+
         //툴바를 액션바로 연결 // ☑️추가
         toolbar = findViewById<Toolbar>(R.id.mainToolbar)
         setSupportActionBar(toolbar)
 
-        btnQuiz1 = findViewById<Button>(R.id.btnQuiz1)
-
+        // 맞춤법 퀴즈
+        btnQuiz1 = findViewById(R.id.btnQuiz1)
+        btnQuiz1.findViewById<TextView>(R.id.tvTitle).text = "맞춤법 퀴즈"
+        btnQuiz1.findViewById<TextView>(R.id.tvSubTitle).text = "Spelling Quiz"
+        btnQuiz1.findViewById< ImageView>(R.id.ivIcon).setImageResource(R.drawable.ic_spelling)
         btnQuiz1.setOnClickListener {
             val intent = Intent(this, SpellQuizActivity::class.java)
             startActivity(intent)
         }
 
-        btnQuiz2 = findViewById<Button>(R.id.btnQuiz2)
-
+        // 신조어 퀴즈
+        btnQuiz2 = findViewById(R.id.btnQuiz2)
+        btnQuiz2.findViewById<TextView>(R.id.tvTitle).text = "신조어 퀴즈"
+        btnQuiz2.findViewById<TextView>(R.id.tvSubTitle).text = "Slang Quiz"
+        btnQuiz2.findViewById< ImageView>(R.id.ivIcon).setImageResource(R.drawable.ic_slang)
         btnQuiz2.setOnClickListener {
             val intent = Intent(this, SlangQuizActivity::class.java)
             startActivity(intent)
         }
 
-        // ✅ '콘텐츠 저장하기' 페이지 연결 (유빈 추가)
-        btnSaved = findViewById<Button>(R.id.btnSaved)
+        // 저장
+        btnSaved = findViewById(R.id.btnSaved)
+        btnSaved.findViewById<TextView>(R.id.tvTitle).text = "저장한 콘텐츠"
+        btnSaved.findViewById<TextView>(R.id.tvSubTitle).text = "Saved Content"
+        btnSaved.findViewById< ImageView>(R.id.ivIcon).setImageResource(R.drawable.ic_saved)
         btnSaved.setOnClickListener {
             val intent = Intent(this, SavedContentActivity::class.java)
             startActivity(intent)
         }
 
-        // 디미 유진_오답 연결
+        // 오답
         btnWrong = findViewById(R.id.btnWrong)
-
+        btnWrong.findViewById<TextView>(R.id.tvTitle).text = "오답"
+        btnWrong.findViewById<TextView>(R.id.tvSubTitle).text = "Incorrect Answers"
+        btnWrong.findViewById< ImageView>(R.id.ivIcon).setImageResource(R.drawable.ic_incorrect)
         btnWrong.setOnClickListener {
             startActivity(Intent(this, WrongNoteActivity::class.java))
         }
@@ -111,5 +128,7 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+
 
 }
