@@ -27,4 +27,9 @@ class AuthRepository(
     fun getSolvedCount(userId: Long): Int {
         return dataSource.getSolvedCount(userId)
     }
+
+    // 유빈_추가 (닉네임 얻기 위해)
+    fun getNickname(userId: Long): String {
+        return dataSource.getNickname(userId)
+    }
 }

@@ -12,11 +12,15 @@ import androidx.core.view.WindowInsetsCompat
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import org.w3c.dom.Text
 
 class SpellResultActivity : AppCompatActivity() {
     lateinit var SpellDBManager: SpellDBManager
     lateinit var resultText: TextView
     lateinit var quizText: TextView
+    lateinit var resultImg: ImageView // 유빈_추가(이미지 연결)
     lateinit var quizAnswer: TextView
     lateinit var bubbleOverlay: FrameLayout
     lateinit var infoText: TextView
@@ -44,6 +48,7 @@ class SpellResultActivity : AppCompatActivity() {
         resultText = findViewById<TextView>(R.id.ResultText)
         quizText = findViewById<TextView>(R.id.QuizText)
         quizAnswer = findViewById<TextView>(R.id.QuizAnswer)
+        resultImg = findViewById<ImageView>(R.id.resultImg)
         btnNext = findViewById<Button>(R.id.btnNext)
         btnSave = findViewById<Button>(R.id.btnSave)
 
@@ -80,6 +85,16 @@ class SpellResultActivity : AppCompatActivity() {
         //isCorrect if문
         quiz?.let {
             quizText.text = it.sentence.replace("____", it.correct)
+
+            // 유빈_추가(이미지 넣기)
+            if (!it.image_path.isNullOrEmpty()) {
+                com.bumptech.glide.Glide.with(this)
+                    .load("file:///android_asset/images/${it.image_path}")
+                    .into(resultImg)
+            } else { // 기본 이미지
+                resultImg.setImageResource(R.drawable.ic_launcher_foreground)
+            }
+
             if(isCorrect) {
                 resultText.text = "정답!"
                 quizAnswer.text = it.incorrect_exp
@@ -187,5 +202,19 @@ class SpellResultActivity : AppCompatActivity() {
                 btnSave.text = "저장됨"
             }
         }
+
+        // 유빈_추가 (문제 풀다가 뒤로 가기 -> 막기)
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    Toast.makeText(
+                        this@SpellResultActivity,
+                        "다음 버튼을 눌러 진행해주세요!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        )
     }
 }

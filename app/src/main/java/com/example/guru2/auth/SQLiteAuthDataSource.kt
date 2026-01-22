@@ -98,4 +98,16 @@ class SQLiteAuthDataSource(context: Context)
         cursor.close()
         return count
     }
+
+    // 유빈_추가 (닉네임 얻기 위해)
+    fun getNickname(userId: Long): String {
+        val db = readableDatabase
+        var nickname = "슈니"
+        val cursor = db.rawQuery("SELECT nickname FROM users WHERE id = ?", arrayOf(userId.toString()))
+        if (cursor.moveToFirst()) {
+            nickname = cursor.getString(0)
+        }
+        cursor.close()
+        return nickname
+    }
 }
