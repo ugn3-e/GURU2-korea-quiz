@@ -11,6 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GURU2">
+        <!-- 마이페이지 -->
+        <activity
+            android:name=".mypage.MyPageActivity"
+            android:exported="false" />
+
         <!-- 회원가입 화면 -->
         <activity
             android:name=".login.SignupActivity"

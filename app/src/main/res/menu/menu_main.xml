@@ -5,4 +5,9 @@
     <item
         android:id="@+id/action_survey"
         android:title="@string/action_survey" />
+
+    <item
+        android:id="@+id/action_mypage"
+        android:title="마이페이지"
+        app:showAsAction="never"/>
 </menu>
