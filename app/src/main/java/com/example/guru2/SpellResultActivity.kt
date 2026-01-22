@@ -14,6 +14,8 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import com.example.guru2.fire.FirestoreProgress
+
 import org.w3c.dom.Text
 
 class SpellResultActivity : AppCompatActivity() {
@@ -148,10 +150,10 @@ class SpellResultActivity : AppCompatActivity() {
             // 5문제마다 결과 화면
             if (totalSCount > 0 && totalSCount % 5 == 0) {
                 // 이어하기 저장: 다음에 풀 문제 id 저장
-                getSharedPreferences("spell_quiz_pref", MODE_PRIVATE)
-                    .edit()
-                    .putInt("last_quiz_offset", quizId)   // quizId는 방금 푼 문제, +1 해서 다음부터 시작됨
-                    .apply()
+                val progressStore = FirestoreProgress()
+                progressStore.saveSpellNextQuizId(
+                    nextQuizId = quizId + 1
+                )
 
                 val intent = Intent(this, SpellFinalResultActivity::class.java)
 
