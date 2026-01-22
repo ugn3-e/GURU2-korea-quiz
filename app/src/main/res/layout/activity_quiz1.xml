@@ -85,10 +85,12 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="50dp"
         android:text="TextView"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btnChoice1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -99,12 +101,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="4dp"
+        android:layout_marginBottom="40dp"
         android:text="Button1"
-        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintBottom_toTopOf="@+id/btnSub"
         app:layout_constraintEnd_toStartOf="@+id/btnChoice2"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="80dp"/>
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnChoice2"
@@ -134,7 +136,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="88dp"
+        android:layout_marginBottom="70dp"
         android:text="확인"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

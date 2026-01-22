@@ -18,6 +18,10 @@
     <color name="confirm_default">#D3C5FA</color>  <!-- 비활성 -->
     <color name="confirm_active">#1E35CB</color>   <!-- 활성-->
 
+    <color name="choice_selected_stroke">#B1B2B4</color>
+
+    <color name="choice_defalut_button">#FF000000</color>
+    <color name="choice_selected_button">#FFF</color>
 
     <color name="point_color">#ED3B64</color> <!-- 마이페이지에서 로그아웃 버튼 색상 -->
 

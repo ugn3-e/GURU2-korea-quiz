@@ -18,13 +18,18 @@ class SurveyQ3Fragment : Fragment(R.layout.fragment_survey_q3) {
         val btnNext = view.findViewById<Button>(R.id.btnNext)
 
         val defaultColor =
-            ContextCompat.getColorStateList(requireContext(), R.color.choice_default)
+            ContextCompat.getColorStateList(requireContext(), R.color.white) // 하얀색
+        val textDefaultColor =
+            ContextCompat.getColor(requireContext(), R.color.black)
         val selectedColor =
-            ContextCompat.getColorStateList(requireContext(), R.color.choice_selected)
+            ContextCompat.getColorStateList(requireContext(), R.color.confirm_active) // 파란색
+        val textSelectedColor =
+            ContextCompat.getColor(requireContext(), R.color.white)
 
         // 처음에는 Next 비활성화
         btnNext.isEnabled = false
-        btnNext.backgroundTintList = defaultColor
+        btnNext.backgroundTintList = defaultColor // 하얀색
+        btnNext.setTextColor(textDefaultColor) // 검은색
 
         // EditText 입력 감지
         editText.addTextChangedListener(object : TextWatcher {
@@ -34,6 +39,10 @@ class SurveyQ3Fragment : Fragment(R.layout.fragment_survey_q3) {
                 btnNext.isEnabled = hasText
                 btnNext.backgroundTintList =
                     if (hasText) selectedColor else defaultColor
+                btnNext.setTextColor(
+                    if(hasText) textSelectedColor else textDefaultColor
+                )
+
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}

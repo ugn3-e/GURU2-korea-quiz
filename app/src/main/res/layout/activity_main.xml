@@ -118,6 +118,21 @@
                 android:src="@drawable/img_character_bg" />
 
             <TextView
+                android:id="@+id/tvCharacterPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/bg_level_tag"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="2dp"
+                android:text="0%"
+                android:textColor="#6851A5"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/tvCharacterLevel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
