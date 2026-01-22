@@ -5,10 +5,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import com.example.guru2.auth.AuthRepository
+import com.example.guru2.auth.SQLiteAuthDataSource
+import com.example.guru2.util.LevelUtil
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +25,12 @@ class MainActivity : AppCompatActivity() {
 
     // 디미 유진_뒤로가기 시간 체크 변수
     private var backPressedTime = 0L
+
+    // 디미 유진_레벨 텍스트
+    private lateinit var levelText: TextView
+
+    // 디미 유진_유저 아이디
+    private var userId: Long = -1L
 
 
 
@@ -42,6 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         btnQuiz1.setOnClickListener {
             val intent = Intent(this, SpellQuizActivity::class.java)
+            intent.putExtra("user_id", userId)  // 디미 유진_유저 아이디 값 넘김
             startActivity(intent)
         }
 
@@ -49,6 +60,7 @@ class MainActivity : AppCompatActivity() {
 
         btnQuiz2.setOnClickListener {
             val intent = Intent(this, SlangQuizActivity::class.java)
+            intent.putExtra("user_id", userId)  // 디미 유진_유저 아이디 값 넘김
             startActivity(intent)
         }
 
@@ -65,6 +77,24 @@ class MainActivity : AppCompatActivity() {
         btnWrong.setOnClickListener {
             startActivity(Intent(this, WrongNoteActivity::class.java))
         }
+
+        // 디미 유진_레벨 뷰 연결
+        levelText= findViewById(R.id.level)
+
+        // 디미 유진_유저 아이디
+        //userId = intent.getLongExtra("user_id", -1L)
+
+        // 디미 유진_레벨 출력
+        //updateLevelUI()
+
+//        if (userId != -1L) {
+//            val repo = AuthRepository(SQLiteAuthDataSource(this))
+//            val solvedCount = repo.getSolvedCount(userId)
+//
+//            val levelValue = LevelUtil.calculateLevel(solvedCount)
+//
+//            level.text = "Lv.$levelValue · 푼 문제 $solvedCount"
+//        }
 
         // 디미 유진_뒤로가기 두 번 누르면 앱 종료
         onBackPressedDispatcher.addCallback(
@@ -111,5 +141,40 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    // 디미 유진_레벨 출력
+//    private fun updateLevelUI() {
+//        if (userId == -1L) return
+//
+//        val repo = AuthRepository(SQLiteAuthDataSource(this))
+//        val solvedCount = repo.getSolvedCount(userId)
+//        val levelValue = LevelUtil.calculateLevel(solvedCount)
+//
+//        level.text = "Lv.$levelValue · 푼 문제 $solvedCount"
+//    }
+
+    // 디미 유진_화면 돌아올 때마다 레벨 갱신
+    override fun onResume() {
+        super.onResume()
+        loadUserAndUpdateLevel()
+    }
+
+    private fun loadUserAndUpdateLevel() {
+        val pref = getSharedPreferences("auth", MODE_PRIVATE)
+        userId = pref.getLong("user_id", -1L)
+
+        if (userId == -1L) {
+            levelText.text = "Lv.1 · 푼 문제 0"
+            return
+        }
+
+        val repo = AuthRepository(SQLiteAuthDataSource(this))
+        val solvedCount = repo.getSolvedCount(userId)
+        val level = LevelUtil.calculateLevel(solvedCount)
+
+        levelText.text = "Lv.$level · 푼 문제 $solvedCount"
+    }
+
+
 
 }
