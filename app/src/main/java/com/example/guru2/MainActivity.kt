@@ -66,7 +66,8 @@ class MainActivity : AppCompatActivity() {
         btnQuiz1.findViewById< ImageView>(R.id.ivIcon).setImageResource(R.drawable.ic_spelling)
         btnQuiz1.setOnClickListener {
             val intent = Intent(this, SpellQuizActivity::class.java)
-            intent.putExtra("user_id", userId)  // 디미 유진_유저 아이디 값 넘김
+            intent.putExtra("quiz_id", -1) // 이어하기 값 전달
+            intent.putExtra("quiz_count", 1)
             startActivity(intent)
         }
 
