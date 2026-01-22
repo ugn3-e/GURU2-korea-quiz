@@ -153,11 +153,18 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    // 디미 유진_(추가)마이페이지 추가
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_survey -> {
                 val intent = Intent(this, SurveyActivity::class.java)
                 startActivity(intent)
+                return true
+            }
+
+            // 디미 유진_마이페이지
+            R.id.action_mypage -> {
+                startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
                 return true
             }
         }

@@ -4,7 +4,9 @@ object LevelUtil {
 
     fun calculateLevel(solvedCount: Int): Int {
         return when {
-            solvedCount >= 60 -> 5
+            solvedCount >= 60 -> 7
+            solvedCount >= 50 -> 6
+            solvedCount >= 40 -> 5
             solvedCount >= 30 -> 4
             solvedCount >= 20 -> 3
             solvedCount >= 10 -> 2
