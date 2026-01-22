@@ -16,7 +16,6 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.guru2.auth.AuthRepository
 import com.example.guru2.auth.SQLiteAuthDataSource
 
-
 class SpellQuizActivity : AppCompatActivity() {
 
     // 디미 유진_유저 아이디
