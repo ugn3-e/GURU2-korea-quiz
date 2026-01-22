@@ -13,6 +13,7 @@ import com.example.guru2.login.LoginActivity
 import com.example.guru2.util.LevelUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import android.view.View
 
 class MyPageActivity : AppCompatActivity() {
 
@@ -31,8 +32,8 @@ class MyPageActivity : AppCompatActivity() {
         val progressLevel = findViewById<ProgressBar>(R.id.progressLevel)
 
         val btnHome = findViewById<Button>(R.id.btnHome)
-        val btnLogout = findViewById<Button>(R.id.btnLogout)
-        val btnEditProfile = findViewById<Button>(R.id.btnEditProfile)
+        val cardEditProfile = findViewById<View>(R.id.cardEditProfile)
+        val btnLogout = findViewById<TextView>(R.id.btnLogout)
 
         // ===== 기본 안내 문구 =====
         tvNotice.text =
@@ -94,7 +95,7 @@ class MyPageActivity : AppCompatActivity() {
         }
 
         // 프로필 정보 수정 (아직 화면 없으면 토스트)
-        btnEditProfile.setOnClickListener {
+        cardEditProfile.setOnClickListener {
             Toast.makeText(this, "프로필 수정은 준비 중입니다.", Toast.LENGTH_SHORT).show()
             // TODO: EditProfileActivity 연결
         }
