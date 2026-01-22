@@ -53,7 +53,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     // Firebase BOM
     implementation(platform("com.google.firebase:firebase-bom:34.8.0"))
-
+    // 로그인 기능
+    implementation("com.google.firebase:firebase-auth-ktx:23.1.0")
     // Firestore (설문 저장용)
     implementation("com.google.firebase:firebase-firestore-ktx:25.1.1")
     testImplementation(libs.junit)
