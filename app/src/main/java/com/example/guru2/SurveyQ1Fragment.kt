@@ -57,7 +57,12 @@ class SurveyQ1Fragment : Fragment(R.layout.fragment_survey_q1) {
         btnStudy4.setOnClickListener { selectButton(btnStudy4) }
 
         btnNext.setOnClickListener {
-            (requireActivity() as SurveyActivity).goNextPage()
+            selectedAnswer?.let {
+                val activity = requireActivity() as SurveyActivity
+                activity.saveAnswer("q1", it)
+                activity.goNextPage()
+            }
+            //(requireActivity() as SurveyActivity).goNextPage()
         }
     }
 }
