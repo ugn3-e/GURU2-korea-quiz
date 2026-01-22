@@ -99,22 +99,42 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <!-- 프로그래스바 -->
                     <ProgressBar
                         android:id="@+id/progressLevel"
-                        style="?android:attr/progressBarStyleHorizontal"
+                        style="@android:style/Widget.ProgressBar.Horizontal"
                         android:layout_width="0dp"
-                        android:layout_height="8dp"
+                        android:layout_height="12dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="16dp"
+                        android:layout_marginEnd="8dp"
                         android:max="100"
-                        android:progress="76"
+                        android:progress="33"
+                        android:progressDrawable="@drawable/custom_progress_bar"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvNotice" />
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!-- 국기 아이콘 (겹침) -->
+                    <ImageView
+                        android:id="@+id/imgFlag"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_korean_flag"
+                        android:elevation="6dp"
+                        android:translationX="-8dp"
+                        app:layout_constraintStart_toStartOf="@id/progressLevel"
+                        app:layout_constraintTop_toTopOf="@id/progressLevel"
+                        app:layout_constraintBottom_toBottomOf="@id/progressLevel" />
+
 
                     <TextView
                         android:id="@+id/tvLevel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="16dp"
                         android:text="Lv.4"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +144,9 @@
                         android:id="@+id/tvProgress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="33"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="33%"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/progressLevel" />
 
