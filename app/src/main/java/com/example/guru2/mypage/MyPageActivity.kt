@@ -17,7 +17,7 @@ class MyPageActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_my_page)
+        setContentView(R.layout.activity_my_page2)
 
         val tvNickname = findViewById<TextView>(R.id.tvNickname)
         val tvInfo = findViewById<TextView>(R.id.tvInfo)
