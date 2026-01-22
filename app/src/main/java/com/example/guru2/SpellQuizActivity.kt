@@ -15,6 +15,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.guru2.auth.AuthRepository
 import com.example.guru2.auth.SQLiteAuthDataSource
+import com.example.guru2.fire.FirestoreProgress
 
 class SpellQuizActivity : AppCompatActivity() {
 
@@ -60,16 +61,10 @@ class SpellQuizActivity : AppCompatActivity() {
             insets
         }
 
-        // 마지막 퀴즈 위치 불러오기 // ☑️추가
-        quizId = intent.getIntExtra("quiz_id", 1)
-        quizCount = intent.getIntExtra("quiz_count", 1)
+        initViews() // ✅ 추가
 
-        if (quizId == -1) {
-            // 최초 시작 or 이어서 학습
-            val pref = getSharedPreferences("spell_quiz_pref", MODE_PRIVATE)
-            val lastOffset = pref.getInt(PREF_LAST_OFFSET, 0)
-            quizId = lastOffset + 1
-        }
+        //DB 연결
+        spellDbManager = SpellDBManager(this)
 
         // 누적 값
         totalSCount = intent.getIntExtra("totalSCount", 0)
@@ -78,18 +73,34 @@ class SpellQuizActivity : AppCompatActivity() {
         // 5문제만 계산
         setCorrectCount = intent.getIntExtra("setCorrectCount", 0)
 
-        initViews() // ✅ 추가
-
         // 제출 버튼 초기 상태
         btnSub.isEnabled = false
         btnSub.setBackgroundColor(getColor(R.color.choice_default))
 
-        //DB 연결
-        spellDbManager = SpellDBManager(this)
+        // 이어서 학습하기 불러오기
+        quizId = intent.getIntExtra("quiz_id", -1)
+        quizCount = intent.getIntExtra("quiz_count", 1)
 
-        //초기화
-        QuizNum.text = "Q$quizCount" // Q 번호
-        loadNextQuiz() //  ✅ 추가
+
+        // 이어서 학습하기
+        val progressStore = FirestoreProgress()
+
+        if (quizId == -1) {
+            progressStore.loadSpellNextQuizId(
+                onResult = { nextId ->
+                    quizId = nextId
+                    QuizNum.text = "Q$quizCount"
+                    loadNextQuiz()
+                },
+                onError = {
+                    // 실패 시 안전하게 1번부터
+                    quizId = 1
+                    QuizNum.text = "Q$quizCount"
+                }
+            )
+        } else {
+            loadNextQuiz()
+        }
 
         setClickListeners()
 
@@ -106,9 +117,6 @@ class SpellQuizActivity : AppCompatActivity() {
                 }
             }
         )
-
-        // 🔥 유저 아이디 받기 (이거 없어서 안 됐던 거)
-        //userId = intent.getLongExtra("user_id", -1L)
     }
 
     private fun initViews() {
@@ -212,6 +220,9 @@ class SpellQuizActivity : AppCompatActivity() {
 
     fun loadNextQuiz() {
         val db = spellDbManager.readableDatabase
+        // Q1~5 반복 계산
+        val qNumber = ((quizId - 1) % 5) + 1
+        QuizNum.text = "Q$qNumber"
 
         // ORDER BY id ASC LIMIT 1 OFFSET ?
         // 순서대로 문제 출력
