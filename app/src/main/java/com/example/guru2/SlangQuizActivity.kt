@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.OnBackPressedCallback
 import android.widget.Toast
+import com.example.guru2.auth.AuthRepository
+import com.example.guru2.auth.SQLiteAuthDataSource
 
 class SlangQuizActivity : AppCompatActivity() {
 
@@ -17,6 +19,9 @@ class SlangQuizActivity : AppCompatActivity() {
     companion object {
         private const val REQ_RESULT = 1001
     }
+
+    // 디미 유진_유저 아이디 받기
+    private var userId: Long = -1L
 
     // 디미 유진_전체 결과 누적 변수
     private var totalCount = 0
@@ -51,6 +56,9 @@ class SlangQuizActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_slang_quiz)
+
+        // 디미 유진_유저 아이디 연결
+        userId = intent.getLongExtra("user_id", -1L)
 
         // 디미 유진_View 연결
         tvQNumber = findViewById(R.id.QText)
@@ -224,6 +232,15 @@ class SlangQuizActivity : AppCompatActivity() {
             WrongDBManager(this)
                 .saveSlangWrong(this, currentQuiz.id, selectedAnswer)
         }
+
+        // 디미 유진_유저 레벨, solvedCount +1
+        if (userId != -1L) {
+            val authRepo = AuthRepository(SQLiteAuthDataSource(this))
+            authRepo.increaseSolvedCount(userId)
+        } else {
+            Log.e("LEVEL_CHECK", "SlangQuiz userId == -1L, 증가 실패")
+        }
+
 
         // 마지막으로 푼 문제 ID 저장 ☑️
         val pref = getSharedPreferences("slang_quiz", MODE_PRIVATE)

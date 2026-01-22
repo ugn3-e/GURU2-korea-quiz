@@ -3,6 +3,7 @@ package com.example.guru2
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -10,8 +11,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.guru2.auth.AuthRepository
+import com.example.guru2.auth.SQLiteAuthDataSource
+
 
 class SpellQuizActivity : AppCompatActivity() {
+
+    // 디미 유진_유저 아이디
+    private var userId: Long = -1L
+
     lateinit var spellDbManager: SpellDBManager
     lateinit var sqlitedb: SQLiteDatabase
     lateinit var QuizText: TextView
@@ -82,6 +90,9 @@ class SpellQuizActivity : AppCompatActivity() {
         loadNextQuiz() //  ✅ 추가
 
         setClickListeners()
+
+        // 🔥 유저 아이디 받기 (이거 없어서 안 됐던 거)
+        //userId = intent.getLongExtra("user_id", -1L)
     }
 
     private fun initViews() {
@@ -132,9 +143,19 @@ class SpellQuizActivity : AppCompatActivity() {
         btnSub.setOnClickListener {
             val isCorrect = selectedAnswer == correctAnswer
 
+            // 디미 유진_오답으로 이동
             if (!isCorrect) {
                 WrongDBManager(this)
                     .saveSpellingWrong(this, currentQuizId, selectedAnswer)
+            }
+
+            // 디미 유진_레벨, solved_count +1
+            val userId = getUserId()
+            if (userId != -1L) {
+                AuthRepository(SQLiteAuthDataSource(this))
+                    .increaseSolvedCount(userId)
+            } else {
+                Log.e("LEVEL_CHECK", "SpellingQuiz userId == -1L, 증가 실패")
             }
 
             // 결과 누적 // ☑️ 추가
@@ -242,5 +263,11 @@ class SpellQuizActivity : AppCompatActivity() {
         }
         startActivity(intent)
         finish()
+    }
+
+    // 디미 유진_slang과 달리 새로운 페이지를 호출하는 방식이라 문제 개수 증가 코드가 다름
+    private fun getUserId(): Long {
+        return getSharedPreferences("auth", MODE_PRIVATE)
+            .getLong("user_id", -1L)
     }
 }
