@@ -40,8 +40,8 @@ class SlangFinalResultActivity : AppCompatActivity() {
         // 디미 유진_이어서 학습하기 버튼
         btnKeep.setOnClickListener {
             // 로그인 때 저장해둔 user_id 꺼내오기 (너희 앱 구조 기준)
-            val userId = getSharedPreferences("auth", MODE_PRIVATE)
-                .getLong("user_id", -1L)
+//            val userId = getSharedPreferences("auth", MODE_PRIVATE)
+//                .getLong("user_id", -1L)
 
             val progressStore = FirestoreProgress()
             progressStore.loadSlangNextQuizId(
@@ -61,7 +61,6 @@ class SlangFinalResultActivity : AppCompatActivity() {
                     }
                     val intent = Intent(this, SlangQuizActivity::class.java).apply {
                         putExtra("startQuizId", nextId)   // 다음에 풀 문제
-                        putExtra("user_id", userId)
                     }
                     startActivity(intent)
                     finish()
@@ -69,7 +68,6 @@ class SlangFinalResultActivity : AppCompatActivity() {
                 onError = {
                     val intent = Intent(this, SlangQuizActivity::class.java).apply {
                         putExtra("startQuizId", 1)
-                        putExtra("user_id", userId)
                     }
                     startActivity(intent)
                     finish()
