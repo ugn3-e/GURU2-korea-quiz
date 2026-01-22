@@ -132,6 +132,12 @@ class SpellResultActivity : AppCompatActivity() {
         btnNext.setOnClickListener {
             // 5문제마다 결과 화면
             if (totalSCount > 0 && totalSCount % 5 == 0) {
+                // 이어하기 저장: 다음에 풀 문제 id 저장
+                getSharedPreferences("spell_quiz_pref", MODE_PRIVATE)
+                    .edit()
+                    .putInt("last_quiz_offset", quizId)   // quizId는 방금 푼 문제, +1 해서 다음부터 시작됨
+                    .apply()
+
                 val intent = Intent(this, SpellFinalResultActivity::class.java)
 
                 intent.putExtra("totalSCount", totalSCount)
