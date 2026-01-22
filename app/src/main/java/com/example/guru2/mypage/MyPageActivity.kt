@@ -4,16 +4,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.guru2.R
 import com.example.guru2.auth.AuthRepository
 import com.example.guru2.auth.SQLiteAuthDataSource
 import com.example.guru2.login.LoginActivity
 import com.example.guru2.util.LevelUtil
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MyPageActivity : AppCompatActivity() {
-
-    private var userId: Long = -1L
+    //private var userId: Long = -1L
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,22 +28,34 @@ class MyPageActivity : AppCompatActivity() {
         val tvLevel = findViewById<TextView>(R.id.tvLevel)
         val btnLogout = findViewById<Button>(R.id.btnLogout)
 
-        val pref = getSharedPreferences("auth", MODE_PRIVATE)
-        userId = pref.getLong("user_id", -1L)
+        // 현재 로그인 유저 uid 가져오기
+        val uid = auth.currentUser?.uid
+        if (uid == null) {
+            // 로그인 상태가 아니면 로그인 화면으로
+            goLogin(clearTask = true)
+            return
+        }
 
-        if (userId != -1L) {
-            val db = SQLiteAuthDataSource(this).readableDatabase
-            val cursor = db.rawQuery(
-                "SELECT nickname, gender, age, country, solved_count FROM users WHERE id = ?",
-                arrayOf(userId.toString())
-            )
+        // Firestore에서 users/{uid} 문서 읽기
+        firestore.collection("users").document(uid).get()
+            .addOnSuccessListener { doc ->
+                if (!doc.exists()) {
+                    tvNickname.text = "-"
+                    tvInfo.text = "-"
+                    tvLevel.text = "Lv.0 · 푼 문제 0"
+                    return@addOnSuccessListener
+                }
 
-            if (cursor.moveToFirst()) {
-                val nickname = cursor.getString(0)
-                val gender = cursor.getString(1)
-                val age = cursor.getInt(2)
-                val country = cursor.getString(3)
-                val solvedCount = cursor.getInt(4)
+                val nickname = doc.getString("nickname") ?: "-"
+                val gender = doc.getString("gender") ?: "-"
+                val ageAny = doc.get("age")
+                val age = when (ageAny) {
+                    is Long -> ageAny.toInt()
+                    is String -> ageAny.toIntOrNull() ?: 0
+                    else -> 0
+                }
+                val country = doc.getString("country") ?: "-"
+                val solvedCount = doc.getLong("solved_count")?.toInt() ?: 0
 
                 val level = LevelUtil.calculateLevel(solvedCount)
 
@@ -47,16 +63,26 @@ class MyPageActivity : AppCompatActivity() {
                 tvInfo.text = "$gender · ${age}세 · $country"
                 tvLevel.text = "Lv.$level · 푼 문제 $solvedCount"
             }
-            cursor.close()
-        }
+            .addOnFailureListener {
+                Toast.makeText(this, "불러오기 실패: ${it.message}", Toast.LENGTH_SHORT).show()
+            }
 
         btnLogout.setOnClickListener {
-            pref.edit().clear().apply()
+            auth.signOut()
 
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-            finish()
+            // prefs는 선택인데, 남아있으면 혼선 생길 수 있어서 같이 비우는 걸 추천
+            getSharedPreferences("auth", MODE_PRIVATE).edit().clear().apply()
+
+            goLogin(clearTask = true)
         }
+    }
+
+    private fun goLogin(clearTask: Boolean = false) {
+        val intent = Intent(this, LoginActivity::class.java)
+        if (clearTask) {
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        startActivity(intent)
+        finish()
     }
 }
