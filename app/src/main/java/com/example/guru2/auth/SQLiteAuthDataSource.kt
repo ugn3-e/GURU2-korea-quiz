@@ -11,7 +11,7 @@ class SQLiteAuthDataSource(context: Context)
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(
             """
-            CREATE TABLE users (
+            CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT UNIQUE,
                 password TEXT,
@@ -36,7 +36,6 @@ class SQLiteAuthDataSource(context: Context)
         age: Int,
         country: String
     ): Boolean {
-        val db = writableDatabase
         val values = ContentValues().apply {
             put("username", username)
             put("password", password)
@@ -47,42 +46,56 @@ class SQLiteAuthDataSource(context: Context)
             put("solved_count", 0)
         }
 
-        return db.insert("users", null, values) != -1L
+        return writableDatabase.insert("users", null, values) != -1L
     }
 
     // 🔹 로그인
     fun login(username: String, password: String): User? {
-        val db = readableDatabase
-        val cursor = db.rawQuery(
+        val cursor = readableDatabase.rawQuery(
             "SELECT * FROM users WHERE username=? AND password=?",
             arrayOf(username, password)
         )
 
-        return if (cursor.moveToFirst()) {
-            val user = User(
-                id = cursor.getInt(0),
-                username = cursor.getString(1),
-                password = cursor.getString(2),
-                nickname = cursor.getString(3),
-                gender = cursor.getString(4),
-                age = cursor.getInt(5),
-                country = cursor.getString(6),
-                solvedCount = cursor.getInt(7)
-            )
-            cursor.close()
-            user
-        } else {
-            cursor.close()
-            null
-        }
+        val user =
+            if (cursor.moveToFirst()) {
+                User(
+                    id = cursor.getLong(0),              // ✅ Long
+                    username = cursor.getString(1),
+                    password = cursor.getString(2),
+                    nickname = cursor.getString(3),
+                    gender = cursor.getString(4),
+                    age = cursor.getInt(5),
+                    country = cursor.getString(6),
+                    solvedCount = cursor.getInt(7)
+                )
+            } else null
+
+        cursor.close()
+        return user
     }
 
     // 🔹 문제 푼 개수 증가 ⭐ 핵심
-    fun increaseSolvedCount(userId: Int) {
-        val db = writableDatabase
-        db.execSQL(
-            "UPDATE users SET solved_count = solved_count + 1 WHERE id = ?",
+    fun increaseSolvedCount(userId: Long) {   // ✅ Long
+        writableDatabase.execSQL(
+            """
+            UPDATE users
+            SET solved_count = solved_count + 1
+            WHERE id = ?
+            """.trimIndent(),
             arrayOf(userId)
         )
+    }
+
+    // solved_count 조회
+    fun getSolvedCount(userId: Long): Int {
+        val db = readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT solved_count FROM users WHERE id = ?",
+            arrayOf(userId.toString())
+        )
+
+        val count = if (cursor.moveToFirst()) cursor.getInt(0) else 0
+        cursor.close()
+        return count
     }
 }

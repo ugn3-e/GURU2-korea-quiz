@@ -41,7 +41,12 @@ class SurveyQ3Fragment : Fragment(R.layout.fragment_survey_q3) {
         })
 
         btnNext.setOnClickListener {
-            (requireActivity() as SurveyActivity).goNextPage()
+            val answer = editText.text.toString()
+
+            val activity = requireActivity() as SurveyActivity
+            activity.saveAnswer("q3", answer)
+            activity.goNextPage()
+            //(requireActivity() as SurveyActivity).goNextPage()
         }
     }
 }

@@ -3,6 +3,7 @@ package com.example.guru2
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 
@@ -18,6 +19,7 @@ class SurveyQ2Fragment : Fragment(R.layout.fragment_survey_q2) {
         val btnHard3 = view.findViewById<Button>(R.id.btnHard3)
         val btnHard4 = view.findViewById<Button>(R.id.btnHard4)
         val buttons = listOf(btnHard1, btnHard2, btnHard3, btnHard4)
+        val editText = view.findViewById<EditText>(R.id.editText)
 
         // 다음 설문으로 넘어가기
         val btnNext = view.findViewById<Button>(R.id.btnNext)
@@ -59,7 +61,20 @@ class SurveyQ2Fragment : Fragment(R.layout.fragment_survey_q2) {
 
 
         btnNext.setOnClickListener {
-            (requireActivity() as SurveyActivity).goNextPage()
+            selectedAnswer?.let { choice ->
+                val extra = editText.text.toString().trim()
+
+                val finalAnswer = if (extra.isNotEmpty()) {
+                    "$choice (추가 의견: $extra)"
+                } else {
+                    choice
+                }
+
+                val activity = requireActivity() as SurveyActivity
+                activity.saveAnswer("q2", finalAnswer)
+                activity.goNextPage()
+            }
+            //(requireActivity() as SurveyActivity).goNextPage()
         }
     }
 }

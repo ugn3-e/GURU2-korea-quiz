@@ -30,12 +30,15 @@ class LoginActivity : AppCompatActivity() {
             )
 
             if (user != null) {
-                val level = LevelUtil.calculateLevel(user.solvedCount)
 
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("user_id", user.id)
-                intent.putExtra("user_level", level)
-                startActivity(intent)
+                // 디미 유진_로그인 성공 -> userId 저장
+                getSharedPreferences("auth", MODE_PRIVATE)
+                    .edit()
+                    .putLong("user_id", user.id)
+                    .apply()
+
+                // 메인으로 이동
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             } else {
                 Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()

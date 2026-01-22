@@ -19,7 +19,12 @@ class AuthRepository(
         return dataSource.login(username, password)
     }
 
-    fun increaseSolvedCount(userId: Int) {
+    // ✅ userId = Long 으로 통일
+    fun increaseSolvedCount(userId: Long) {
         dataSource.increaseSolvedCount(userId)
+    }
+
+    fun getSolvedCount(userId: Long): Int {
+        return dataSource.getSolvedCount(userId)
     }
 }
