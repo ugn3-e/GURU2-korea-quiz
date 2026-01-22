@@ -15,12 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20.dp">
+        android:padding="18.dp">
 
         <ImageView
             android:id="@+id/ivIcon"
-            android:layout_width="56.dp"
-            android:layout_height="56.dp"
+            android:layout_width="35.dp"
+            android:layout_height="35.dp"
             android:src="@drawable/ic_spelling" />
 
         <TextView
@@ -30,7 +30,7 @@
             android:layout_marginTop="16.dp"
             android:text="맞춤법 퀴즈"
             android:textColor="#333333"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
         <TextView
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:text="Spelling Quiz"
             android:textColor="#A0A0A0"
-            android:textSize="14sp" />
+            android:textSize="13sp" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

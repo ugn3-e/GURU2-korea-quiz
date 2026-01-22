@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+<!--    상단바 -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="0dp"
@@ -25,6 +26,7 @@
             app:titleTextColor="@android:color/white" />
     </com.google.android.material.appbar.AppBarLayout>
 
+<!--    슈니님 파트-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -37,11 +39,23 @@
             android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8.dp"
+            android:layout_marginTop="0.dp"
             android:text="슈니님"
             android:textColor="#333333"
             android:textSize="20sp"
             android:textStyle="bold" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/level"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginTop="32dp"-->
+<!--            android:text="레벨"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/appBar" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,57 +65,62 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="24.dp"
-                android:layout_height="24.dp"
-                android:src="@drawable/ic_korean_flag" /> <ProgressBar
-            style="@android:style/Widget.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="12.dp"
-            android:layout_marginStart="8.dp"
-            android:progress="60"
-            android:progressDrawable="@drawable/custom_progress_bar" /> </LinearLayout>
+                android:layout_width="35.dp"
+                android:layout_height="35.dp"
+                android:src="@drawable/ic_korean_flag"
+                android:elevation="10dp"/>
+            <ProgressBar
+                android:id="@+id/levelProgressBar"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="12.dp"
+                android:layout_marginStart="12.dp"
+                android:max="100"
+                android:progressDrawable="@drawable/custom_progress_bar" />
+        </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="220dp"
-            android:layout_marginTop="16.dp"
-            app:cardCornerRadius="20.dp"
-            app:cardElevation="0.dp">
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp"
+            app:cardPreventCornerOverlap="false"
+            android:clipToOutline="true">
 
-            <FrameLayout
+            <ImageView
+                android:id="@+id/ivCharacter"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_character_bg" />
 
-                <ImageView
-                    android:id="@+id/ivCharacter"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/img_character_bg" />
+            <TextView
+                android:id="@+id/tvCharacterLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_margin="12dp"
+                android:background="@drawable/bg_level_tag"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="2dp"
+                android:text="Lv.1"
+                android:textColor="#6851A5"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top|end"
-                    android:layout_margin="12.dp"
-                    android:background="@drawable/bg_level_tag"
-                    android:paddingHorizontal="20.dp"
-                    android:paddingVertical="2.dp"
-                    android:text="Lv.4"
-                    android:textColor="#6851A5"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-            </FrameLayout>
         </com.google.android.material.card.MaterialCardView>
 
+<!--        여기서부터 학습하기 -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32.dp"
-            android:layout_marginBottom="16.dp"
+            android:layout_marginTop="16.dp"
+            android:layout_marginBottom="8.dp"
             android:text="학습하기"
             android:textColor="#333333"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <GridLayout
@@ -116,7 +135,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_margin="8.dp" />
+                android:layout_margin="1.dp" />
 
             <include
                 android:id="@+id/btnQuiz2"
@@ -124,7 +143,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_margin="8.dp" />
+                android:layout_margin="4.dp" />
 
             <include
                 android:id="@+id/btnSaved"
@@ -132,7 +151,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_margin="8.dp" />
+                android:layout_margin="1.dp" />
 
             <include
                 android:id="@+id/btnWrong"
@@ -140,7 +159,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_margin="8.dp" />
+                android:layout_margin="4.dp" />
         </GridLayout>
 
     </LinearLayout>
