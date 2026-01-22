@@ -131,44 +131,92 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- 프로필 정보 수정 -->
-            <Button
-                android:id="@+id/btnEditProfile"
+            <!-- ================= 버튼 영역 ================= -->
+
+            <!-- 프로필 정보 수정 카드 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardEditProfile"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginBottom="12dp"
-                android:text="프로필 정보 수정"
-                app:layout_constraintBottom_toTopOf="@+id/btnHome"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:layout_constraintTop_toBottomOf="@id/cardLevel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
-            <!-- 로그아웃 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
-            <!-- 홈 이동 -->
-            <Button
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_pen"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/btnEditProfile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="프로필 정보 수정"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Edit profile information"
+                            android:textSize="12sp"
+                            android:textColor="#888888"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 로그아웃 (텍스트 버튼) -->
+            <TextView
                 android:id="@+id/btnLogout"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginBottom="72dp"
-                android:backgroundTint="@color/choice_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:drawableStart="@drawable/outline_logout_gray"
+                android:drawablePadding="6dp"
+                android:gravity="center"
                 android:text="로그아웃"
-                android:textColor="@color/white"
+                android:textColor="#3F51B5"
+                android:textSize="14sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardEditProfile" />
 
+
+            <!-- 홈으로 이동 버튼 -->
             <Button
                 android:id="@+id/btnHome"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginBottom="12dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="88dp"
+                android:backgroundTint="#1F3BD1"
                 android:text="홈으로 이동"
-                app:layout_constraintBottom_toTopOf="@+id/btnLogout"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnLogout" />
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -65,7 +65,7 @@ class MyPageActivity : AppCompatActivity() {
                 // ===== UI 반영 =====
                 tvNickname.text = nickname
                 tvLevel.text = "Lv.$level"
-                tvProgress.text = "$progressPercent%"
+                tvProgress.text = "$progressPercent"
                 progressLevel.progress = progressPercent
             }
             .addOnFailureListener {
