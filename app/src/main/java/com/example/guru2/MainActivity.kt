@@ -228,13 +228,22 @@ class MainActivity : AppCompatActivity() {
         // 캐릭터 카드 위 레벨 표시 (Lv.X)
         levelText.text = "Lv.$levelValue"
 
-        // 게이지 계산 (LevelUtil 기준 반영)
-        val progressPercent = when (levelValue) {
-            1 -> (solvedCount / 10.0 * 100).toInt()          // 0~9문제
-            2 -> ((solvedCount - 10) / 10.0 * 100).toInt()   // 10~19문제
-            3 -> ((solvedCount - 20) / 10.0 * 100).toInt()   // 20~29문제
-            4 -> ((solvedCount - 30) / 30.0 * 100).toInt()   // 30~59문제
-            else -> 100                                      // 60문제 이상
+        // 게이지 계산 (LevelUtil 기준 반영) -> 각 레벨 구간 안에서 0~100% (레벨업 하면 다시 0%부터 시작)
+//        val progressPercent = when (levelValue) {
+//            1 -> (solvedCount / 10.0 * 100).toInt()          // 0~9문제 (Lv.1)
+//            2 -> ((solvedCount - 10) / 10.0 * 100).toInt()   // 10~19문제 (Lv.2)
+//            3 -> ((solvedCount - 20) / 10.0 * 100).toInt()   // 20~29문제 (Lv.3)
+//            4 -> ((solvedCount - 30) / 10.0 * 100).toInt()   // 30~39문제 (Lv.4)
+//            5 -> ((solvedCount - 40) / 10.0 * 100).toInt()   // 40~49문제 (Lv.5)
+//            6 -> ((solvedCount - 50) / 10.0 * 100).toInt()   // 50~59문제 (Lv.6)
+//            else -> 100                                      // 60문제 이상 (Lv.7)
+//        }
+
+        // 게이지 (LevelUtil 기준 반영) -> 0문제부터 60문제까지로 전체 게이지 계싼
+        val progressPercent = if(solvedCount >= 60) {
+            100
+        } else {
+            ((solvedCount / 60.0) * 100).toInt(); // 60문제를 100%로 환산하여 계산
         }
 
         // 게이지 반영

@@ -46,7 +46,7 @@
                 android:paddingEnd="16dp">
 
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/resultImg"
                     android:layout_width="224dp"
                     android:layout_height="225dp"
                     android:layout_marginBottom="27dp"

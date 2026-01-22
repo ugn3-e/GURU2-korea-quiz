@@ -5,8 +5,10 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -23,6 +25,7 @@ class SpellQuizActivity : AppCompatActivity() {
     lateinit var spellDbManager: SpellDBManager
     lateinit var sqlitedb: SQLiteDatabase
     lateinit var QuizText: TextView
+    lateinit var ivQuizImg: ImageView // 유빈_추가 (이미지 연결)
     lateinit var btnChoice1: Button
     lateinit var btnChoice2: Button
     lateinit var btnChoice3: Button
@@ -91,6 +94,20 @@ class SpellQuizActivity : AppCompatActivity() {
 
         setClickListeners()
 
+        // 유빈_추가 (퀴즈 접속하면 뒤로 가기 -> 막기)
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    Toast.makeText(
+                        this@SpellQuizActivity,
+                        "퀴즈를 완료해야 홈으로 돌아갈 수 있어요!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        )
+
         // 🔥 유저 아이디 받기 (이거 없어서 안 됐던 거)
         //userId = intent.getLongExtra("user_id", -1L)
     }
@@ -99,6 +116,7 @@ class SpellQuizActivity : AppCompatActivity() {
         //view 연결
         QuizText = findViewById<TextView>(R.id.QuizText)
         QuizNum = findViewById<TextView>(R.id.QuizNum)
+        ivQuizImg = findViewById<ImageView>(R.id.imageView)
         btnChoice1 = findViewById<Button>(R.id.btnChoice1)
         btnChoice2 = findViewById<Button>(R.id.btnChoice2)
         btnChoice3 = findViewById<Button>(R.id.btnChoice3)
@@ -231,6 +249,18 @@ class SpellQuizActivity : AppCompatActivity() {
             incorrect_exp = cursor.getString(
                 cursor.getColumnIndexOrThrow("incorrect_exp"))
 
+            // DB 필드 연결
+            val imgPath = cursor.getString(cursor.getColumnIndexOrThrow("image_path"))
+
+
+            if (!imgPath.isNullOrEmpty()) {
+                com.bumptech.glide.Glide.with(this)
+                    .load("file:///android_asset/images/$imgPath")
+                    .into(ivQuizImg)
+            } else {
+                // 이미지가 없는 경우 기본 이미지
+                ivQuizImg.setImageResource(R.drawable.ic_launcher_foreground)
+            }
 
             //source = cursor.getString(
             //cursor.getColumnIndexOrThrow("source"))
