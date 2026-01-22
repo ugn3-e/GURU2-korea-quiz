@@ -2,13 +2,33 @@ package com.example.guru2.auth
 
 import android.content.ContentValues
 import android.content.Context
-import com.example.guru2.db.AuthDBHelper
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
 
-class SQLiteAuthDataSource(context: Context) : AuthDataSource {
+class SQLiteAuthDataSource(context: Context)
+    : SQLiteOpenHelper(context, "auth.db", null, 1) {
 
-    private val dbHelper = AuthDBHelper(context)
+    override fun onCreate(db: SQLiteDatabase) {
+        db.execSQL(
+            """
+            CREATE TABLE users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE,
+                password TEXT,
+                nickname TEXT,
+                gender TEXT,
+                age INTEGER,
+                country TEXT,
+                solved_count INTEGER DEFAULT 0
+            )
+            """.trimIndent()
+        )
+    }
 
-    override fun signup(
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
+
+    // 🔹 회원가입
+    fun signup(
         username: String,
         password: String,
         nickname: String,
@@ -16,9 +36,7 @@ class SQLiteAuthDataSource(context: Context) : AuthDataSource {
         age: Int,
         country: String
     ): Boolean {
-
-        val db = dbHelper.writableDatabase
-
+        val db = writableDatabase
         val values = ContentValues().apply {
             put("username", username)
             put("password", password)
@@ -26,43 +44,45 @@ class SQLiteAuthDataSource(context: Context) : AuthDataSource {
             put("gender", gender)
             put("age", age)
             put("country", country)
+            put("solved_count", 0)
         }
 
-        return try {
-            db.insertOrThrow("users", null, values)
-            true
-        } catch (e: Exception) {
-            false
-        } finally {
-            db.close()
-        }
+        return db.insert("users", null, values) != -1L
     }
 
-    override fun login(username: String, password: String): User? {
-
-        val db = dbHelper.readableDatabase
+    // 🔹 로그인
+    fun login(username: String, password: String): User? {
+        val db = readableDatabase
         val cursor = db.rawQuery(
-            """
-            SELECT id, username, nickname, gender, age, country
-            FROM users
-            WHERE username=? AND password=?
-            """.trimIndent(),
+            "SELECT * FROM users WHERE username=? AND password=?",
             arrayOf(username, password)
         )
 
-        val user = if (cursor.moveToFirst()) {
-            User(
-                id = cursor.getLong(0),
+        return if (cursor.moveToFirst()) {
+            val user = User(
+                id = cursor.getInt(0),
                 username = cursor.getString(1),
-                nickname = cursor.getString(2),
-                gender = cursor.getString(3),
-                age = cursor.getInt(4),
-                country = cursor.getString(5)
+                password = cursor.getString(2),
+                nickname = cursor.getString(3),
+                gender = cursor.getString(4),
+                age = cursor.getInt(5),
+                country = cursor.getString(6),
+                solvedCount = cursor.getInt(7)
             )
-        } else null
+            cursor.close()
+            user
+        } else {
+            cursor.close()
+            null
+        }
+    }
 
-        cursor.close()
-        db.close()
-        return user
+    // 🔹 문제 푼 개수 증가 ⭐ 핵심
+    fun increaseSolvedCount(userId: Int) {
+        val db = writableDatabase
+        db.execSQL(
+            "UPDATE users SET solved_count = solved_count + 1 WHERE id = ?",
+            arrayOf(userId)
+        )
     }
 }

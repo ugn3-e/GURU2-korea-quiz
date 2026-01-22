@@ -1,7 +1,7 @@
 package com.example.guru2.auth
 
 class AuthRepository(
-    private val dataSource: AuthDataSource
+    private val dataSource: SQLiteAuthDataSource
 ) {
 
     fun signup(
@@ -17,5 +17,9 @@ class AuthRepository(
 
     fun login(username: String, password: String): User? {
         return dataSource.login(username, password)
+    }
+
+    fun increaseSolvedCount(userId: Int) {
+        dataSource.increaseSolvedCount(userId)
     }
 }
