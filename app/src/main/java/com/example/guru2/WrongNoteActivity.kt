@@ -40,9 +40,6 @@ class WrongNoteActivity : AppCompatActivity() {
         val btnSlang = findViewById<TextView>(R.id.btnSlang)
         val btnGrammar = findViewById<TextView>(R.id.btnGrammar)
 
-        // 디미 유진_오답 전체 삭제 버튼
-        val btnClearWrong = findViewById<Button>(R.id.btnClearWrong)
-
         // 디미 유진_홈으로 돌아가기 버튼
         val btnGoHome = findViewById<Button>(R.id.btnGoHome)
 
@@ -68,9 +65,6 @@ class WrongNoteActivity : AppCompatActivity() {
             viewPager.setCurrentItem(1, false)
             selectTab(false)
         }
-
-        // 디미 유진_오답 전체 삭제 버튼 클릭
-        btnClearWrong.setOnClickListener { showClearDialog() }
 
         // 디미 유진_홈으로 돌아가기
         btnGoHome.setOnClickListener {
@@ -136,37 +130,5 @@ class WrongNoteActivity : AppCompatActivity() {
         constraintSet.applyTo(mainLayout)
     }
 
-    // 디미 유진_오답 전체 삭제 확인 다이얼로그 표시
-    private fun showClearDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("오답 초기화")
-            .setMessage("오답 내역을 모두 삭제할까요?")
-            .setPositiveButton("삭제") { _, _ ->
 
-                // 로컬(SQLite) 삭제
-                WrongDBManager(this).clearAllWrong(this)
-
-                // Firestore 삭제
-                FirestoreWrongNote().clearAll(
-                    type = currentType,
-                    onSuccess = {
-                        runOnUiThread {
-                            Toast.makeText(this, "오답이 초기화되었습니다", Toast.LENGTH_SHORT).show()
-
-                            // 🔥 recreate()도 되지만, ViewPager 어댑터 재세팅이 더 확실
-                            val viewPager = findViewById<ViewPager2>(R.id.viewPager)
-                            viewPager.adapter = WrongPagerAdapter(this)
-                            viewPager.setCurrentItem(if (currentType == "slang") 0 else 1, false)
-                        }
-                    },
-                    onFail = { e ->
-                        runOnUiThread {
-                            Toast.makeText(this, "Firestore 초기화 실패: ${e.message}", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                )
-            }
-            .setNegativeButton("취소", null)
-            .show()
-    }
 }

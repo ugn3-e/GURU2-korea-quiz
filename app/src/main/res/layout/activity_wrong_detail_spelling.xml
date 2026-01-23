@@ -78,10 +78,10 @@
 
     <ImageView
         android:id="@+id/imgDog"
-        android:layout_width="97dp"
-        android:layout_height="99dp"
-        android:layout_marginEnd="200dp"
-        android:layout_marginBottom="100dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="245dp"
+        android:layout_marginBottom="88dp"
         android:src="@drawable/content_dog"
         app:layout_constraintBottom_toBottomOf="@+id/contentArea"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +94,7 @@
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="88dp"
+        android:layout_marginBottom="70dp"
         android:backgroundTint="#1E35CB"
         android:text="뒤로가기"
         app:layout_constraintBottom_toBottomOf="parent"

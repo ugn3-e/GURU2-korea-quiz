@@ -72,24 +72,11 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/tabBaseLine"
-        app:layout_constraintBottom_toTopOf="@id/btnClearWrong"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnClearWrong"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="#FF5722"
-        android:text="오답 내역 초기화"
         app:layout_constraintBottom_toTopOf="@id/btnGoHome"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabBaseLine" />
+
 
     <Button
         android:id="@+id/btnGoHome"
@@ -98,7 +85,7 @@
         android:layout_marginHorizontal="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="70dp"
         android:backgroundTint="#1E35CB"
         android:text="홈으로 이동"
         app:layout_constraintBottom_toBottomOf="parent"
