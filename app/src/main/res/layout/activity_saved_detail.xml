@@ -23,32 +23,45 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:background="#FFFFFF" app:title="저장한 콘텐츠"
-            app:titleTextColor="#333333" />
+            app:titleTextColor="#333333"
+            app:titleTextAppearance="@style/ToolbarTitleBold"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#E0E0E0" /> </com.google.android.material.appbar.AppBarLayout>
 
+    <ImageView
+        android:id="@+id/imgDog2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="-30dp"
+        android:src="@drawable/content_dog"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/saved_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="99dp"
+        android:layout_marginTop="32dp"
         android:text="TextView"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
     <ImageView
         android:id="@+id/saved_img"
-        android:layout_width="279dp"
-        android:layout_height="205dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.575"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,9 +72,10 @@
         android:id="@+id/saved_sentence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="24dp"
         android:text="TextView"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,30 +83,46 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/saved_img" />
 
+    <!-- 구분선 -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="#E0E0E0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/saved_sentence" />
+
     <TextView
         android:id="@+id/saved_exp"
-        android:layout_width="252dp"
-        android:layout_height="102dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="59dp"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
         android:text="TextView"
         android:textAlignment="center"
-        android:textColor="#646568"
+        android:textColor="@color/button_text_default"
         android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.566"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saved_sentence"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="298dp"
-        android:layout_height="51dp"
-        android:layout_marginBottom="77dp"
-        android:text="홈으로 이동"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="70dp"
+        android:backgroundTint="@color/confirm_active"
+        android:text="뒤로 가기"
+        android:textColor="@color/white"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

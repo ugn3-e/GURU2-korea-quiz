@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import android.content.Intent
+import android.widget.Button
 
 class SavedContentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,6 +16,16 @@ class SavedContentActivity : AppCompatActivity() {
         // DB 가져오기
         val spellDbManager = SpellDBManager(this)
         val store = com.example.guru2.fire.FirestoreSavedContent()
+
+        // 🔹 홈으로 이동 버튼
+        val btnGoHome = findViewById<Button>(R.id.btnGoHome)
+        btnGoHome.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
+            finish()
+        }
 
         store.loadSpell(
             onResult = { savedList ->
