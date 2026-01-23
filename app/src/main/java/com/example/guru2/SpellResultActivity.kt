@@ -117,6 +117,8 @@ class SpellResultActivity : AppCompatActivity() {
 
             // 말풍선 안 텍스트 설정
             infoText.text = correctExp
+            infoText.setTextColor(getColor(R.color.confirm_active))
+            infoText.setTypeface(null, android.graphics.Typeface.BOLD)
 
             bubbleOverlay.visibility = View.VISIBLE
 

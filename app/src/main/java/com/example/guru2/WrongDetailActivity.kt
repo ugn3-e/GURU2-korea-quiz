@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 
 // 오답 상세 화면 Activity
 // 오답 노트에서 문제 클릭 시 진입
@@ -14,9 +15,20 @@ import androidx.appcompat.app.AppCompatActivity
 // quiz_id를 통해 원본 문제 정보를 DB에서 조회
 
 class WrongDetailActivity : AppCompatActivity() {
+    lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 툴바
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.apply {
+            title = "오답" // 타이틀 설정
+            // 만약 뒤로가기 버튼이 필요하면
+            // setDisplayHomeAsUpEnabled(true)
+        }
 
         // 디미 유진_이전 화면에서 전달받은 데이터
         // quiz_type: "slang" / "spelling"
@@ -85,10 +97,36 @@ class WrongDetailActivity : AppCompatActivity() {
             // 디미 유진_오답 설명 표시
             findViewById<TextView>(R.id.tvIncorrectExp).text = quiz.incorrect_exp
 
+            // Glide로 asset에서 이미지 가져오기
+            val imageView = findViewById<ImageView>(R.id.imgPlaceholder)
+
+            if (!quiz.image_path.isNullOrEmpty()) {
+                com.bumptech.glide.Glide.with(this)
+                    .load("file:///android_asset/images/${quiz.image_path}")
+                    .error(R.drawable.ic_launcher_foreground) // 실패 시 기본 이미지
+                    .into(imageView)
+            } else {
+                imageView.setImageResource(R.drawable.ic_launcher_foreground)
+            }
+
             // 디미 유진_뒤로 가기 버튼
             findViewById<Button>(R.id.btnBack).setOnClickListener {
                 finish()
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.mainToolbar -> { // 메뉴 ID에 맞게 수정
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

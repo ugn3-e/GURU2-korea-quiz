@@ -7,8 +7,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.viewpager2.widget.ViewPager2
 import com.example.guru2.fire.FirestoreWrongNote
+import androidx.constraintlayout.widget.ConstraintSet
 
 // 오답 노트 메인 화면 Activity
 // 신조어 / 맞춤법 오답 탭 전환 및 초기화 기능 담당
@@ -16,9 +18,21 @@ import com.example.guru2.fire.FirestoreWrongNote
 class WrongNoteActivity : AppCompatActivity() {
     private var currentType: String = "slang"
 
+    lateinit var toolbar: Toolbar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wrong_note)
+
+        // 툴바
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.apply {
+            title = "오답" // 타이틀 설정
+            // 만약 뒤로가기 버튼이 필요하면
+            // setDisplayHomeAsUpEnabled(true)
+        }
 
         // 디미 유진_상단 탭 버튼 (TextView 사용)
         val btnSlang = findViewById<TextView>(R.id.btnSlang)
@@ -65,21 +79,51 @@ class WrongNoteActivity : AppCompatActivity() {
         selectTab(true)
     }
 
+    override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.mainToolbar -> { // 메뉴 ID에 맞게 수정
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     // 디미 유진_선택된 탭에 따라 텍스트 색상 변경
     private fun selectTab(isSlang: Boolean) {
         val btnSlang = findViewById<TextView>(R.id.btnSlang)
         val btnGrammar = findViewById<TextView>(R.id.btnGrammar)
+        val mainLayout = findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.mainLayout)
+
 
         // 디미 유진_신조어 탭 선택 상태
         if (isSlang) {
-            btnSlang.setTextColor(Color.parseColor("#6851A5"))
-            btnGrammar.setTextColor(Color.parseColor("#555555"))
+            btnSlang.setTextColor(Color.parseColor("#1E35CB"))
+            btnGrammar.setTextColor(Color.parseColor("#7D7E82"))
 
         // 디미 유진_신조어 탭 선택 상태
         } else {
             btnSlang.setTextColor(Color.parseColor("#555555"))
-            btnGrammar.setTextColor(Color.parseColor("#6851A5"))
+            btnGrammar.setTextColor(Color.parseColor("#1E35CB"))
         }
+
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(mainLayout)
+
+        if (isSlang) {
+
+            constraintSet.connect(R.id.tabIndicator, ConstraintSet.START, R.id.btnSlang, ConstraintSet.START)
+            constraintSet.connect(R.id.tabIndicator, ConstraintSet.END, R.id.btnSlang, ConstraintSet.END)
+        } else {
+
+            constraintSet.connect(R.id.tabIndicator, ConstraintSet.START, R.id.btnGrammar, ConstraintSet.START)
+            constraintSet.connect(R.id.tabIndicator, ConstraintSet.END, R.id.btnGrammar, ConstraintSet.END)
+        }
+        constraintSet.applyTo(mainLayout)
     }
 
     // 디미 유진_오답 전체 삭제 확인 다이얼로그 표시
