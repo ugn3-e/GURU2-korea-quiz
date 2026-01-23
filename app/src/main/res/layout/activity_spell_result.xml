@@ -26,12 +26,12 @@
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/mainToolbar"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="70dp"
+                android:background="@color/toolbar_color"
                 android:minHeight="0dp"
-                android:background="#FFF"
+                app:menu="@menu/menu_main"
                 app:title="Quiz"
                 app:titleTextAppearance="@style/ToolbarTitleBold"
-                app:menu="@menu/menu_main"
                 app:titleTextColor="@android:color/black" />
             <View
                 android:layout_width="match_parent"
@@ -44,12 +44,12 @@
             android:id="@+id/ResultText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="32dp"
 
             android:text="정답!"
-            android:textSize="34sp"
+            android:textColor="@color/black"
+            android:textSize="32sp"
             android:textStyle="bold"
-            android:translationY="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBar" />
@@ -58,9 +58,8 @@
             android:id="@+id/scrollView2"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/btnNext"
+            android:layout_marginTop="24dp"
+            app:layout_constraintBottom_toTopOf="@id/btnSave"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -69,50 +68,54 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/resultImg"
-                    android:layout_width="224dp"
-                    android:layout_height="225dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginBottom="32dp"
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <TextView
                     android:id="@+id/QuizText"
-                    android:layout_width="300dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
                     android:lineSpacingExtra="4dp"
                     android:text="TextView"
                     android:textAlignment="center"
+                    android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <View
                     android:id="@+id/divider"
-                    android:layout_width="300dp"   android:layout_height="1dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="24dp"
                     android:background="#E0E0E0" />
 
 
                 <TextView
                     android:id="@+id/QuizAnswer"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="24dp"
                     android:lineSpacingExtra="2dp"
                     android:text="TextView"
                     android:textAlignment="center"
-                    android:textColor="#646568"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/button_text_default"
+                    android:textSize="14sp" />
             </LinearLayout>
         </ScrollView>
 
@@ -120,13 +123,13 @@
             android:id="@+id/btnInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="24dp"
             android:drawableStart="@drawable/btn_add_icon"
             android:text="  콘텐츠 정보 보기"
-            android:textColor="#3F51B5"
+            android:textColor="@color/choice_text_selected"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/btnNext"
+            app:layout_constraintBottom_toTopOf="@+id/btnSave"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -134,40 +137,43 @@
             android:id="@+id/imgDog"
             android:layout_width="97dp"
             android:layout_height="99dp"
-            android:layout_marginEnd="200dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginBottom="-30dp"
             android:src="@drawable/content_dog"
-            app:layout_constraintBottom_toTopOf="@id/btnNext"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btnSave"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/btnSave"
-            android:layout_width="360dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="4dp"
-            android:backgroundTint="#E9ECFF"
+            android:backgroundTint="@color/choice_selected_bg"
             android:text="콘텐츠 저장"
-            android:textColor="#1E35CB"
-            android:textSize="14sp"
+            android:textColor="@color/choice_text_selected"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/btnNext"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:strokeColor="#1E35CB"
+            app:strokeColor="@color/button_selected_stroke"
             app:strokeWidth="1dp" />
 
         <!--콘텐츠 저장-->
         <Button
             android:id="@+id/btnNext"
-            android:layout_width="360dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginBottom="30dp"
-            android:backgroundTint="#1E35CB"
+            android:layout_marginBottom="70dp"
+            android:backgroundTint="@color/confirm_active"
             android:text="다음 문제"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

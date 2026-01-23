@@ -113,7 +113,7 @@
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="122dp"
+        android:layout_marginBottom="126dp"
 
         android:insetTop="0dp"
         android:insetBottom="0dp"
@@ -124,7 +124,7 @@
         android:textStyle="bold"
 
         app:backgroundTint="@color/confirm_active"
-        app:cornerRadius="60dp"
+        app:cornerRadius="30dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
