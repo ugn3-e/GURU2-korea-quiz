@@ -14,6 +14,9 @@ import com.example.guru2.auth.AuthRepository
 import com.example.guru2.auth.SQLiteAuthDataSource
 import com.example.guru2.util.LevelUtil
 import android.widget.ProgressBar
+import com.google.firebase.auth.FirebaseAuth
+import android.util.Log
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,30 +29,19 @@ class MainActivity : AppCompatActivity() {
     // 디미 유진_뒤로가기 시간 체크 변수
     private var backPressedTime = 0L
 
-    // 디미 유진_유저 아이디
-    private var userId: Long = -1L
-
     private lateinit var levelText: TextView       // 레벨 텍스트
     private lateinit var progressBar: ProgressBar   // 파란색 게이지
     private lateinit var tvUserName: TextView      // 사용자 이름
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
 
-        userId = intent.getIntExtra("user_id", -1).toLong()
+        //userId = intent.getIntExtra("user_id", -1).toLong()
         val userLevel = intent.getStringExtra("user_level") ?: "Lv.1"
 
         // 확인용 토스트 (삭제 예정)
-        Toast.makeText(this, "환영합니다! ID: $userId, 레벨: $userLevel", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, "환영합니다! ID: $userId, 레벨: $userLevel", Toast.LENGTH_SHORT).show()
 
         // 툴바를 액션바로 연결
         toolbar = findViewById<Toolbar>(R.id.mainToolbar)
@@ -79,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         btnQuiz2.findViewById< ImageView>(R.id.ivIcon).setImageResource(R.drawable.ic_slang)
         btnQuiz2.setOnClickListener {
             val intent = Intent(this, SlangQuizActivity::class.java)
-            intent.putExtra("user_id", userId)  // 디미 유진_유저 아이디 값 넘김
+            //intent.putExtra("user_id", userId)  // 디미 유진_유저 아이디 값 넘김
             startActivity(intent)
         }
 
@@ -104,21 +96,6 @@ class MainActivity : AppCompatActivity() {
 
         // 디미 유진_레벨 뷰 연결 (유빈 추가 수정 level -> tvCharacterLevel)
         levelText= findViewById(R.id.tvCharacterLevel)
-
-        // 디미 유진_유저 아이디
-        //userId = intent.getLongExtra("user_id", -1L)
-
-        // 디미 유진_레벨 출력
-        //updateLevelUI()
-
-//        if (userId != -1L) {
-//            val repo = AuthRepository(SQLiteAuthDataSource(this))
-//            val solvedCount = repo.getSolvedCount(userId)
-//
-//            val levelValue = LevelUtil.calculateLevel(solvedCount)
-//
-//            level.text = "Lv.$levelValue · 푼 문제 $solvedCount"
-//        }
 
         // 디미 유진_뒤로가기 두 번 누르면 앱 종료
         onBackPressedDispatcher.addCallback(
@@ -145,9 +122,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         )
-
-
     }
+
 
     // 메인화면과 메뉴 연결
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -173,83 +149,62 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    // 디미 유진_레벨 출력
-//    private fun updateLevelUI() {
-//        if (userId == -1L) return
-//
-//        val repo = AuthRepository(SQLiteAuthDataSource(this))
-//        val solvedCount = repo.getSolvedCount(userId)
-//        val levelValue = LevelUtil.calculateLevel(solvedCount)
-//
-//        level.text = "Lv.$levelValue · 푼 문제 $solvedCount"
-//    }
+    // 로그인 보장
+    private fun ensureFirebaseAuth(onReady: () -> Unit) {
+        val auth = FirebaseAuth.getInstance()
+        if (auth.currentUser != null) {
+            onReady()
+        } else {
+            auth.signInAnonymously()
+                .addOnSuccessListener { onReady() }
+                .addOnFailureListener { e -> Log.e("AUTH", "anonymous login failed", e) }
+        }
+    }
 
     // 디미 유진_화면 돌아올 때마다 레벨 갱신
     override fun onResume() {
         super.onResume()
-        loadUserAndUpdateLevel()
+        loadLevelFromFirestoreAndUpdateUI() // 🔥 수정: Firebase 기준 통일
     }
 
-//    private fun loadUserAndUpdateLevel() {
-//        val pref = getSharedPreferences("auth", MODE_PRIVATE)
-//        userId = pref.getLong("user_id", -1L)
-//
-//        if (userId == -1L) {
-//            levelText.text = "Lv.1 · 푼 문제 0"
-//            return
-//        }
-//
-//        val repo = AuthRepository(SQLiteAuthDataSource(this))
-//        val solvedCount = repo.getSolvedCount(userId)
-//        val level = LevelUtil.calculateLevel(solvedCount)
-//
-//        levelText.text = "Lv.$level · 푼 문제 $solvedCount"
-//    }
+    // 🔥 Firebase uid 기준으로 메인 레벨/닉네임 로드
 
-    //
-    private fun loadUserAndUpdateLevel() {
-        val pref = getSharedPreferences("auth", MODE_PRIVATE)
-        val savedUserId = pref.getLong("user_id", -1L)
-        if (savedUserId != -1L) userId = savedUserId
-
-        if (userId == -1L) {
+    // 레벨 표시 ☑️
+    private fun loadLevelFromFirestoreAndUpdateUI() {
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        if (uid == null) {
             levelText.text = "Lv.1"
-            tvUserName.text = "게스트님" // 로그인 정보가 없을 때
+            tvUserName.text = "게스트님"
             progressBar.progress = 0
             return
         }
 
-        val repo = AuthRepository(SQLiteAuthDataSource(this))
+        FirebaseFirestore.getInstance()
+            .collection("users")
+            .document(uid)
+            .get()
+            .addOnSuccessListener { snap ->
+                val level = snap.getLong("level") ?: 1L
+                val totalSolved = snap.getLong("totalSolved") ?: 0L
+                val nickname = snap.getString("nickname") ?: "게스트"
 
-        val nickname = repo.getNickname(userId)
-        tvUserName.text = "${nickname}님"
+                // 디미 유진_닉네임 표시
+                tvUserName.text = "${nickname}님"
+                // ✅ 레벨 표시
+                levelText.text = "Lv.$level"
 
-        val solvedCount = repo.getSolvedCount(userId)
-        val levelValue = LevelUtil.calculateLevel(solvedCount)
+                // ✅ 게이지 표시(너가 쓰던 방식 그대로: 60문제=100%)
+                val progressPercent = if (totalSolved >= 60) 100 else ((totalSolved / 60.0) * 100).toInt()
+                progressBar.setProgress(progressPercent, true)
 
-        // 캐릭터 카드 위 레벨 표시 (Lv.X)
-        levelText.text = "Lv.$levelValue"
-
-        // 게이지 계산 (LevelUtil 기준 반영) -> 각 레벨 구간 안에서 0~100% (레벨업 하면 다시 0%부터 시작)
-//        val progressPercent = when (levelValue) {
-//            1 -> (solvedCount / 10.0 * 100).toInt()          // 0~9문제 (Lv.1)
-//            2 -> ((solvedCount - 10) / 10.0 * 100).toInt()   // 10~19문제 (Lv.2)
-//            3 -> ((solvedCount - 20) / 10.0 * 100).toInt()   // 20~29문제 (Lv.3)
-//            4 -> ((solvedCount - 30) / 10.0 * 100).toInt()   // 30~39문제 (Lv.4)
-//            5 -> ((solvedCount - 40) / 10.0 * 100).toInt()   // 40~49문제 (Lv.5)
-//            6 -> ((solvedCount - 50) / 10.0 * 100).toInt()   // 50~59문제 (Lv.6)
-//            else -> 100                                      // 60문제 이상 (Lv.7)
-//        }
-
-        // 게이지 (LevelUtil 기준 반영) -> 0문제부터 60문제까지로 전체 게이지 계싼
-        val progressPercent = if(solvedCount >= 60) {
-            100
-        } else {
-            ((solvedCount / 60.0) * 100).toInt(); // 60문제를 100%로 환산하여 계산
-        }
-
-        // 게이지 반영
-        progressBar.setProgress(progressPercent, true)
+                Log.d("MAIN_LEVEL", "uid=$uid level=$level totalSolved=$totalSolved")
+            }
+            .addOnFailureListener { e ->
+                Log.e("MAIN_LEVEL", "load failed", e)
+                // 실패 시 기본 표시
+                levelText.text = "Lv.1"
+                progressBar.progress = 0
+            }
     }
 
     private fun setupBackPressed() {

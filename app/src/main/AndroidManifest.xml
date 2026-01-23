@@ -12,14 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GURU2">
         <activity
-            android:name=".MainCardActivity"
+            android:name=".mypage.EditProfileActivity"
             android:exported="false" />
-        <!-- 마이페이지 -->
+        <activity
+            android:name=".MainCardActivity"
+            android:exported="false" /> <!-- 마이페이지 -->
         <activity
             android:name=".mypage.MyPageActivity"
-            android:exported="false" />
-
-        <!-- 회원가입 화면 -->
+            android:exported="false" /> <!-- 회원가입 화면 -->
         <activity
             android:name=".login.SignupActivity"
             android:exported="false" /> <!-- 로그인 화면 (앱 시작 화면) -->
@@ -74,12 +74,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
     </application>
 
 </manifest>
