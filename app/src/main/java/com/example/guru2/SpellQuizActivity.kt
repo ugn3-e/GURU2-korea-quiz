@@ -197,13 +197,29 @@ class SpellQuizActivity : AppCompatActivity() {
 
     private fun enableConfirmButton() {
         btnConfirm.isEnabled = true
+
+        btnConfirm.backgroundTintList =
+            ColorStateList.valueOf(getColor(R.color.choice_text_selected))
+        btnConfirm.setTextColor(getColor(R.color.confirm_text_active))
+        btnConfirm.strokeWidth = 0
+
         imgDog.visibility = View.VISIBLE
     }
 
+
     private fun disableConfirmButton() {
         btnConfirm.isEnabled = false
+
+        btnConfirm.backgroundTintList =
+            ColorStateList.valueOf(getColor(R.color.spell_defalut_bg))
+        btnConfirm.setTextColor(getColor(R.color.spell_defalut_text))
+        btnConfirm.strokeColor =
+            ColorStateList.valueOf(getColor(R.color.spell_default_stroke))
+        btnConfirm.strokeWidth = 2
+
         imgDog.visibility = View.GONE
     }
+
 
     // ================= 결과 이동 =================
     private fun moveToResultPage() {
