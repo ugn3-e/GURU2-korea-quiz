@@ -1,127 +1,75 @@
 package com.example.guru2
 
 import android.content.Intent
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import com.example.guru2.auth.AuthRepository
-import com.example.guru2.auth.SQLiteAuthDataSource
-import com.example.guru2.fire.FirestoreLevelStore
-import com.example.guru2.fire.FirestoreProgress
-import com.example.guru2.fire.FirestoreWrongNote
-import android.content.res.ColorStateList
-import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
+import com.bumptech.glide.Glide
+import com.google.android.material.button.MaterialButton
+import android.content.res.ColorStateList
+import com.example.guru2.fire.FirestoreLevelStore
+import com.example.guru2.fire.FirestoreWrongNote
+import com.google.firebase.auth.FirebaseAuth
 
 class SpellQuizActivity : AppCompatActivity() {
 
-    // 디미 유진_유저 아이디
-    private var userId: Long = -1L
+    companion object {
+        private const val REQ_RESULT = 1001
+        private const val SET_SIZE = 5
+    }
 
-    // 유빈_추가(툴바)
-    lateinit var toolbar: Toolbar
+    // ================= View =================
+    private lateinit var toolbar: Toolbar
+    private lateinit var tvQNumber: TextView
+    private lateinit var tvQuestion: TextView
+    private lateinit var imgExample: ImageView
+    private lateinit var imgDog: ImageView
 
-    lateinit var spellDbManager: SpellDBManager
-    lateinit var sqlitedb: SQLiteDatabase
-    lateinit var QuizText: TextView
-    lateinit var ivQuizImg: ImageView // 유빈_추가 (이미지 연결)
-    lateinit var btnChoice1: Button
-    lateinit var btnChoice2: Button
-    lateinit var btnChoice3: Button
-    lateinit var btnSub: Button
-    lateinit var QuizNum: TextView
-    lateinit var imgDog: ImageView
+    private lateinit var btn1: MaterialButton
+    private lateinit var btn2: MaterialButton
+    private lateinit var btn3: MaterialButton
+    private lateinit var btnConfirm: MaterialButton
+    private lateinit var choiceButtons: List<MaterialButton>
 
-    // 정답/오답 판단 변수
-    var correctAnswer = ""
-    var correct_exp = ""
-    var incorrect_exp = ""
-    //var explanation = ""
-    //var source = ""
-    // 퀴즈 번호
-    var currentQuizId = 0
-    var selectedAnswer = ""
-    var quizCount = 1
-    var quizId = 0
+    // ================= 상태 =================
+    private var currentQuizId = 1        // 🔥 전역 문제 ID
+    private var solvedInSet = 0           // 🔥 이번 세트에서 푼 문제 수
+    private var selectedAnswer = ""
 
-    // 전체 결과 누적 변수 // ☑️ 추가
-    var totalSCount = 0
-    var correctSCount = 0
-    val PREF_LAST_OFFSET = "last_quiz_offset" // 이어서 학습
+    private var correctAnswer = ""
+    private var correctExp = ""
+    private var incorrectExp = ""
+    private var imagePath = ""
 
-    var setCorrectCount = 0 // 5문제만 계산
+    private var totalCount = 0
+    private var correctCount = 0
+
+    // 🔥 slang과 동일한 SharedPreferences
+    private val pref by lazy {
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: "guest"
+        getSharedPreferences("spell_quiz_$uid", MODE_PRIVATE)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //enableEdgeToEdge()
         setContentView(R.layout.activity_spell_quiz)
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
 
+        toolbar = findViewById(R.id.mainToolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = "Quiz"
 
-        // 툴바
-        val mainToolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.mainToolbar)
-        setSupportActionBar(mainToolbar)
+        bindViews()
 
-        supportActionBar?.apply {
-            title = "Quiz" // 타이틀 설정
-            // 만약 뒤로가기 버튼이 필요하면
-            // setDisplayHomeAsUpEnabled(true)
-        }
-
-        initViews() // ✅ 추가
-
-        //DB 연결
-        spellDbManager = SpellDBManager(this)
-
-        // 누적 값
-        totalSCount = intent.getIntExtra("totalSCount", 0)
-        correctSCount = intent.getIntExtra("correctSCount", 0)
-
-        // 5문제만 계산
-        setCorrectCount = intent.getIntExtra("setCorrectCount", 0)
-
-        // 제출 버튼 초기 상태
-        btnSub.isEnabled = false
-        btnSub.setBackgroundColor(getColor(R.color.choice_default))
-
-        // 이어서 학습하기 불러오기
-        quizId = intent.getIntExtra("quiz_id", -1)
-        quizCount = intent.getIntExtra("quiz_count", 1)
-
-
-        // 이어서 학습하기
-        val progressStore = FirestoreProgress()
-
-        if (quizId == -1) {
-            progressStore.loadSpellNextQuizId(
-                onResult = { nextId ->
-                    quizId = nextId
-                    QuizNum.text = "Q$quizCount"
-                    loadNextQuiz()
-                },
-                onError = {
-                    // 실패 시 안전하게 1번부터
-                    quizId = 1
-                    QuizNum.text = "Q$quizCount"
-                }
-            )
-        } else {
-            loadNextQuiz()
-        }
+        // ================= 이어서 학습 복원 =================
+        currentQuizId = pref.getInt("currentQuizId", 1)
+        solvedInSet = pref.getInt("solvedInSet", 0)
 
         setClickListeners()
 
-        // 유빈_추가 (퀴즈 접속하면 뒤로 가기 -> 막기)
         onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -135,301 +83,195 @@ class SpellQuizActivity : AppCompatActivity() {
             }
         )
 
-        // 초기 비활성화 상태 설정
-        btnSub.isEnabled = false
-        btnSub.setBackgroundColor(getColor(R.color.spell_defalut_bg))
-        btnSub.setTextColor(getColor(R.color.spell_defalut_text))
-
-        // 비활성일 때 테두리 설정
-        val mBtnSub = btnSub as? com.google.android.material.button.MaterialButton
-        mBtnSub?.apply {
-            strokeWidth = 2 // 테두리 두께 (단위: pixel)
-            strokeColor = ColorStateList.valueOf(getColor(R.color.spell_default_stroke))
-        }
+        loadQuiz()
     }
 
-    private fun initViews() {
-        //view 연결
-        QuizText = findViewById<TextView>(R.id.QuizText)
-        QuizNum = findViewById<TextView>(R.id.QuizNum)
-        ivQuizImg = findViewById<ImageView>(R.id.imageView)
-        btnChoice1 = findViewById<Button>(R.id.btnChoice1)
-        btnChoice2 = findViewById<Button>(R.id.btnChoice2)
-        btnChoice3 = findViewById<Button>(R.id.btnChoice3)
-        btnSub = findViewById<Button>(R.id.btnSub)
-        imgDog = findViewById<ImageView>(R.id.imgDog)
+    // ================= View =================
+    private fun bindViews() {
+        tvQNumber = findViewById(R.id.QuizNum)
+        tvQuestion = findViewById(R.id.QuizText)
+        imgExample = findViewById(R.id.imageView)
+        imgDog = findViewById(R.id.imgDog)
+
+        btn1 = findViewById(R.id.btnChoice1)
+        btn2 = findViewById(R.id.btnChoice2)
+        btn3 = findViewById(R.id.btnChoice3)
+        btnConfirm = findViewById(R.id.btnSub)
+
+        choiceButtons = listOf(btn1, btn2, btn3)
+
+        resetChoiceButtons()
+        disableConfirmButton()
     }
 
-
-    // 선택지 초기 상태
-    private fun selectChoiceButton(selected: Button) {
-        val defaultText = getColor(R.color.spell_defalut_text)
-        val defaultStroke = getColor(R.color.spell_default_stroke)
-        val defaultBg = getColor(R.color.spell_defalut_bg)
-
-        val selectedText = getColor(R.color.confirm_active)
-        val selectedBg = getColor(R.color.choice_default)
-
-        val buttons = listOf(btnChoice1, btnChoice2, btnChoice3)
-
-        buttons.forEach { button ->
-            if(button == selected) {
-                button.setBackgroundColor(selectedBg)
-                button.setTextColor(selectedText)
-                (button as? com.google.android.material.button.MaterialButton)?.strokeColor = ColorStateList.valueOf(selectedText)
-            } else {
-                button.setBackgroundColor(defaultBg)
-                button.setTextColor(defaultText)
-                (button as? com.google.android.material.button.MaterialButton)?.strokeColor = ColorStateList.valueOf(defaultStroke)
-            }
-
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_survey -> {
-                val intent = Intent(this, SurveyActivity::class.java)
-                startActivity(intent)
-                return true
-            }
-
-            // 디미 유진_마이페이지
-            R.id.action_mypage -> {
-                startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun enableSubmitButton() {
-        val mBtnSub = btnSub as? com.google.android.material.button.MaterialButton
-
-        btnSub.isEnabled = true
-
-        btnSub.setBackgroundColor(getColor(R.color.confirm_active))
-        btnSub.setTextColor(getColor(R.color.white))
-
-        mBtnSub?.strokeWidth = 0
-
-        imgDog.visibility = android.view.View.VISIBLE
-    }
+    // ================= 클릭 =================
     private fun setClickListeners() {
-        //보기 선택
-        btnChoice1.setOnClickListener {
-            selectedAnswer = btnChoice1.text.toString()
-            selectChoiceButton(btnChoice1)
-            enableSubmitButton()
-        }
-        btnChoice2.setOnClickListener {
-            selectedAnswer = btnChoice2.text.toString()
-            selectChoiceButton(btnChoice2)
-            enableSubmitButton()
-        }
-        btnChoice3.setOnClickListener {
-            selectedAnswer = btnChoice3.text.toString()
-            selectChoiceButton(btnChoice3)
-            enableSubmitButton()
-        }
+        btn1.setOnClickListener { onChoiceSelected(btn1) }
+        btn2.setOnClickListener { onChoiceSelected(btn2) }
+        btn3.setOnClickListener { onChoiceSelected(btn3) }
 
-        //ResultActivity1로 이동
-        btnSub.setOnClickListener {
-            val isCorrect = selectedAnswer == correctAnswer
-
-            // 디미 유진_오답으로 이동
-            if (!isCorrect) {
-                WrongDBManager(this)
-                    .saveSpellingWrong(this, currentQuizId, selectedAnswer)
-
-                // Firestore ☑️
-                val wrongStore = FirestoreWrongNote()
-                wrongStore.addWrong(
-                    type = "spell",
-                    quizId = currentQuizId,
-                    userAnswer = selectedAnswer
-                )
-            }
-
-            // 디미 유진_레벨, solved_count +1
-            val userId = getUserId()
-            if (userId != -1L) {
-                AuthRepository(SQLiteAuthDataSource(this))
-                    .increaseSolvedCount(userId)
-            } else {
-                Log.e("LEVEL_CHECK", "SpellingQuiz userId == -1L, 증가 실패")
-            }
-
-            try {
-                FirestoreLevelStore().addSolved1(
-                    onSuccess = { level, totalSolved ->
-                        Log.d("FIRE_LEVEL", "spell +1 -> totalSolved=$totalSolved, level=$level")
-                    },
-                    onFail = { e ->
-                        Log.e("FIRE_LEVEL", "spell update failed", e)
-                    }
-                )
-            } catch (e: Exception) {
-                Log.e("FIRE_LEVEL", "spell auth null?", e)
-            }
-
-            // 결과 누적 // ☑️ 추가
-            totalSCount++ // 최종 결과
-            if (isCorrect) {
-                correctSCount++ // 전체 누적 맞힌 수
-                setCorrectCount++ // 세트 전용 맞힌 수
-            }
-
-            if (quizId % 5 == 0) {
-                val progressStore = FirestoreProgress()
-                progressStore.saveSpellNextQuizId(
-                    nextQuizId = quizId + 1,
-                    onSuccess = { Log.d("FIRE_SAVE", "spell nextQuizId saved = ${quizId + 1}") },
-                    onFail = { e -> Log.e("FIRE_SAVE", "spell save failed", e) }
-                )
-            }
-
-            val intent = Intent(this, SpellResultActivity::class.java)
-
-            intent.putExtra("quiz_count", quizCount) // ☑️ Q 번호
-            intent.putExtra("quiz_id", currentQuizId)
-            intent.putExtra("is_correct", isCorrect)
-            intent.putExtra("isCorrect", isCorrect)
-            intent.putExtra("sentence", QuizText.text.toString())
-            intent.putExtra("correct", correctAnswer)
-            intent.putExtra("correct_exp", correct_exp)
-            intent.putExtra("incorrect_exp", incorrect_exp)
-            intent.putExtra("selected_answer", selectedAnswer)
-
-            // 누적값 전달 // ☑️ 추가
-            intent.putExtra("totalSCount", totalSCount)
-            intent.putExtra("correctSCount", correctSCount)
-
-            // 다음 문제 준비
-            quizCount++
-            quizId++
-
-            // 맞힌 수
-            intent.putExtra("setCorrectCount", setCorrectCount)
-
-            startActivity(intent)
+        btnConfirm.setOnClickListener {
+            moveToResultPage()
         }
     }
 
+    // ================= 문제 로딩 =================
+    private fun loadQuiz() {
 
-    fun loadNextQuiz() {
-        val db = spellDbManager.readableDatabase
-        // Q1~5 반복 계산
-        val qNumber = ((quizId - 1) % 5) + 1
-        QuizNum.text = "Q$qNumber"
+        // 🔥 세트 종료
+        if (solvedInSet >= SET_SIZE) {
+            moveToFinalResult()
+            return
+        }
 
-        // ORDER BY id ASC LIMIT 1 OFFSET ?
-        // 순서대로 문제 출력
-        // DB에서 문제 1개 가져오기
-        val cursor = db.rawQuery( "SELECT * FROM spelling_quiz WHERE id = ?",
-            arrayOf(quizId.toString()) // 중복 문제 해결 -> id로 가져오기
+        val dbManager = SpellDBManager(this)
+        val db = dbManager.readableDatabase
+
+        val cursor = db.rawQuery(
+            "SELECT * FROM spelling_quiz WHERE id = ?",
+            arrayOf(currentQuizId.toString())
         )
 
-        if(cursor.moveToFirst()) {
-            // DB의 실제 id를 가져오기
-            currentQuizId = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
-
-
-            QuizText.text = cursor.getString(
-                cursor.getColumnIndexOrThrow("sentence"))
-
-            btnChoice1.text = cursor.getString(
-                cursor.getColumnIndexOrThrow("choice1"))
-
-            btnChoice2.text = cursor.getString(
-                cursor.getColumnIndexOrThrow("choice2"))
-
-            btnChoice3.text = cursor.getString(
-                cursor.getColumnIndexOrThrow("choice3"))
-
-            correctAnswer = cursor.getString(
-                cursor.getColumnIndexOrThrow("correct"))
-
-//              explanation = cursor.getString(
-//                  cursor.getColumnIndexOrThrow("explanation"))
-            correct_exp = cursor.getString(
-                cursor.getColumnIndexOrThrow("correct_exp"))
-
-            incorrect_exp = cursor.getString(
-                cursor.getColumnIndexOrThrow("incorrect_exp"))
-
-            // DB 필드 연결
-            val imgPath = cursor.getString(cursor.getColumnIndexOrThrow("image_path"))
-
-
-            if (!imgPath.isNullOrEmpty()) {
-                com.bumptech.glide.Glide.with(this)
-                    .load("file:///android_asset/images/$imgPath")
-                    .into(ivQuizImg)
-            } else {
-                // 이미지가 없는 경우 기본 이미지
-                ivQuizImg.setImageResource(R.drawable.ic_launcher_foreground)
-            }
-
-            //source = cursor.getString(
-            //cursor.getColumnIndexOrThrow("source"))
-
-            // selectChoiceButton(btnChoice1)
-            val defaultBg = getColor(R.color.spell_defalut_bg)
-            val defaultText = getColor(R.color.spell_defalut_text)
-            val defaultStroke = getColor(R.color.spell_default_stroke)
-
-            val buttons = listOf(btnChoice1, btnChoice2, btnChoice3)
-            buttons.forEach { button ->
-                button.setBackgroundColor(defaultBg)
-                button.setTextColor(defaultText)
-                (button as? com.google.android.material.button.MaterialButton)?.strokeColor =
-                    ColorStateList.valueOf(defaultStroke)
-                (button as? com.google.android.material.button.MaterialButton)?.strokeWidth = 2
-            }
-
-
-            btnSub.isEnabled = false
-            btnSub.setBackgroundColor(defaultBg) // 또는 설정하신 비활성 배경색
-            btnSub.setTextColor(defaultText)
-
-            imgDog.visibility = android.view.View.GONE
-
-            (btnSub as? com.google.android.material.button.MaterialButton)?.apply {
-                strokeWidth = 2
-                strokeColor = ColorStateList.valueOf(defaultStroke)
-            }
-
-            selectedAnswer = ""
-        } else {
-            // 문제 다 풀었을 때
-            moveToSpellFinalResultPage()
+        if (!cursor.moveToFirst()) {
+            cursor.close()
+            db.close()
+            moveToFinalResult()
+            return
         }
+
+        // Q번호 (🔥 slang 동일)
+        tvQNumber.text = "Q${solvedInSet + 1}"
+
+        tvQuestion.text = cursor.getString(cursor.getColumnIndexOrThrow("sentence"))
+
+        btn1.text = cursor.getString(cursor.getColumnIndexOrThrow("choice1"))
+        btn2.text = cursor.getString(cursor.getColumnIndexOrThrow("choice2"))
+        btn3.text = cursor.getString(cursor.getColumnIndexOrThrow("choice3"))
+
+        correctAnswer = cursor.getString(cursor.getColumnIndexOrThrow("correct"))
+        correctExp = cursor.getString(cursor.getColumnIndexOrThrow("correct_exp"))
+        incorrectExp = cursor.getString(cursor.getColumnIndexOrThrow("incorrect_exp"))
+        imagePath = cursor.getString(cursor.getColumnIndexOrThrow("image_path")) ?: ""
+
+        if (imagePath.isNotBlank()) {
+            Glide.with(this)
+                .load("file:///android_asset/images/$imagePath")
+                .into(imgExample)
+        } else {
+            imgExample.setImageDrawable(null)
+        }
+
+        resetChoiceButtons()
+        disableConfirmButton()
+        imgDog.visibility = View.GONE
+        selectedAnswer = ""
 
         cursor.close()
         db.close()
-
     }
 
-    // 퀴즈 완료 화면으로 이동 // ☑️ 추가
-    private fun moveToSpellFinalResultPage() {
-        val intent = Intent(this, SpellFinalResultActivity::class.java).apply {
-            putExtra("totalSCount", totalSCount)
-            putExtra("correctSCount", correctSCount)
-            putExtra("setCorrectCount", setCorrectCount)
+    // ================= 선택지 =================
+    private fun onChoiceSelected(btn: MaterialButton) {
+        resetChoiceButtons()
+
+        btn.backgroundTintList =
+            ColorStateList.valueOf(getColor(R.color.choice_selected_bg))
+        btn.setTextColor(getColor(R.color.choice_text_selected))
+        btn.strokeWidth = 0
+
+        selectedAnswer = btn.text.toString()
+        enableConfirmButton()
+    }
+
+    private fun resetChoiceButtons() {
+        choiceButtons.forEach {
+            it.backgroundTintList =
+                ColorStateList.valueOf(getColor(R.color.spell_defalut_bg))
+            it.strokeColor =
+                ColorStateList.valueOf(getColor(R.color.spell_default_stroke))
+            it.strokeWidth = 2
+            it.setTextColor(getColor(R.color.spell_defalut_text))
         }
-        startActivity(intent)
-        finish()
+        selectedAnswer = ""
     }
 
-    // 디미 유진_slang과 달리 새로운 페이지를 호출하는 방식이라 문제 개수 증가 코드가 다름
-    private fun getUserId(): Long {
-        return getSharedPreferences("auth", MODE_PRIVATE)
-            .getLong("user_id", -1L)
+    private fun enableConfirmButton() {
+        btnConfirm.isEnabled = true
+        imgDog.visibility = View.VISIBLE
+    }
+
+    private fun disableConfirmButton() {
+        btnConfirm.isEnabled = false
+        imgDog.visibility = View.GONE
+    }
+
+    // ================= 결과 이동 =================
+    private fun moveToResultPage() {
+        val isCorrect = selectedAnswer == correctAnswer
+
+        totalCount++
+        if (isCorrect) correctCount++
+
+        FirestoreLevelStore().addSolved1(
+            onSuccess = { _, _ -> },
+            onFail = { e -> Log.e("SPELL_LEVEL", "fail", e) }
+        )
+
+        if (!isCorrect) {
+            FirestoreWrongNote().addWrong(
+                type = "spell",
+                quizId = currentQuizId,
+                userAnswer = selectedAnswer
+            )
+        }
+
+        // 🔥 핵심: 상태 증가 + 저장
+        solvedInSet++
+        currentQuizId++
+
+        pref.edit()
+            .putInt("currentQuizId", currentQuizId)
+            .putInt("solvedInSet", solvedInSet)
+            .apply()
+
+        val intent = Intent(this, SpellResultActivity::class.java).apply {
+            putExtra("isCorrect", isCorrect)
+            putExtra("sentence", tvQuestion.text.toString())
+            putExtra("correct_exp", correctExp)
+            putExtra("incorrect_exp", incorrectExp)
+            putExtra("image_path", imagePath)
+            putExtra("quiz_id", currentQuizId - 1)
+            putExtra("isEndOfPart", solvedInSet == SET_SIZE)
+        }
+
+        startActivityForResult(intent, REQ_RESULT)
+    }
+
+    // ================= 결과 복귀 =================
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQ_RESULT && resultCode == RESULT_OK) {
+            val isEnd = data?.getBooleanExtra("isEndOfPart", false) ?: false
+            if (isEnd) moveToFinalResult()
+            else loadQuiz()
+        }
+    }
+
+    // ================= 최종 결과 =================
+    private fun moveToFinalResult() {
+        startActivity(
+            Intent(this, SpellFinalResultActivity::class.java).apply {
+                putExtra("totalSCount", totalCount)
+                putExtra("correctSCount", correctCount)
+            }
+        )
+
+        // 🔥 다음 세트를 위해 초기화
+        pref.edit()
+            .putInt("solvedInSet", 0)
+            .apply()
+
+        finish()
     }
 }
