@@ -17,8 +17,24 @@
     <color name="choice_selected">#6851A5</color>  <!-- 선택됨 -->
     <color name="confirm_default">#D3C5FA</color>  <!-- 비활성 -->
     <color name="confirm_active">#1E35CB</color>   <!-- 활성-->
-
     <color name="choice_selected_stroke">#B1B2B4</color>
+
+
+    <!-- 디미 유진 추가 -->
+    <color name="choice_selected_bg">#E9ECFF</color>
+
+    <color name="button_default_bg">#F4F4F4</color>
+    <color name="button_text_default">#646568</color>
+    <color name="button_default_stroke">#B1B2B4</color>
+    <color name="button_selected_stroke">#1E35CB</color>
+
+    <!-- 선택지 텍스트 -->
+<!--    <color name="choice_text_default">#646568</color>-->
+    <color name="choice_text_selected">#1E35CB</color>
+
+    <!-- 확인 텍스트 -->
+<!--    <color name="confirm_text_disabled">#646568</color>-->
+    <color name="confirm_text_active">#FFFFFF</color>
 
     <color name="choice_defalut_button">#FF000000</color>
     <color name="choice_selected_button">#FFF</color>

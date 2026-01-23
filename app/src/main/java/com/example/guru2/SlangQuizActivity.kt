@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.OnBackPressedCallback
 import android.widget.Toast
+import com.google.android.material.button.MaterialButton
+import android.content.res.ColorStateList
 import com.example.guru2.auth.AuthRepository
 import com.example.guru2.auth.SQLiteAuthDataSource
 import com.example.guru2.fire.FirestoreLevelStore
@@ -40,18 +42,20 @@ class SlangQuizActivity : AppCompatActivity() {
     private lateinit var tvQuestion: TextView
 
     // 디미 유진_선택지 버튼
-    private lateinit var btn1: Button
-    private lateinit var btn2: Button
-    private lateinit var btn3: Button
-    private lateinit var btn4: Button
-    private lateinit var choiceButtons: List<Button>
+    // MaterialButton으로 변경
+    private lateinit var btn1: MaterialButton
+    private lateinit var btn2: MaterialButton
+    private lateinit var btn3: MaterialButton
+    private lateinit var btn4: MaterialButton
+    private lateinit var choiceButtons: List<MaterialButton>
 
     // 디미 유진_상황 예시 이미지
     private lateinit var btnShowExample: TextView
     private lateinit var imgExample: ImageView
+    private lateinit var dogImage: ImageView
 
     // 디미 유진_확인 버튼
-    private lateinit var btnConfirm: Button
+    private lateinit var btnConfirm: MaterialButton
 
     // 디미 유진_선택지 값
     private var selectedAnswer = ""
@@ -98,6 +102,8 @@ class SlangQuizActivity : AppCompatActivity() {
 
         btnShowExample = findViewById(R.id.btnShowExample)
         imgExample = findViewById(R.id.imgExample)
+        dogImage = findViewById(R.id.DogImage)
+
         btnConfirm = findViewById(R.id.btnConfirm)
 
         choiceButtons = listOf(btn1, btn2, btn3, btn4)
@@ -105,7 +111,7 @@ class SlangQuizActivity : AppCompatActivity() {
         // 디미 유진_초기 UI 상태 (확인버튼, 상황 예시 이미지 X)
         resetChoiceButtons()
         btnConfirm.isEnabled = false
-        btnConfirm.setBackgroundColor(getColor(R.color.confirm_default))
+
         imgExample.visibility = View.GONE
 
         // 디미 유진_선택지 클릭 이벤트
@@ -116,11 +122,13 @@ class SlangQuizActivity : AppCompatActivity() {
 
         // 디미 유진_상황 예시 이미지 보기
         btnShowExample.setOnClickListener {
-            imgExample.visibility =
-                if (imgExample.visibility == View.VISIBLE)
-                    View.GONE
-                else
-                    View.VISIBLE
+            imgExample.visibility = View.VISIBLE
+            dogImage.visibility = View.GONE
+        }
+
+        imgExample.setOnClickListener {
+            imgExample.visibility = View.GONE
+            dogImage.visibility = View.VISIBLE
         }
 
         // 디미 유진_정답 확인 -> 결과 화면 이동
@@ -191,28 +199,63 @@ class SlangQuizActivity : AppCompatActivity() {
         // 디미 유진_선택지, 확인 버튼 초기화
         resetChoiceButtons()
         btnConfirm.isEnabled = false
-        btnConfirm.setBackgroundColor(getColor(R.color.confirm_default))
+        disableConfirmButton()
     }
 
 
     // 디미 유진_선택지 클릭 처리
-    private fun onChoiceSelected(selectedButton: Button) {
+    // ======================= UI 제어 =======================
+
+    private fun onChoiceSelected(selected: MaterialButton) {
         resetChoiceButtons()
 
-        selectedButton.setBackgroundColor(getColor(R.color.choice_selected))
-        selectedAnswer = selectedButton.text.toString()
+        selected.strokeColor =
+            ColorStateList.valueOf(getColor(R.color.button_selected_stroke))
+        selected.backgroundTintList =
+            ColorStateList.valueOf(getColor(R.color.choice_selected_bg
+            ))
+        selected.setTextColor(getColor(R.color.choice_text_selected)) // ⭐ 핵심
 
-        btnConfirm.isEnabled = true
-        btnConfirm.setBackgroundColor(getColor(R.color.confirm_active))
+        selectedAnswer = selected.text.toString()
+        enableConfirmButton()
     }
 
-    // 디미 유진_선택지 버튼 초기화
     private fun resetChoiceButtons() {
-        for (btn in choiceButtons) {
-            btn.setBackgroundColor(getColor(R.color.choice_default))
+        choiceButtons.forEach {
+            it.backgroundTintList =
+                ColorStateList.valueOf(getColor(R.color.button_default_bg))
+            it.strokeColor =
+                ColorStateList.valueOf(getColor(R.color.button_default_stroke))
+            it.setTextColor(getColor(R.color.button_text_default)) // ⭐ 추가
         }
         selectedAnswer = ""
     }
+
+    private fun enableConfirmButton() {
+        btnConfirm.backgroundTintList =
+            ColorStateList.valueOf(getColor(R.color.confirm_active))
+
+        btnConfirm.strokeColor =
+            ColorStateList.valueOf(getColor(R.color.button_selected_stroke))
+
+        btnConfirm.setTextColor(
+            ColorStateList.valueOf(getColor(R.color.confirm_text_active))
+        )
+    }
+
+    private fun disableConfirmButton() {
+        btnConfirm.isEnabled = false
+        btnConfirm.backgroundTintList =
+            ColorStateList.valueOf(getColor(R.color.button_default_bg))
+
+        btnConfirm.strokeColor =
+            ColorStateList.valueOf(getColor(R.color.button_default_stroke))
+
+        btnConfirm.setTextColor(
+            ColorStateList.valueOf(getColor(R.color.button_text_default))
+        )
+    }
+
 
     // 디미 유진_선택지 섞기
     private fun setShuffledChoices(quiz: SlangQuizData) {

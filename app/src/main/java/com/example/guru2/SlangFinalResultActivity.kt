@@ -8,33 +8,37 @@ import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import com.example.guru2.fire.FirestoreProgress
-
+import com.google.android.material.button.MaterialButton
 
 class SlangFinalResultActivity : AppCompatActivity() {
+
+    private lateinit var sSummary: TextView
+    private lateinit var btnKeep: MaterialButton
+    private lateinit var btnHome: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_slang_final_result)
 
         // 디미 유진_결과 요약 텍스트
-        val tvSummary = findViewById<TextView>(R.id.tvSummary)
+        sSummary = findViewById<TextView>(R.id.SlangSummary)
 
         // 디미 유진_이어서 학습하기 버튼
-        val btnKeep = findViewById<Button>(R.id.btnKeep)
+        btnKeep = findViewById(R.id.btnQKeep)
 
         // 디미 유진_홈으로 돌아가기 버튼
-        val btnFinish = findViewById<Button>(R.id.btnFinish)
+        btnHome = findViewById(R.id.btnHome)
 
         val total = intent.getIntExtra("totalCount", 0)
         val correct = intent.getIntExtra("correctCount", 0)
 
         // 디미 유진_퀴즈 결과 요약 메세지
-        tvSummary.text = """
-            🎉 오늘의 모든 퀴즈를 완료했습니다!
-            수고하였습니다!
+        sSummary.text = """
+            오늘의 문제 결과!
+            ( $correct / $total )
             
-            총 문제 수 : $total
-            맞힌 문제 수 : $correct
+            틀린 문제는 복습하기로
+            한 번 더 학습할 수 있습니다!
         """.trimIndent()
 
         // 디미 유진_이어서 학습하기 버튼
@@ -76,7 +80,7 @@ class SlangFinalResultActivity : AppCompatActivity() {
         }
 
         // 디미 유진_(수정) MainActivity로 이동 (뒤로 가기 눌러도 이전 퀴즈 화면으로 돌아가지 않음)
-        btnFinish.setOnClickListener {
+        btnHome.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             }
