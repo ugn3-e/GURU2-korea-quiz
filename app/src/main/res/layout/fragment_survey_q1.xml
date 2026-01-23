@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFF"
-    android:fitsSystemWindows="true"
     tools:context=".SurveyQ1Fragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -127,8 +126,8 @@
         android:id="@+id/btnNext"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginBottom="65dp"
         android:text="다음"
         android:textColor="#323234"

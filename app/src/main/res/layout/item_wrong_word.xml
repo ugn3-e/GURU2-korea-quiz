@@ -6,10 +6,10 @@
 
     <TextView
         android:id="@+id/tvWord"
-        android:padding="12dp"
-        android:background="@color/choice_default"
-        android:layout_marginEnd="8dp"
-        android:textColor="@android:color/black"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bg_word_border"
+        android:padding="12dp"
+        android:textColor="@android:color/black" />
 </LinearLayout>

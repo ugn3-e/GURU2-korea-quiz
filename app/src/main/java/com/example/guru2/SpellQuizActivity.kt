@@ -39,6 +39,7 @@ class SpellQuizActivity : AppCompatActivity() {
     lateinit var btnChoice3: Button
     lateinit var btnSub: Button
     lateinit var QuizNum: TextView
+    lateinit var imgDog: ImageView
 
     // 정답/오답 판단 변수
     var correctAnswer = ""
@@ -159,6 +160,7 @@ class SpellQuizActivity : AppCompatActivity() {
         btnChoice2 = findViewById<Button>(R.id.btnChoice2)
         btnChoice3 = findViewById<Button>(R.id.btnChoice3)
         btnSub = findViewById<Button>(R.id.btnSub)
+        imgDog = findViewById<ImageView>(R.id.imgDog)
     }
 
 
@@ -187,6 +189,20 @@ class SpellQuizActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.mainToolbar -> { // 메뉴 ID에 맞게 수정
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun enableSubmitButton() {
         val mBtnSub = btnSub as? com.google.android.material.button.MaterialButton
 
@@ -196,6 +212,8 @@ class SpellQuizActivity : AppCompatActivity() {
         btnSub.setTextColor(getColor(R.color.white))
 
         mBtnSub?.strokeWidth = 0
+
+        imgDog.visibility = android.view.View.VISIBLE
     }
     private fun setClickListeners() {
         //보기 선택
@@ -356,15 +374,33 @@ class SpellQuizActivity : AppCompatActivity() {
             //source = cursor.getString(
             //cursor.getColumnIndexOrThrow("source"))
 
-            selectChoiceButton(btnChoice1)
-            btnChoice1.setBackgroundColor(getColor(R.color.choice_default))
-            btnChoice2.setBackgroundColor(getColor(R.color.choice_default))
-            btnChoice3.setBackgroundColor(getColor(R.color.choice_default))
+            // selectChoiceButton(btnChoice1)
+            val defaultBg = getColor(R.color.spell_defalut_bg)
+            val defaultText = getColor(R.color.spell_defalut_text)
+            val defaultStroke = getColor(R.color.spell_default_stroke)
+
+            val buttons = listOf(btnChoice1, btnChoice2, btnChoice3)
+            buttons.forEach { button ->
+                button.setBackgroundColor(defaultBg)
+                button.setTextColor(defaultText)
+                (button as? com.google.android.material.button.MaterialButton)?.strokeColor =
+                    ColorStateList.valueOf(defaultStroke)
+                (button as? com.google.android.material.button.MaterialButton)?.strokeWidth = 2
+            }
+
 
             btnSub.isEnabled = false
-            btnSub.setBackgroundColor(getColor(R.color.choice_default))
+            btnSub.setBackgroundColor(defaultBg) // 또는 설정하신 비활성 배경색
+            btnSub.setTextColor(defaultText)
 
-            selectedAnswer = "";
+            imgDog.visibility = android.view.View.GONE
+
+            (btnSub as? com.google.android.material.button.MaterialButton)?.apply {
+                strokeWidth = 2
+                strokeColor = ColorStateList.valueOf(defaultStroke)
+            }
+
+            selectedAnswer = ""
         } else {
             // 문제 다 풀었을 때
             moveToSpellFinalResultPage()

@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="#FFF"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,12 +12,20 @@
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="70dp"
-        android:background="#6851A5"
-        app:title="오답노트"
-        app:titleTextColor="@android:color/white"
+        android:background="#FFF"
+        app:menu="@menu/menu_main"
+        app:title="오답"
+        app:titleTextColor="@android:color/black"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+    <View
+        android:id="@+id/dividerLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="65dp"
+        android:background="#7D7E82"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- SubBar (탭 영역) -->
     <LinearLayout
@@ -29,37 +38,65 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/btnGrammar"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/choice_default"
-            android:gravity="center"
-            android:text="맞춤법 퀴즈"
-            android:textColor="#555555"
-            android:textStyle="bold"/>
+            android:layout_weight="1">
 
         <TextView
-            android:id="@+id/btnSlang"
-            android:layout_width="0dp"
+            android:id="@+id/btnGrammar"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/choice_default"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="맞춤법 퀴즈"
+            android:textColor="#7D7E82"
+            android:textStyle="bold"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+        <TextView
+            android:id="@+id/btnSlang"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
             android:gravity="center"
             android:text="신조어 퀴즈"
-            android:textColor="#6851A5"
+            android:textColor="#1E35CB"
             android:textStyle="bold"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_gravity="bottom"
+                android:background="#1E35CB"/>
+        </FrameLayout>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imgDog"
+        android:layout_width="97dp"
+        android:layout_height="99dp"
+        android:layout_marginEnd="200dp"
+        android:layout_marginBottom="100dp"
+        android:src="@drawable/content_dog"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <!-- 뒤로가기 버튼 -->
     <Button
         android:id="@+id/btnBack"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginBottom="88dp"
+        android:backgroundTint="#1E35CB"
         android:text="뒤로가기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,50 +126,86 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- 예시 이미지 -->
-        <ImageView
-            android:id="@+id/ivExample"
-            android:layout_width="0dp"
-            android:layout_height="180dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
-            android:scaleType="fitCenter"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvExplanation" />
-
         <!-- 설명 -->
+
+        <!-- 예시 이미지 -->
         <TextView
             android:id="@+id/tvExplanation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:text="설명 텍스트"
             android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="14sp"
+            android:textColor="#4B4C4E"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivExample" />
+
+        <View
+            android:id="@+id/dividerSentence"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="32dp"
+            android:background="#D3D3D3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvSlangWord" />
+            app:layout_constraintTop_toBottomOf="@+id/tvExplanation" />
 
         <!-- 참고 -->
+
+        <ImageView
+            android:id="@+id/ivExample"
+            android:layout_width="0dp"
+            android:layout_height="170dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvSlangWord" />
+
         <TextView
             android:id="@+id/tvNotice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="16dp"
             android:text="참고 사항"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="#646568"
             android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/notice" />
+
+        <TextView
+            android:id="@+id/notice"
+            android:layout_width="139dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="6dp"
+            android:text="*사용 시 주의사항"
+            android:textAlignment="center"
+            android:textColor="#1E35CB"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tvNotice"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivExample" />
+            app:layout_constraintTop_toBottomOf="@+id/dividerSentence" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
