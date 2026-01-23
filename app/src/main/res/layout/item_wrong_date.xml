@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="25"
-            android:textColor="#1E35CB"
+            android:textColor="@color/choice_text_selected"
             android:textSize="20sp"
             android:textStyle="bold" />
 
