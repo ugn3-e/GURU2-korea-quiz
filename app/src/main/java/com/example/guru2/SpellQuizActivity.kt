@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.guru2.auth.AuthRepository
@@ -18,11 +19,16 @@ import com.example.guru2.auth.SQLiteAuthDataSource
 import com.example.guru2.fire.FirestoreLevelStore
 import com.example.guru2.fire.FirestoreProgress
 import com.example.guru2.fire.FirestoreWrongNote
+import android.content.res.ColorStateList
+import androidx.appcompat.widget.Toolbar
 
 class SpellQuizActivity : AppCompatActivity() {
 
     // 디미 유진_유저 아이디
     private var userId: Long = -1L
+
+    // 유빈_추가(툴바)
+    lateinit var toolbar: Toolbar
 
     lateinit var spellDbManager: SpellDBManager
     lateinit var sqlitedb: SQLiteDatabase
@@ -55,12 +61,23 @@ class SpellQuizActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        //enableEdgeToEdge()
         setContentView(R.layout.activity_quiz1)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+//            insets
+//        }
+
+
+        // 툴바
+        val mainToolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.mainToolbar)
+        setSupportActionBar(mainToolbar)
+
+        supportActionBar?.apply {
+            title = "Quiz" // 타이틀 설정
+            // 만약 뒤로가기 버튼이 필요하면
+            // setDisplayHomeAsUpEnabled(true)
         }
 
         initViews() // ✅ 추가
@@ -119,6 +136,18 @@ class SpellQuizActivity : AppCompatActivity() {
                 }
             }
         )
+
+        // 초기 비활성화 상태 설정
+        btnSub.isEnabled = false
+        btnSub.setBackgroundColor(getColor(R.color.spell_defalut_bg))
+        btnSub.setTextColor(getColor(R.color.spell_defalut_text))
+
+        // 비활성일 때 테두리 설정
+        val mBtnSub = btnSub as? com.google.android.material.button.MaterialButton
+        mBtnSub?.apply {
+            strokeWidth = 2 // 테두리 두께 (단위: pixel)
+            strokeColor = ColorStateList.valueOf(getColor(R.color.spell_default_stroke))
+        }
     }
 
     private fun initViews() {
@@ -132,21 +161,41 @@ class SpellQuizActivity : AppCompatActivity() {
         btnSub = findViewById<Button>(R.id.btnSub)
     }
 
+
     // 선택지 초기 상태
     private fun selectChoiceButton(selected: Button) {
-        val defaultColor = getColor(R.color.choice_default)
-        val selectedColor = getColor(R.color.choice_selected)
+        val defaultText = getColor(R.color.spell_defalut_text)
+        val defaultStroke = getColor(R.color.spell_default_stroke)
+        val defaultBg = getColor(R.color.spell_defalut_bg)
 
-        btnChoice1.setBackgroundColor(defaultColor)
-        btnChoice2.setBackgroundColor(defaultColor)
-        btnChoice3.setBackgroundColor(defaultColor)
+        val selectedText = getColor(R.color.confirm_active)
+        val selectedBg = getColor(R.color.choice_default)
 
-        selected.setBackgroundColor(selectedColor)
+        val buttons = listOf(btnChoice1, btnChoice2, btnChoice3)
+
+        buttons.forEach { button ->
+            if(button == selected) {
+                button.setBackgroundColor(selectedBg)
+                button.setTextColor(selectedText)
+                (button as? com.google.android.material.button.MaterialButton)?.strokeColor = ColorStateList.valueOf(selectedText)
+            } else {
+                button.setBackgroundColor(defaultBg)
+                button.setTextColor(defaultText)
+                (button as? com.google.android.material.button.MaterialButton)?.strokeColor = ColorStateList.valueOf(defaultStroke)
+            }
+
+        }
     }
 
     private fun enableSubmitButton() {
+        val mBtnSub = btnSub as? com.google.android.material.button.MaterialButton
+
         btnSub.isEnabled = true
-        btnSub.setBackgroundColor(getColor(R.color.choice_selected))
+
+        btnSub.setBackgroundColor(getColor(R.color.confirm_active))
+        btnSub.setTextColor(getColor(R.color.white))
+
+        mBtnSub?.strokeWidth = 0
     }
     private fun setClickListeners() {
         //보기 선택

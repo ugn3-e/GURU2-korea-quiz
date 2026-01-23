@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var levelText: TextView       // 레벨 텍스트
     private lateinit var progressBar: ProgressBar   // 파란색 게이지
     private lateinit var tvUserName: TextView      // 사용자 이름
+    private lateinit var tvCharacterPercent: TextView // 유빈_추가(% UI 추가)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         levelText = findViewById(R.id.tvCharacterLevel)
         progressBar = findViewById(R.id.levelProgressBar)
         tvUserName = findViewById(R.id.tvUserName)
+        tvCharacterPercent = findViewById(R.id.tvCharacterPercent) // 유빈_추가(레벨 말고 % Ui 추가함)
 
         // 맞춤법 퀴즈
         btnQuiz1 = findViewById(R.id.btnQuiz1)
@@ -174,7 +176,8 @@ class MainActivity : AppCompatActivity() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         if (uid == null) {
             levelText.text = "Lv.1"
-            tvUserName.text = "게스트님"
+            tvUserName.text = "슈니님"
+            tvCharacterPercent.text = "0%"
             progressBar.progress = 0
             return
         }
@@ -196,6 +199,7 @@ class MainActivity : AppCompatActivity() {
                 // ✅ 게이지 표시(너가 쓰던 방식 그대로: 60문제=100%)
                 val progressPercent = if (totalSolved >= 60) 100 else ((totalSolved / 60.0) * 100).toInt()
                 progressBar.setProgress(progressPercent, true)
+                tvCharacterPercent.text = "$progressPercent%"
 
                 Log.d("MAIN_LEVEL", "uid=$uid level=$level totalSolved=$totalSolved")
             }
@@ -203,6 +207,7 @@ class MainActivity : AppCompatActivity() {
                 Log.e("MAIN_LEVEL", "load failed", e)
                 // 실패 시 기본 표시
                 levelText.text = "Lv.1"
+                tvCharacterPercent.text = "0%"
                 progressBar.progress = 0
             }
     }

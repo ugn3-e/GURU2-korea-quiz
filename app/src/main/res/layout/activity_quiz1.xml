@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="#FFF"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SpellQuizActivity">
@@ -33,10 +34,15 @@
             android:id="@+id/mainToolbar"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:background="#6851A5"
+            android:background="#FFF"
             android:paddingVertical="8dp"
             app:title="Quiz"
-            app:titleTextColor="@android:color/white" />
+            app:menu="@menu/menu_main"
+            app:titleTextColor="@android:color/black" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- ================= 하단 확인 버튼 ================= -->
@@ -106,7 +112,8 @@
         app:layout_constraintBottom_toTopOf="@+id/btnSub"
         app:layout_constraintEnd_toStartOf="@+id/btnChoice2"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeWidth="1dp"/>
 
     <Button
         android:id="@+id/btnChoice2"
@@ -117,7 +124,8 @@
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintBottom_toBottomOf="@+id/btnChoice1"
         app:layout_constraintEnd_toStartOf="@+id/btnChoice3"
-        app:layout_constraintStart_toEndOf="@+id/btnChoice1" />
+        app:layout_constraintStart_toEndOf="@+id/btnChoice1"
+        app:strokeWidth="1dp"/>
 
     <Button
         android:id="@+id/btnChoice3"
@@ -128,7 +136,8 @@
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintBottom_toBottomOf="@+id/btnChoice1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnChoice2" />
+        app:layout_constraintStart_toEndOf="@+id/btnChoice2"
+        app:strokeWidth="1dp"/>
 
     <Button
         android:id="@+id/btnSub"
@@ -141,6 +150,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeWidth="2dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

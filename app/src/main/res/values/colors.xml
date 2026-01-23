@@ -25,5 +25,10 @@
 
     <color name="point_color">#ED3B64</color> <!-- 마이페이지에서 로그아웃 버튼 색상 -->
 
+    <color name="spell_defalut_text">#646568</color>
+    <color name="spell_default_stroke">#CBCBCD</color>
+    <color name="spell_defalut_bg">#FAFAFA</color>
+
+
 
 </resources>

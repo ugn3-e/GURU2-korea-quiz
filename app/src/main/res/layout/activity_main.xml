@@ -160,7 +160,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4.dp"
+            android:layout_marginBottom="8.dp"
             android:layout_marginLeft="10dp"
             android:text="학습하기"
             android:textColor="#333333"
@@ -179,7 +179,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_margin="1.dp" />
+                android:layout_margin="2.dp" />
 
             <include
                 android:id="@+id/btnQuiz2"
@@ -187,7 +187,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_margin="4.dp" />
+                android:layout_margin="6.dp" />
 
             <include
                 android:id="@+id/btnSaved"
@@ -195,7 +195,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_margin="1.dp" />
+                android:layout_margin="2.dp" />
 
             <include
                 android:id="@+id/btnWrong"
@@ -203,7 +203,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_margin="4.dp" />
+                android:layout_margin="6.dp" />
         </GridLayout>
     </LinearLayout>
     </LinearLayout>
