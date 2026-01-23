@@ -18,8 +18,7 @@ import android.widget.Toolbar
 import androidx.activity.OnBackPressedCallback
 import com.example.guru2.fire.FirestoreProgress
 import com.example.guru2.fire.FirestoreSavedContent
-
-import org.w3c.dom.Text
+import androidx.core.content.ContextCompat
 
 class SpellResultActivity : AppCompatActivity() {
     lateinit var SpellDBManager: SpellDBManager
@@ -43,7 +42,7 @@ class SpellResultActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_result1)
+        setContentView(R.layout.activity_spell_result)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -114,9 +113,15 @@ class SpellResultActivity : AppCompatActivity() {
 
             if(isCorrect) {
                 resultText.text = "정답!"
+                resultText.setTextColor(
+                    ContextCompat.getColor(this, android.R.color.holo_green_dark)
+                )
                 quizAnswer.text = it.incorrect_exp
             } else {
                 resultText.text = "오답"
+                resultText.setTextColor(
+                    ContextCompat.getColor(this, android.R.color.holo_red_dark)
+                )
                 quizAnswer.text = it.incorrect_exp
             }
 

@@ -187,7 +187,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_margin="6.dp" />
+                android:layout_margin="2.dp" />
 
             <include
                 android:id="@+id/btnSaved"
@@ -203,7 +203,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_margin="6.dp" />
+                android:layout_margin="2.dp" />
         </GridLayout>
     </LinearLayout>
     </LinearLayout>
