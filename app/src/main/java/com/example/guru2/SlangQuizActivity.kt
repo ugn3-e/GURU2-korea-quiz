@@ -261,7 +261,9 @@ class SlangQuizActivity : AppCompatActivity() {
 //        Glide.with(this)
 //            .load("file:///android_asset/slang_image/$imgPath")
 //            .into(imgExample)
-        imgExample.visibility = View.GONE
+        imgExample.visibility = View.GONE // 상황 이미지느 안나오게
+        dogImage.visibility = View.VISIBLE // 강아지 다시 나오게
+
         val rawImage = quiz.exampleImage
         val imgPath =
             if (!rawImage.contains(".")) "$rawImage.png" else rawImage
