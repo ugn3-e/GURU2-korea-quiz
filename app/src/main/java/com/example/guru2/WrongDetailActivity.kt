@@ -2,6 +2,7 @@ package com.example.guru2
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -20,16 +21,6 @@ class WrongDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // 툴바
-        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        supportActionBar?.apply {
-            title = "오답" // 타이틀 설정
-            // 만약 뒤로가기 버튼이 필요하면
-            // setDisplayHomeAsUpEnabled(true)
-        }
 
         // 디미 유진_이전 화면에서 전달받은 데이터
         // quiz_type: "slang" / "spelling"
@@ -129,6 +120,16 @@ class WrongDetailActivity : AppCompatActivity() {
                 finish()
             }
         }
+
+        // 툴바
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.apply {
+            title = "오답" // 타이틀 설정
+            // 만약 뒤로가기 버튼이 필요하면
+            // setDisplayHomeAsUpEnabled(true)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
@@ -136,12 +137,20 @@ class WrongDetailActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.mainToolbar -> { // 메뉴 ID에 맞게 수정
-                true
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_survey -> {
+                val intent = Intent(this, SurveyActivity::class.java)
+                startActivity(intent)
+                return true
             }
-            else -> super.onOptionsItemSelected(item)
+
+            // 디미 유진_마이페이지
+            R.id.action_mypage -> {
+                startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
+                return true
+            }
         }
+        return super.onOptionsItemSelected(item)
     }
 }

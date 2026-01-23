@@ -12,6 +12,7 @@
         android:layout_height="70dp"
         android:background="#FFF"
         app:title="오답"
+        app:titleTextAppearance="@style/ToolbarTitleBold"
         app:menu="@menu/menu_main"
         app:titleTextColor="@android:color/black"
         app:layout_constraintTop_toTopOf="parent"

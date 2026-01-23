@@ -20,6 +20,7 @@ import com.example.guru2.fire.FirestoreLevelStore
 import com.example.guru2.fire.FirestoreProgress
 import com.example.guru2.fire.FirestoreWrongNote
 import android.content.res.ColorStateList
+import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 
 class SpellQuizActivity : AppCompatActivity() {
@@ -194,13 +195,21 @@ class SpellQuizActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.mainToolbar -> { // 메뉴 ID에 맞게 수정
-                true
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_survey -> {
+                val intent = Intent(this, SurveyActivity::class.java)
+                startActivity(intent)
+                return true
             }
-            else -> super.onOptionsItemSelected(item)
+
+            // 디미 유진_마이페이지
+            R.id.action_mypage -> {
+                startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
+                return true
+            }
         }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun enableSubmitButton() {

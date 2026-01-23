@@ -2,13 +2,17 @@ package com.example.guru2
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 
 
 class SavedDetail : AppCompatActivity() {
+    lateinit var toolbar: Toolbar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //enableEdgeToEdge()
@@ -18,6 +22,11 @@ class SavedDetail : AppCompatActivity() {
 //            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
 //            insets
 //        }
+
+        // 툴바
+        val mainToolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.mainToolbar)
+        setSupportActionBar(mainToolbar)
+
         val tvTitle = findViewById<TextView>(R.id.saved_title)
         val ivImg = findViewById<ImageView>(R.id.saved_img)
         val tvSentence = findViewById<TextView>(R.id.saved_sentence)
@@ -58,5 +67,26 @@ class SavedDetail : AppCompatActivity() {
 //            startActivity(intent)
             finish()
         }
+    }
+    override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_survey -> {
+                val intent = Intent(this, SurveyActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+
+            // 디미 유진_마이페이지
+            R.id.action_mypage -> {
+                startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
