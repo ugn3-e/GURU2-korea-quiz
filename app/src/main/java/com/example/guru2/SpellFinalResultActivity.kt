@@ -3,15 +3,15 @@ package com.example.guru2
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.button.MaterialButton
 
 class SpellFinalResultActivity : AppCompatActivity() {
     lateinit var sSummary: TextView
-    lateinit var btnQKeep: Button
-    lateinit var btnHome: Button
+    lateinit var btnQKeep: MaterialButton
+    lateinit var btnHome: MaterialButton
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,22 +28,19 @@ class SpellFinalResultActivity : AppCompatActivity() {
         // 결과 요약 텍스트
         sSummary = findViewById<TextView>(R.id.SpellSummary)
 
-        // 이어서 학습 버튼
-        btnQKeep = findViewById<Button>(R.id.btnQKeep)
-
-        // 홈 버튼
-        btnHome = findViewById<Button>(R.id.btnHome)
+        // 이어서 학습, 홈 버튼
+        // 🔥 [수정] MaterialButton으로 findViewById
+        btnQKeep = findViewById(R.id.btnQKeep)
+        btnHome = findViewById(R.id.btnHome)
 
         sSummary.text = """
-            🎉 오늘의 모든 퀴즈를 완료했습니다!
-            수고하였습니다!
+            수고하셨습니다!
             
-            총 문제 수 : 5
-            맞힌 문제 수 : $setCorrect
+            틀린 문제는 복습하기로
+            한 번 더 학습할 수 있습니다!
         """.trimIndent()
 
         btnQKeep.setOnClickListener {
-            val nextQuizId = intent.getIntExtra("next_quiz_id", -1)
 
             // DB에 nextQuizId 문제가 실제로 존재하는지 확인
             val spellDb = SpellDBManager(this)
