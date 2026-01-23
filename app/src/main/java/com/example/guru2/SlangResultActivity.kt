@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.activity.OnBackPressedCallback
 import android.widget.Toast
+import com.bumptech.glide.Glide
 
 class SlangResultActivity : AppCompatActivity() {
 
@@ -30,12 +31,24 @@ class SlangResultActivity : AppCompatActivity() {
         val isCorrect = intent.getBooleanExtra("isCorrect", false)
         val explanation = intent.getStringExtra("explanation") ?: ""
         val notice = intent.getStringExtra("notice") ?: ""
-        val exampleImage = intent.getStringExtra("exampleImage") ?: ""
+        val rawExampleImage = intent.getStringExtra("exampleImage") ?: ""
+
+        // 🔥 .png 자동 보정 로직
+        val exampleImage = if (
+            rawExampleImage.isNotBlank() &&
+            !rawExampleImage.contains(".")
+        ) {
+            "$rawExampleImage.png"
+        } else {
+            rawExampleImage
+        }
+
         val nextQuizId = intent.getIntExtra("nextQuizId", -1)
         val isEndOfPart = intent.getBooleanExtra("isEndOfPart", false)
 
         // 디미 유진_상황 예시 이미지 잘 받았나 확인용 코드
-        Log.d("RESULT", "exampleImage = [$exampleImage]")
+        Log.d("RESULT", "rawExampleImage = [$rawExampleImage]")
+        Log.d("RESULT", "fixedExampleImage = [$exampleImage]")
 
         // 디미 유진_정답 / 오답 표시 (색상 임시)
         if (isCorrect) {
@@ -60,19 +73,28 @@ class SlangResultActivity : AppCompatActivity() {
         }
 
         // 디미 유진_상황 예시 이미지 (결과 화면에서도 표시하기 위해)
+//        if (exampleImage.isNotBlank()) {
+//            val imageResId = resources.getIdentifier(
+//                exampleImage,
+//                "drawable",
+//                packageName
+//            )
+//
+//            if (imageResId != 0) {
+//                imgExample.setImageResource(imageResId)
+//                imgExample.visibility = View.VISIBLE
+//            } else {
+//                imgExample.visibility = View.GONE
+//            }
+//        } else {
+//            imgExample.visibility = View.GONE
+//        }
         if (exampleImage.isNotBlank()) {
-            val imageResId = resources.getIdentifier(
-                exampleImage,
-                "drawable",
-                packageName
-            )
+            Glide.with(this)
+                .load("file:///android_asset/slang_image/$exampleImage")
+                .into(imgExample)
 
-            if (imageResId != 0) {
-                imgExample.setImageResource(imageResId)
-                imgExample.visibility = View.VISIBLE
-            } else {
-                imgExample.visibility = View.GONE
-            }
+            imgExample.visibility = View.VISIBLE
         } else {
             imgExample.visibility = View.GONE
         }

@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.bumptech.glide.Glide
 
 // 오답 상세 화면 Activity
 // 오답 노트에서 문제 클릭 시 진입
@@ -53,11 +54,25 @@ class WrongDetailActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.tvNotice).text = quiz.notice
 
             // 디미 유진_예시 이미지 표시
-            val img = findViewById<ImageView>(R.id.ivExample)
-            val resId = resources.getIdentifier(quiz.exampleImage, "drawable", packageName)
+            val imgExample = findViewById<ImageView>(R.id.ivExample)
+            // 🔥 이미지 파일명 자동 보정
+            val rawImage = quiz.exampleImage ?: ""
+            val imageFile = if (rawImage.isNotBlank() && !rawImage.contains(".")) {
+                "$rawImage.png"
+            } else {
+                rawImage
+            }
 
-            // 이미지 리소스가 존재할 때만 설정 (0이면 없음)
-            if (resId != 0) img.setImageResource(resId)
+            if (imageFile.isNotBlank()) {
+                Glide.with(this)
+                    .load("file:///android_asset/slang_image/$imageFile")
+                    .error(R.drawable.ic_launcher_foreground)
+                    .into(imgExample)
+
+                imgExample.visibility = View.VISIBLE
+            } else {
+                imgExample.visibility = View.GONE
+            }
 
             //디미 유진_뒤로 가기 버튼
             // -> 현재 Activity만 종료 -> 오답 목록 화면

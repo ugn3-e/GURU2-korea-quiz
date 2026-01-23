@@ -18,6 +18,7 @@ import com.example.guru2.fire.FirestoreLevelStore
 import com.example.guru2.fire.FirestoreProgress
 import com.example.guru2.fire.FirestoreWrongNote
 import com.google.firebase.auth.FirebaseAuth
+import com.bumptech.glide.Glide
 
 
 
@@ -186,16 +187,25 @@ class SlangQuizActivity : AppCompatActivity() {
 
 
         // 디미 유진_불러온 문제의 상황 예시 이미지
-        val imageResId = resources.getIdentifier(
-            quiz.exampleImage,
-            "drawable",
-            packageName
-        )
-
+        // 🔥 Glide로 assets/slang_image 이미지 로딩
         imgExample.visibility = View.GONE
-        if (imageResId != 0) {
-            imgExample.setImageResource(imageResId)
-        }
+        val imgPath = quiz.exampleImage + ".png"
+
+        Glide.with(this)
+            .load("file:///android_asset/slang_image/$imgPath")
+            .into(imgExample)
+
+
+//        val imageResId = resources.getIdentifier(
+//            quiz.exampleImage,
+//            "drawable",
+//            packageName
+//        )
+//
+//        imgExample.visibility = View.GONE
+//        if (imageResId != 0) {
+//            imgExample.setImageResource(imageResId)
+//        }
 
         // 디미 유진_선택지, 확인 버튼 초기화
         resetChoiceButtons()
