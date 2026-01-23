@@ -20,6 +20,7 @@ import com.example.guru2.fire.FirestoreWrongNote
 import com.google.firebase.auth.FirebaseAuth
 
 
+
 class SlangQuizActivity : AppCompatActivity() {
 
     // 디미 유진_결과 화면 -> 다음 문제 화면으로 넘어갈 때 확인을 위한 번호
@@ -232,6 +233,7 @@ class SlangQuizActivity : AppCompatActivity() {
     }
 
     private fun enableConfirmButton() {
+        btnConfirm.isEnabled = true
         btnConfirm.backgroundTintList =
             ColorStateList.valueOf(getColor(R.color.confirm_active))
 

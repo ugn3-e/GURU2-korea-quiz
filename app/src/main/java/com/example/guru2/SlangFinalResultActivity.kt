@@ -36,7 +36,6 @@ class SlangFinalResultActivity : AppCompatActivity() {
         sSummary.text = """
             오늘의 문제 결과!
             ( $correct / $total )
-            
             틀린 문제는 복습하기로
             한 번 더 학습할 수 있습니다!
         """.trimIndent()

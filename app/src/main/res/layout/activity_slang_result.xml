@@ -25,6 +25,7 @@
             android:paddingVertical="8dp"
             app:title="Quiz"
             app:titleTextColor="@android:color/black"
+            app:menu="@menu/menu_main"
             app:titleTextAppearance="@style/ToolbarTitleBold"/>
 
         <View
@@ -36,6 +37,21 @@
     <!-- ===============================
          하단 버튼
     =============================== -->
+
+    <!-- ===============================
+         콘텐츠 영역 (중요!)
+    =============================== -->
+
+    <ImageView
+        android:id="@+id/imgDog2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="-30dp"
+        android:src="@drawable/content_dog"
+        app:layout_constraintBottom_toTopOf="@+id/btnNext"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
         android:id="@+id/btnNext"
         android:layout_width="0dp"
@@ -51,10 +67,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <!-- ===============================
-         콘텐츠 영역 (중요!)
-    =============================== -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contentArea"
@@ -115,11 +127,29 @@
             android:id="@+id/divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
             android:background="#E0E0E0"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvExplanation" />
+
+        <TextView
+            android:id="@+id/noticetext"
+            android:layout_width="139dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:text="*사용 시 주의사항"
+            android:textAlignment="center"
+            android:textColor="#1E35CB"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
 
         <!-- 주의 사항 -->
         <TextView
@@ -127,7 +157,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="24dp"
             android:text="! 공식적인 자리에서는 사용을 피해주세요."
             android:textAlignment="center"
@@ -135,17 +165,7 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider" />
-
-        <ImageView
-            android:id="@+id/imgDog2"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginBottom="-30dp"
-            android:src="@drawable/content_dog"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/noticetext" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
