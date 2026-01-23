@@ -1,14 +1,22 @@
 package com.example.guru2
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 
 class SurveyQ2Fragment : Fragment(R.layout.fragment_survey_q2) {
-
+    lateinit var toolbar: Toolbar
     private var selectedAnswer: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,6 +53,37 @@ class SurveyQ2Fragment : Fragment(R.layout.fragment_survey_q2) {
             ContextCompat.getColorStateList(requireContext(), R.color.choice_selected_stroke)
         val strokeSelectedColor =
             ContextCompat.getColorStateList(requireContext(), R.color.confirm_active)
+
+        // 툴바
+        val toolbar = view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.mainToolbar)
+        val activity = requireActivity() as? androidx.appcompat.app.AppCompatActivity
+        activity?.setSupportActionBar(toolbar)
+
+        // 만약 타이틀을 바꾸고 싶다면
+        activity?.supportActionBar?.title = "Quiz"
+
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_main, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_mypage -> {
+                        val intent = Intent(requireContext(), com.example.guru2.mypage.MyPageActivity::class.java)
+                        startActivity(intent)
+                        true
+                    }
+                    R.id.action_survey -> {
+                        val intent = Intent(requireContext(), SurveyActivity::class.java)
+                        startActivity(intent)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         // 선택지 초기 상태 (색 없음)
         buttons.forEach {

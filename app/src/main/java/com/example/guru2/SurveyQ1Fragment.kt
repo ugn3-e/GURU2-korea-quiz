@@ -1,5 +1,6 @@
 package com.example.guru2
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -45,9 +46,15 @@ class SurveyQ1Fragment : Fragment(R.layout.fragment_survey_q1) {
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                // 메뉴 아이템 클릭 이벤트 처리
                 return when (menuItem.itemId) {
                     R.id.action_mypage -> {
+                        val intent = Intent(requireContext(), com.example.guru2.mypage.MyPageActivity::class.java)
+                        startActivity(intent)
+                        true
+                    }
+                    R.id.action_survey -> {
+                        val intent = Intent(requireContext(), SurveyActivity::class.java)
+                        startActivity(intent)
                         true
                     }
                     else -> false
@@ -126,4 +133,5 @@ class SurveyQ1Fragment : Fragment(R.layout.fragment_survey_q1) {
             //(requireActivity() as SurveyActivity).goNextPage()
         }
     }
+
 }

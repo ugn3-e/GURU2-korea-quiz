@@ -5,13 +5,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.content.Intent
+import android.view.MenuItem
 import android.widget.Button
+import android.widget.Toolbar
 
 class SavedContentActivity : AppCompatActivity() {
+
+    lateinit var toolbar: Toolbar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // 레이아웃 설정(합치기)
         setContentView(R.layout.activity_saved_content)
+
+        // 툴바
+        val mainToolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.mainToolbar)
+        setSupportActionBar(mainToolbar)
 
         // DB 가져오기
         val spellDbManager = SpellDBManager(this)
@@ -55,5 +64,26 @@ class SavedContentActivity : AppCompatActivity() {
                 android.util.Log.e("DB_CHECK", "Firestore 불러오기 실패: ${e.message}")
             }
         )
+    }
+    override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_survey -> {
+                val intent = Intent(this, SurveyActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+
+            // 디미 유진_마이페이지
+            R.id.action_mypage -> {
+                startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

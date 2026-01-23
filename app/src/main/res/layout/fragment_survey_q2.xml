@@ -24,6 +24,7 @@
             android:background="#FFF"
             android:paddingVertical="8dp"
             app:menu="@menu/menu_main"
+            app:titleTextAppearance="@style/ToolbarTitleBold"
             app:title="Quiz"
             app:titleTextColor="@android:color/black" />
         <View

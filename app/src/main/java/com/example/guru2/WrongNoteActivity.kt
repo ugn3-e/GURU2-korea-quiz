@@ -1,7 +1,9 @@
 package com.example.guru2
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -84,13 +86,21 @@ class WrongNoteActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.mainToolbar -> { // 메뉴 ID에 맞게 수정
-                true
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_survey -> {
+                val intent = Intent(this, SurveyActivity::class.java)
+                startActivity(intent)
+                return true
             }
-            else -> super.onOptionsItemSelected(item)
+
+            // 디미 유진_마이페이지
+            R.id.action_mypage -> {
+                startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
+                return true
+            }
         }
+        return super.onOptionsItemSelected(item)
     }
 
     // 디미 유진_선택된 탭에 따라 텍스트 색상 변경

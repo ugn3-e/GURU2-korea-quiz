@@ -3,6 +3,7 @@ package com.example.guru2
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -13,6 +14,7 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.activity.OnBackPressedCallback
 import com.example.guru2.fire.FirestoreProgress
 import com.example.guru2.fire.FirestoreSavedContent
@@ -34,6 +36,8 @@ class SpellResultActivity : AppCompatActivity() {
     lateinit var btnNext: Button
     lateinit var btnSave: Button
 
+    lateinit var toolbar: Toolbar
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +49,16 @@ class SpellResultActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        // 툴바
+        val mainToolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.mainToolbar)
+        setSupportActionBar(mainToolbar)
+
+        supportActionBar?.apply {
+            title = "Quiz" // 타이틀 설정
+            // 만약 뒤로가기 버튼이 필요하면
+            // setDisplayHomeAsUpEnabled(true)
         }
 
         // ui 연결
@@ -233,5 +247,27 @@ class SpellResultActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_survey -> {
+                val intent = Intent(this, SurveyActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+
+            // 디미 유진_마이페이지
+            R.id.action_mypage -> {
+                startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
