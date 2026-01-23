@@ -42,24 +42,25 @@ class SlangFinalResultActivity : AppCompatActivity() {
 
         // 디미 유진_이어서 학습하기 버튼
         btnKeep.setOnClickListener {
-            // 로그인 때 저장해둔 user_id 꺼내오기 (너희 앱 구조 기준)
+            // 로그인 때 저장해둔 user_id 꺼내오기
 //            val userId = getSharedPreferences("auth", MODE_PRIVATE)
 //                .getLong("user_id", -1L)
 
             val progressStore = FirestoreProgress()
             progressStore.loadSlangNextQuizId(
                 onResult = { nextId ->
-                    // 로컬 DB에 다음 문제가 있는지 확인
-                    val slangDb = SlangDBManager(this)
-                    val nextQuiz = slangDb.getQuizById(nextId)
+                    val nextQuiz = try {
+                        val slangDb = SlangDBManager(this)
+                        slangDb.getQuizById(nextId)
+                    } catch (e: Exception) {
+                        null
+                    }
 
-                    // 다음 문제가 없으면 → Toast만
+                    // 문제 다 풀었을 때 토스트 문구
                     if (nextQuiz == null) {
-                        Toast.makeText(
-                            this,
-                            "모든 학습을 완료하였습니다!",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        runOnUiThread {
+                            Toast.makeText(this, "모든 학습을 완료하였습니다!", Toast.LENGTH_SHORT).show()
+                        }
                         return@loadSlangNextQuizId
                     }
                     val intent = Intent(this, SlangQuizActivity::class.java).apply {
