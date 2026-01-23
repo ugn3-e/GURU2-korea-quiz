@@ -34,8 +34,8 @@ class SlangFinalResultActivity : AppCompatActivity() {
 
         // 디미 유진_퀴즈 결과 요약 메세지
         sSummary.text = """
-            오늘의 문제 결과!
-            ( $correct / $total )
+            수고하셨습니다!
+            
             틀린 문제는 복습하기로
             한 번 더 학습할 수 있습니다!
         """.trimIndent()
