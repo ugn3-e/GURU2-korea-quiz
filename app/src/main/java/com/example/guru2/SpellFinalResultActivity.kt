@@ -3,8 +3,10 @@ package com.example.guru2
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 
@@ -13,10 +15,22 @@ class SpellFinalResultActivity : AppCompatActivity() {
     lateinit var btnQKeep: MaterialButton
     lateinit var btnHome: MaterialButton
 
+    lateinit var toolbar: Toolbar
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spell_final_result)
+
+        // 툴바
+        val mainToolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.mainToolbar)
+        setSupportActionBar(mainToolbar)
+
+        supportActionBar?.apply {
+            title = "Quiz" // 타이틀 설정
+            // 만약 뒤로가기 버튼이 필요하면
+            // setDisplayHomeAsUpEnabled(true)
+        }
 
         val total = intent.getIntExtra("totalSCount", 0)
         val correct = intent.getIntExtra("correctSCount", 0)
@@ -73,5 +87,27 @@ class SpellFinalResultActivity : AppCompatActivity() {
             finish()
         }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_survey -> {
+                val intent = Intent(this, SurveyActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+
+            // 디미 유진_마이페이지
+            R.id.action_mypage -> {
+                startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
