@@ -73,8 +73,8 @@ class WrongNoteActivity : AppCompatActivity() {
             finish()
         }
 
-        // 처음 접속하면 신조어 탭이 선택되도록 설정
-        selectTab(true)
+        // 처음 접속하면 맞춤법 탭이 선택되도록 설정
+        selectTab(false)
     }
 
     // 상단 메뉴
