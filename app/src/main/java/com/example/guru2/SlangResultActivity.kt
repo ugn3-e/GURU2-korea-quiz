@@ -18,21 +18,9 @@ import com.bumptech.glide.Glide
 
 class SlangResultActivity : AppCompatActivity() {
 
-    lateinit var toolbar: Toolbar
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_slang_result)
-
-        // 툴바
-        val mainToolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.mainToolbar)
-        setSupportActionBar(mainToolbar)
-
-        supportActionBar?.apply {
-            title = "Quiz" // 타이틀 설정
-            // 만약 뒤로가기 버튼이 필요하면
-            // setDisplayHomeAsUpEnabled(true)
-        }
 
         // 디미 유진_View 연결
         val tvResult = findViewById<TextView>(R.id.tvResult)
@@ -151,29 +139,5 @@ class SlangResultActivity : AppCompatActivity() {
             }
         )
 
-    }
-
-    // 메뉴 연결
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    // 디미 유진_(추가)마이페이지 추가
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_survey -> {
-                val intent = Intent(this, SurveyActivity::class.java)
-                startActivity(intent)
-                return true
-            }
-
-            // 디미 유진_마이페이지
-            R.id.action_mypage -> {
-                startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 }

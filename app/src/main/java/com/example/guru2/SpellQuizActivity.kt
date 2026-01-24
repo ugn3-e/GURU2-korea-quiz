@@ -24,7 +24,6 @@ class SpellQuizActivity : AppCompatActivity() {
     }
 
     // ================= View =================
-    private lateinit var toolbar: Toolbar
     private lateinit var tvQNumber: TextView
     private lateinit var tvQuestion: TextView
     private lateinit var imgExample: ImageView
@@ -64,9 +63,6 @@ class SpellQuizActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spell_quiz)
 
-        toolbar = findViewById(R.id.mainToolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.title = "Quiz"
 
         bindViews()
         setClickListeners()
@@ -107,6 +103,7 @@ class SpellQuizActivity : AppCompatActivity() {
             }
         )
 
+        // 퀴즈 도중 뒤로가기 불가
         onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -162,11 +159,13 @@ class SpellQuizActivity : AppCompatActivity() {
         val dbManager = SpellDBManager(this)
         val db = dbManager.readableDatabase
 
+        // currentQuizId에 해당하는 문제 1개 가져옴
         val cursor = db.rawQuery(
             "SELECT * FROM spelling_quiz WHERE id = ?",
             arrayOf(currentQuizId.toString())
         )
 
+        // 풀 문제 없으면 최종 결과 페이지로 이동
         if (!cursor.moveToFirst()) {
             cursor.close()
             db.close()
@@ -182,9 +181,11 @@ class SpellQuizActivity : AppCompatActivity() {
         // DB 기준 문제 번호 그대로 표시
         //tvQNumber.text = "Q$currentQuizId"
 
+        // Q번호 (1~5 반복 표시)
         val qNumber = ((currentQuizId - 1) % 5) + 1
         tvQNumber.text = "Q$qNumber"
 
+        // DB에서 문제, 선택지, 정답, 해설, 이미지 경로 추출
         tvQuestion.text = cursor.getString(cursor.getColumnIndexOrThrow("sentence"))
 
         btn1.text = cursor.getString(cursor.getColumnIndexOrThrow("choice1"))
@@ -196,6 +197,8 @@ class SpellQuizActivity : AppCompatActivity() {
         incorrectExp = cursor.getString(cursor.getColumnIndexOrThrow("incorrect_exp"))
         imagePath = cursor.getString(cursor.getColumnIndexOrThrow("image_path")) ?: ""
 
+
+        // assets 폴더 내 이미지 시용해서 이미지 가져오기
         if (imagePath.isNotBlank()) {
             Glide.with(this)
                 .load("file:///android_asset/images/$imagePath")
@@ -204,8 +207,8 @@ class SpellQuizActivity : AppCompatActivity() {
             imgExample.setImageDrawable(null)
         }
 
-        resetChoiceButtons()
-        disableConfirmButton()
+        resetChoiceButtons() // 선택지 ui 초기화
+        disableConfirmButton() // 확인 버튼 비활성화
         imgDog.visibility = View.GONE
         selectedAnswer = ""
 
@@ -220,12 +223,15 @@ class SpellQuizActivity : AppCompatActivity() {
         btn.backgroundTintList =
             ColorStateList.valueOf(getColor(R.color.choice_selected_bg))
         btn.setTextColor(getColor(R.color.choice_text_selected))
-        btn.strokeWidth = 0
+
+        btn.strokeColor = ColorStateList.valueOf(getColor(R.color.choice_text_selected))
+        btn.strokeWidth = 2
 
         selectedAnswer = btn.text.toString()
         enableConfirmButton()
     }
 
+    // 리셋
     private fun resetChoiceButtons() {
         choiceButtons.forEach {
             it.backgroundTintList =
@@ -276,6 +282,7 @@ class SpellQuizActivity : AppCompatActivity() {
             onFail = { e -> Log.e("SPELL_LEVEL", "fail", e) }
         )
 
+        // 틀리면 오답 저장
         if (!isCorrect) {
             FirestoreWrongNote().addWrong(
                 type = "spell",

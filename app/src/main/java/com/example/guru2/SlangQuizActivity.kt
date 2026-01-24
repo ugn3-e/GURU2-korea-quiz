@@ -27,8 +27,6 @@ import com.bumptech.glide.Glide
 
 class SlangQuizActivity : AppCompatActivity() {
 
-    lateinit var toolbar: Toolbar
-
     // 디미 유진_결과 화면 -> 다음 문제 화면으로 넘어갈 때 확인을 위한 번호
     companion object {
         private const val REQ_RESULT = 1001
@@ -81,16 +79,6 @@ class SlangQuizActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_slang_quiz)
-
-        // 툴바
-        val mainToolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.mainToolbar)
-        setSupportActionBar(mainToolbar)
-
-        supportActionBar?.apply {
-            title = "Quiz" // 타이틀 설정
-            // 만약 뒤로가기 버튼이 필요하면
-            // setDisplayHomeAsUpEnabled(true)
-        }
 
         bindViews()
         setClickListeners()
@@ -163,29 +151,29 @@ class SlangQuizActivity : AppCompatActivity() {
         btnConfirm.setOnClickListener { moveToResultPage() }
     }
 
-    // 메뉴 연결
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    // 디미 유진_(추가)마이페이지 추가
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_survey -> {
-                val intent = Intent(this, SurveyActivity::class.java)
-                startActivity(intent)
-                return true
-            }
-
-            // 디미 유진_마이페이지
-            R.id.action_mypage -> {
-                startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    // 메뉴 연결
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.menu_main, menu)
+//        return true
+//    }
+//
+//    // 디미 유진_(추가)마이페이지 추가
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            R.id.action_survey -> {
+//                val intent = Intent(this, SurveyActivity::class.java)
+//                startActivity(intent)
+//                return true
+//            }
+//
+//            // 디미 유진_마이페이지
+//            R.id.action_mypage -> {
+//                startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
+//                return true
+//            }
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     // 디미 유진_DB에서 문제 1개 가져오기
     private fun loadQuizFromDB() {

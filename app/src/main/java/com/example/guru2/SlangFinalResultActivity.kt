@@ -14,8 +14,6 @@ import com.google.android.material.button.MaterialButton
 
 class SlangFinalResultActivity : AppCompatActivity() {
 
-    lateinit var toolbar: Toolbar
-
     private lateinit var sSummary: TextView
     private lateinit var btnKeep: MaterialButton
     private lateinit var btnHome: MaterialButton
@@ -25,16 +23,6 @@ class SlangFinalResultActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_slang_final_result)
-
-        // 툴바
-        val mainToolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.mainToolbar)
-        setSupportActionBar(mainToolbar)
-
-        supportActionBar?.apply {
-            title = "Quiz" // 타이틀 설정
-            // 만약 뒤로가기 버튼이 필요하면
-            // setDisplayHomeAsUpEnabled(true)
-        }
 
         // 디미 유진_결과 요약 텍스트
         sSummary = findViewById<TextView>(R.id.SlangSummary)
@@ -126,27 +114,5 @@ class SlangFinalResultActivity : AppCompatActivity() {
             }
         )
 
-    }
-
-    override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_survey -> {
-                val intent = Intent(this, SurveyActivity::class.java)
-                startActivity(intent)
-                return true
-            }
-
-            // 디미 유진_마이페이지
-            R.id.action_mypage -> {
-                startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 }

@@ -24,11 +24,6 @@ class SpellFinalResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spell_final_result)
 
-        // ================= 툴바 =================
-        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.mainToolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.title = "Quiz"
-
         // ================= View =================
         tvSummary = findViewById(R.id.SpellSummary)
         btnKeep = findViewById(R.id.btnQKeep)
@@ -127,26 +122,26 @@ class SpellFinalResultActivity : AppCompatActivity() {
 
     }
 
-    // ================= 메뉴 =================
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_survey -> {
-                startActivity(Intent(this, SurveyActivity::class.java))
-                return true
-            }
-            R.id.action_mypage -> {
-                startActivity(
-                    Intent(this, com.example.guru2.mypage.MyPageActivity::class.java)
-                )
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    // ================= 메뉴 =================
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.menu_main, menu)
+//        return true
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            R.id.action_survey -> {
+//                startActivity(Intent(this, SurveyActivity::class.java))
+//                return true
+//            }
+//            R.id.action_mypage -> {
+//                startActivity(
+//                    Intent(this, com.example.guru2.mypage.MyPageActivity::class.java)
+//                )
+//                return true
+//            }
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
 }
