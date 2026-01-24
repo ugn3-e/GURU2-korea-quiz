@@ -33,10 +33,10 @@ class SpellFinalResultActivity : AppCompatActivity() {
         val correct = intent.getIntExtra("correctSCount", 0)
 
         tvSummary.text = """
-            수고하셨습니다! 🎉
+            수고하셨습니다!
             
-            틀린 문제는
-            다시 학습해볼 수 있어요!
+            틀린 문제는 복습하기로
+            한 번 더 학습할 수 있습니다!
         """.trimIndent()
 
         // ================= 이어서 학습 =================
