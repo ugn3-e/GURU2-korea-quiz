@@ -7,9 +7,9 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.example.guru2.MainActivity
+import com.example.guru2.home.MainActivity
 import com.example.guru2.R
-import com.example.guru2.SurveyActivity
+import com.example.guru2.survey.SurveyActivity
 import com.example.guru2.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

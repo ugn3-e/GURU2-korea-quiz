@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.example.guru2.MainActivity
+import com.example.guru2.home.MainActivity
 import com.example.guru2.R
 import com.google.firebase.auth.FirebaseAuth
 import com.example.guru2.auth.AuthRepository

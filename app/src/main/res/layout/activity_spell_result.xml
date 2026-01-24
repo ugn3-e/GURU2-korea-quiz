@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/main"
     android:background="#FFF"
-    tools:context=".SpellResultActivity">
+    tools:context=".spellquiz.SpellResultActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:background="#FFF"

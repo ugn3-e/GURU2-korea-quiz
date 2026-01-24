@@ -18,7 +18,7 @@
             android:name=".mypage.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".MainCardActivity"
+            android:name=".home.MainCardActivity"
             android:exported="false" /> <!-- 마이페이지 -->
         <activity
             android:name=".mypage.MyPageActivity"
@@ -36,46 +36,46 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".WrongDetailActivity"
+            android:name=".wrong.WrongDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".WrongNoteActivity"
+            android:name=".wrong.WrongNoteActivity"
             android:exported="false" />
         <activity
-            android:name=".SavedDetail"
+            android:name=".saved.SavedDetail"
             android:exported="false" />
         <activity
-            android:name=".SavedDailyActivity"
+            android:name=".saved.SavedDailyActivity"
             android:exported="false" />
         <activity
-            android:name=".SavedQuizActivity"
+            android:name=".saved.SavedQuizActivity"
             android:exported="false" />
         <activity
-            android:name=".SavedContentActivity"
+            android:name=".saved.SavedContentActivity"
             android:exported="false" />
         <activity
-            android:name=".SpellFinalResultActivity"
+            android:name=".spellquiz.SpellFinalResultActivity"
             android:exported="false" />
         <activity
-            android:name=".SlangFinalResultActivity"
+            android:name=".slangquiz.SlangFinalResultActivity"
             android:exported="false" />
         <activity
-            android:name=".SurveyActivity"
+            android:name=".survey.SurveyActivity"
             android:exported="false" />
         <activity
-            android:name=".SlangQuizActivity"
+            android:name=".slangquiz.SlangQuizActivity"
             android:exported="false" />
         <activity
-            android:name=".SlangResultActivity"
+            android:name=".slangquiz.SlangResultActivity"
             android:exported="false" />
         <activity
-            android:name=".SpellResultActivity"
+            android:name=".spellquiz.SpellResultActivity"
             android:exported="false" />
         <activity
-            android:name=".SpellQuizActivity"
+            android:name=".spellquiz.SpellQuizActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".home.MainActivity"
             android:exported="false" />
     </application>
 
