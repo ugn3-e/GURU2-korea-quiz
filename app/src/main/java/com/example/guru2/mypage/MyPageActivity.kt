@@ -72,8 +72,8 @@ class MyPageActivity : AppCompatActivity() {
                 val totalSolved = doc.getLong("totalSolved") ?: 0L
 
                 val progressPercent =
-                    if (totalSolved >= 60) 100
-                    else ((totalSolved / 60.0) * 100).toInt()
+                    if (totalSolved >= 50) 100
+                    else ((totalSolved / 50.0) * 100).toInt()
 
                 // ===== UI 반영 =====
                 tvNickname.text = nickname

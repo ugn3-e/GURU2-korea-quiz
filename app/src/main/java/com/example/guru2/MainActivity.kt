@@ -61,10 +61,11 @@ class MainActivity : AppCompatActivity() {
         btnQuiz1.findViewById< ImageView>(R.id.ivIcon).setImageResource(R.drawable.ic_spelling)
         btnQuiz1.setOnClickListener {
             val intent = Intent(this, SpellQuizActivity::class.java)
-            intent.putExtra("quiz_id", -1) // 이어하기 값 전달
-            intent.putExtra("quiz_count", 1)
+            //intent.putExtra("continue", true)   // ⭐⭐⭐ 핵심
             startActivity(intent)
         }
+
+
 
         // 신조어 퀴즈
         btnQuiz2 = findViewById(R.id.btnQuiz2)
@@ -73,9 +74,10 @@ class MainActivity : AppCompatActivity() {
         btnQuiz2.findViewById< ImageView>(R.id.ivIcon).setImageResource(R.drawable.ic_slang)
         btnQuiz2.setOnClickListener {
             val intent = Intent(this, SlangQuizActivity::class.java)
-            //intent.putExtra("user_id", userId)  // 디미 유진_유저 아이디 값 넘김
+            //intent.putExtra("continue", true)   // ⭐⭐⭐ 핵심
             startActivity(intent)
         }
+
 
         // 저장
         btnSaved = findViewById(R.id.btnSaved)
@@ -197,7 +199,7 @@ class MainActivity : AppCompatActivity() {
                 levelText.text = "Lv.$level"
 
                 // ✅ 게이지 표시(너가 쓰던 방식 그대로: 60문제=100%)
-                val progressPercent = if (totalSolved >= 60) 100 else ((totalSolved / 60.0) * 100).toInt()
+                val progressPercent = if (totalSolved >= 50) 100 else ((totalSolved / 50.0) * 100).toInt()
                 progressBar.setProgress(progressPercent, true)
                 tvCharacterPercent.text = "$progressPercent%"
 
