@@ -13,11 +13,11 @@ import com.google.android.material.button.MaterialButton
 
 class SpellFinalResultActivity : AppCompatActivity() {
 
-    private lateinit var tvSummary: TextView
-    private lateinit var btnKeep: MaterialButton
-    private lateinit var btnHome: MaterialButton
+    private lateinit var tvSummary: TextView // 결과 요약
+    private lateinit var btnKeep: MaterialButton // 이어 풀기 버튼
+    private lateinit var btnHome: MaterialButton // 홈으로 이동 버튼
 
-    // 파이어베이스 진행 상태
+    // 파이어베이스에 저장된 사용자의 퀴즈 진행도를 관리
     private val progressStore by lazy { FirestoreProgress() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,9 +33,10 @@ class SpellFinalResultActivity : AppCompatActivity() {
         btnKeep.isEnabled = false
 
         // 내가 푼 문제 결과
-        val total = intent.getIntExtra("totalSCount", 0)
-        val correct = intent.getIntExtra("correctSCount", 0)
+        val total = intent.getIntExtra("totalSCount", 0) // 전체 푼 문제 수
+        val correct = intent.getIntExtra("correctSCount", 0) // 맞춘 문제 수
 
+        // 화면 문구 설정
         tvSummary.text = """
             수고하셨습니다!
             
@@ -44,10 +45,14 @@ class SpellFinalResultActivity : AppCompatActivity() {
         """.trimIndent()
 
         // 다음 문제 존재 여부 확인
+        // 파이어베이스에서 다음에 풀어야 할 Quiz ID를 가져옴
+        // 로컬 SQLite DB에 실제로 해당 ID의 데이터가 존재하는지 검사
         progressStore.loadSpellNextQuizId(
             onResult = { nextId ->
+                // nextId가 spelling_quiz.db에 있는지 확인
                 val nextQuiz = try {
                     val db = SpellDBManager(this)
+                    // use 블록 -> 사용 후 DB와 Cursor가 자동으로 닫히도록 처리
                     db.readableDatabase.use { database ->
                         val cursor = database.rawQuery(
                             "SELECT id FROM spelling_quiz WHERE id = ?",
@@ -55,7 +60,7 @@ class SpellFinalResultActivity : AppCompatActivity() {
                         )
                         val exists = cursor.moveToFirst()
                         cursor.close()
-                        exists
+                        exists // 데이터 존재 여부 반환
                     }
                 } catch (e: Exception) {
                     false
@@ -68,7 +73,7 @@ class SpellFinalResultActivity : AppCompatActivity() {
                         "모든 맞춤법 학습을 완료하였습니다!",
                         Toast.LENGTH_SHORT
                     ).show()
-                    btnKeep.isEnabled = false
+                    btnKeep.isEnabled = false // 버튼 비활성화 유지
                 } else {
                     // 다음 문제가 있는 경우 -> 다음 학습하기 활성화
                     btnKeep.isEnabled = true
@@ -85,12 +90,12 @@ class SpellFinalResultActivity : AppCompatActivity() {
 
         // 이어서 학습하는 경우
         btnKeep.setOnClickListener {
-
+            // 다시 퀴즈 화면(SpellQuizActivity)으로 이동
             startActivity(
                 Intent(this, SpellQuizActivity::class.java).apply {
                 }
             )
-            finish()
+            finish() // 현재 결과 화면 종료
         }
 
         // 홈으로 이동하는 경우

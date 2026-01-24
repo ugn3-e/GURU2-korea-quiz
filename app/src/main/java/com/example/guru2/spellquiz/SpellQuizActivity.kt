@@ -22,8 +22,8 @@ import com.google.android.material.button.MaterialButton
 class SpellQuizActivity : AppCompatActivity() {
 
     companion object {
-        private const val REQ_RESULT = 1001
-        private const val SET_SIZE = 5
+        private const val REQ_RESULT = 1001 // 결과 화면으로부터 돌아올 때 사용하는 요청 코드
+        private const val SET_SIZE = 5 // 한 세트당 문항 수
     }
 
     // View
@@ -38,16 +38,17 @@ class SpellQuizActivity : AppCompatActivity() {
     private lateinit var btnConfirm: MaterialButton
     private lateinit var choiceButtons: List<MaterialButton>
 
-    // 상태
+    // 현재 퀴즈 상태 관리 변수
     private var currentQuizId = 1        // 문제 ID
-
     private var selectedAnswer = ""
 
+    // 현재 로드된 문제의 상세 데이터
     private var correctAnswer = ""
     private var correctExp = ""
     private var incorrectExp = ""
     private var imagePath = ""
 
+    // 결과 통계를 위한 카운터
     private var totalCount = 0
     private var correctCount = 0
 
@@ -65,10 +66,10 @@ class SpellQuizActivity : AppCompatActivity() {
         progressStore.loadSpellNextQuizId(
             onResult = { nextId ->
                 currentQuizId = nextId
-                loadQuiz()
+                loadQuiz() // 가져온 ID로 첫 문제 로드
             },
             onError = {
-                currentQuizId = 1
+                currentQuizId = 1 // 실패 시 1번 문제부터 시작
                 loadQuiz()
             }
         )
@@ -88,7 +89,7 @@ class SpellQuizActivity : AppCompatActivity() {
         )
     }
 
-    // View
+    // View 연결
     private fun bindViews() {
         tvQNumber = findViewById(R.id.QuizNum)
         tvQuestion = findViewById(R.id.QuizText)
@@ -102,8 +103,8 @@ class SpellQuizActivity : AppCompatActivity() {
 
         choiceButtons = listOf(btn1, btn2, btn3)
 
-        resetChoiceButtons()
-        disableConfirmButton()
+        resetChoiceButtons() // 버튼 UI 초기화
+        disableConfirmButton() // 확인 버튼 비활성화 상태
     }
 
     // 클릭
@@ -112,12 +113,13 @@ class SpellQuizActivity : AppCompatActivity() {
         btn2.setOnClickListener { onChoiceSelected(btn2) }
         btn3.setOnClickListener { onChoiceSelected(btn3) }
 
+        // 확인 버튼 클릭 -> 결과 페이지 이동
         btnConfirm.setOnClickListener {
             moveToResultPage()
         }
     }
 
-    // 문제 로딩
+    // DB에서 currentQuizId에 해당하는 문제 로딩
     private fun loadQuiz() {
 
         val dbManager = SpellDBManager(this)
@@ -144,6 +146,7 @@ class SpellQuizActivity : AppCompatActivity() {
         // DB에서 문제, 선택지, 정답, 해설, 이미지 경로 추출
         tvQuestion.text = cursor.getString(cursor.getColumnIndexOrThrow("sentence"))
 
+        // DB 컬럼 데이터를 변수에 할당
         btn1.text = cursor.getString(cursor.getColumnIndexOrThrow("choice1"))
         btn2.text = cursor.getString(cursor.getColumnIndexOrThrow("choice2"))
         btn3.text = cursor.getString(cursor.getColumnIndexOrThrow("choice3"))
@@ -175,7 +178,7 @@ class SpellQuizActivity : AppCompatActivity() {
 
     // 선택지 클릭했을 때
     private fun onChoiceSelected(btn: MaterialButton) {
-        resetChoiceButtons()
+        resetChoiceButtons() // 모든 버튼 리셋
 
         // ui 변화
         btn.backgroundTintList =
@@ -186,7 +189,7 @@ class SpellQuizActivity : AppCompatActivity() {
         btn.strokeWidth = 2
 
         selectedAnswer = btn.text.toString()
-        enableConfirmButton()
+        enableConfirmButton() // 확인 버튼 클릭 가능
     }
 
     // 버튼들 초기화 상태로 만들기
@@ -233,9 +236,10 @@ class SpellQuizActivity : AppCompatActivity() {
     private fun moveToResultPage() {
         val isCorrect = selectedAnswer == correctAnswer
 
-        totalCount++
-        if (isCorrect) correctCount++
+        totalCount++ // 푼 문제 수 증가
+        if (isCorrect) correctCount++ // 맞은 문제 수 증가
 
+        // 레벨 업데이트
         FirestoreLevelStore().addSolved1(
             onSuccess = { _, _ -> },
             onFail = { e -> Log.e("SPELL_LEVEL", "fail", e) }
@@ -260,6 +264,7 @@ class SpellQuizActivity : AppCompatActivity() {
         // Q가 5번이면 무조건 세트 종료
         val isEndOfSet = ((currentQuizId - 1) % SET_SIZE) == 0
 
+        // 결과 화면으로 데이터 전달
         val intent = Intent(this, SpellResultActivity::class.java).apply {
             putExtra("isCorrect", isCorrect)
             putExtra("sentence", tvQuestion.text.toString())
@@ -280,8 +285,8 @@ class SpellQuizActivity : AppCompatActivity() {
 
         if (requestCode == REQ_RESULT && resultCode == RESULT_OK) {
             val isEnd = data?.getBooleanExtra("isEndOfPart", false) ?: false
-            if (isEnd) moveToFinalResult()
-            else loadQuiz()
+            if (isEnd) moveToFinalResult() // 5문제를 다 풀었으면 최종 요약 화면으로
+            else loadQuiz() // 아직 세트가 안 끝났으면 다음 문제 로드
         }
     }
 

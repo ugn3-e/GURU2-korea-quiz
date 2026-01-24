@@ -23,7 +23,7 @@ class SlangQuizActivity : AppCompatActivity() {
 
     // 결과 화면 -> 다음 문제 화면으로 넘어갈 때 확인을 위한 번호
     companion object {
-        private const val REQ_RESULT = 1001
+        private const val REQ_RESULT = 1001 // 결과 화면 액티비티 요청 코드
         private const val SET_SIZE = 5 // 일일 퀴즈 개수
     }
 
@@ -58,24 +58,24 @@ class SlangQuizActivity : AppCompatActivity() {
     private var selectedAnswer = ""
     private lateinit var currentQuiz: SlangQuizData
 
-    // Firestore 진행 상태
+    // Firestore 진행 상태 관리
     private val progressStore by lazy { FirestoreProgress() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_slang_quiz)
 
-        bindViews()
-        setClickListeners()
+        bindViews() // 뷰 연결
+        setClickListeners() // 버튼 클릭 리스너 설정
 
-        // Firestore에서 nextQuizId만 복원
+        // Firestore에서 nextQuizId만 복원 -> 이전에 풀었던 다음 문제 ID 불러옴
         progressStore.loadSlangNextQuizId(
             onResult = { nextId ->
                 currentQuizId = nextId
                 loadQuizFromDB()
             },
             onError = {
-                loadQuizFromDB()
+                loadQuizFromDB() // 실패 시 처음부터 혹은 현재 로컬 ID로 진행
             }
         )
 
@@ -93,7 +93,7 @@ class SlangQuizActivity : AppCompatActivity() {
         )
     }
 
-    // View
+    // View 연결
     private fun bindViews() {
         tvQNumber = findViewById(R.id.QText)
         tvQuestion = findViewById(R.id.tvQuestion)
@@ -111,9 +111,9 @@ class SlangQuizActivity : AppCompatActivity() {
 
         choiceButtons = listOf(btn1, btn2, btn3, btn4)
 
-        resetChoiceButtons()
-        disableConfirmButton()
-        imgExample.visibility = View.GONE
+        resetChoiceButtons() // 버튼 UI 초기화
+        disableConfirmButton() // 확인 버튼 비활성화
+        imgExample.visibility = View.GONE // 예시 이미지는 처음에 숨김
     }
 
     // 클릭
@@ -123,16 +123,19 @@ class SlangQuizActivity : AppCompatActivity() {
         btn3.setOnClickListener { onChoiceSelected(btn3) }
         btn4.setOnClickListener { onChoiceSelected(btn4) }
 
+        // '상황 예시 보기' 클릭 시 강아지 숨기고 이미지 표시
         btnShowExample.setOnClickListener {
             imgExample.visibility = View.VISIBLE
             dogImage.visibility = View.GONE
         }
 
+        // 이미지 클릭 시 다시 강아지로 복구
         imgExample.setOnClickListener {
             imgExample.visibility = View.GONE
             dogImage.visibility = View.VISIBLE
         }
 
+        // 제출 확인 버튼
         btnConfirm.setOnClickListener { moveToResultPage() }
     }
 
@@ -148,6 +151,7 @@ class SlangQuizActivity : AppCompatActivity() {
 
         currentQuiz = quiz
 
+        // 문제 번호 (1~5 사이 반복)
         val qNumber = ((currentQuizId - 1) % 5) + 1
         tvQNumber.text = "Q$qNumber"
 
@@ -162,7 +166,7 @@ class SlangQuizActivity : AppCompatActivity() {
         // 선택지 섞기
         setShuffledChoices(quiz)
 
-        imgExample.visibility = View.GONE // 상황 이미지느 안나오게
+        imgExample.visibility = View.GONE // 상황 이미지는 안나오게
         dogImage.visibility = View.VISIBLE // 강아지 다시 나오게
 
         val rawImage = quiz.exampleImage
@@ -181,7 +185,7 @@ class SlangQuizActivity : AppCompatActivity() {
 
     // 선택지 클릭 시 ui 변화
     private fun onChoiceSelected(selected: MaterialButton) {
-        resetChoiceButtons()
+        resetChoiceButtons() // 모두 초기화 후
 
         selected.strokeColor =
             ColorStateList.valueOf(getColor(R.color.button_selected_stroke))
@@ -192,9 +196,10 @@ class SlangQuizActivity : AppCompatActivity() {
         selected.setTextColor(getColor(R.color.choice_text_selected)) // ⭐ 핵심
 
         selectedAnswer = selected.text.toString()
-        enableConfirmButton()
+        enableConfirmButton() // 제출 가능 상태로 변경
     }
 
+    // 선택지 버튼 ui 기본값으로
     private fun resetChoiceButtons() {
         choiceButtons.forEach {
             it.backgroundTintList =
@@ -206,6 +211,7 @@ class SlangQuizActivity : AppCompatActivity() {
         selectedAnswer = ""
     }
 
+    // 제출 확인 버튼 활성화 ui로 변경
     private fun enableConfirmButton() {
         btnConfirm.isEnabled = true
         btnConfirm.backgroundTintList =
@@ -219,6 +225,7 @@ class SlangQuizActivity : AppCompatActivity() {
         )
     }
 
+    // 제출 확인 버튼 비활성화 ui로 변경
     private fun disableConfirmButton() {
         btnConfirm.isEnabled = false
         btnConfirm.backgroundTintList =
@@ -242,7 +249,7 @@ class SlangQuizActivity : AppCompatActivity() {
             quiz.choice4
         )
 
-        choices.shuffle()
+        choices.shuffle() // 리스트 무작위 섞기
 
         // 섞인 결과 로그
         Log.d("Clog", "Q${quiz.id} 섞인 보기 = $choices")

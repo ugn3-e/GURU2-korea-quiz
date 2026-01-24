@@ -25,7 +25,7 @@ class SpellResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spell_result)
 
-        // View
+        // View 연결
         val tvResult = findViewById<TextView>(R.id.ResultText)
         val tvQuizText = findViewById<TextView>(R.id.QuizText)
         val tvAnswer = findViewById<TextView>(R.id.QuizAnswer)

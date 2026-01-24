@@ -18,32 +18,39 @@ class SpellDBManager(
     }
 
     private fun copyDatabase() {
-        val dbPath = context.getDatabasePath("spelling_quiz.db") // DB 경로
+        val dbPath = context.getDatabasePath("spelling_quiz.db") // 앱 내부의 DB 저장 경로 추출
 
-        // 파일 없으면
+        // 해당 경로에 DB 파일이 없을 경우
         if (!dbPath.exists()) {
             try {
+                // assets 폴더에서 원본 DB 파일 읽기
                 val inputStream = context.assets.open("spelling_quiz.db")
 
                 // assets에 있는 db 경로로 복사
                 val outputStream = FileOutputStream(dbPath)
+
+                // 1KB 단위로 데이터 복사
                 val buffer = ByteArray(1024)
                 var length: Int
                 while(inputStream.read(buffer).also { length = it } > 0) {
                     outputStream.write(buffer, 0, length)
                 }
+
+                // 스트림 닫기 및 버퍼 비우기
                 outputStream.flush()
                 outputStream.close()
                 inputStream.close()
             } catch (e: Exception) {
+                // 파일 복사 중 오류 발생 시 로그 출력
                 e.printStackTrace()
             }
         }
     }
     override fun onCreate(db: SQLiteDatabase?) {
-        // 파일에 테이블 있으니 비워두기
+        // 이미 파일에 테이블 있으니 비워두기
     }
 
+    // DB 버전이 변경될 때 수행할 로직
     override fun onUpgrade(
         db: SQLiteDatabase?,
         oldVersion: Int,
@@ -54,7 +61,7 @@ class SpellDBManager(
 
     // 한 문제만 가져오기
     fun getQuizById(id: Int) : QuizData? {
-        val db = this.readableDatabase
+        val db = this.readableDatabase // 읽기 전용 DB 연결
 
         // id가 입력값과 같은 행을 선택
         var cursor = db.rawQuery("SELECT * FROM spelling_quiz WHERE id = ?", arrayOf(id.toString()))
@@ -77,12 +84,14 @@ class SpellDBManager(
     }
 
 
+    // DB에 저장된 모든 퀴즈 목록 반환
     fun getAllQuizzed(): List<QuizData> {
         val list = mutableListOf<QuizData>()
         val db = this.readableDatabase
 
         val cursor = db.rawQuery("SELECT * FROM spelling_quiz", null)
 
+        // 커서를 처음부터 끝까지 이동하며 리스트에 담기
         if(cursor.moveToFirst()) {
             do {
                 list.add(
@@ -103,10 +112,11 @@ class SpellDBManager(
         return list
     }
 
-    // 콘텐츠 저장한 목록
+    // 콘텐츠 저장한 퀴즈 목록 가져오기
     fun getSavedQuizzes(): List<QuizData> {
         val list = mutableListOf<QuizData>()
         val db = this.readableDatabase
+
         // is_saved가 1인 데이터만 최신으로(id 역순) 가져옴
         val cursor = db.rawQuery("SELECT * FROM spelling_quiz WHERE is_saved = 1 ORDER BY id DESC", null)
 
@@ -130,16 +140,19 @@ class SpellDBManager(
         return list
     }
 
-    // 콘텐츠 저장하기
+    // 콘텐츠를 저장 상태로 업데이트
     fun saveQuizContent(id: Int, date: String) {
         val db = this.writableDatabase
+
+        // 업데이트할 데이터를 key-value 쌍으로 구성
         val values = ContentValues().apply {
             put("is_saved", 1)       // 저장 상태 1로 변경
             put("saved_date", date)  // 현재 날짜 저장
         }
 
+        // 해당 ID의 행을 찾아 업데이트 실행
         val rows = db.update("spelling_quiz", values, "id = ?", arrayOf(id.toString()))
         Log.d("DB_CHECK", "수정된 행 개수: $rows (id: $id)")
-        db.close()
+        db.close() // 작업 완료 후 DB 닫기
     }
 }
