@@ -28,9 +28,9 @@ class SurveyQ3Fragment : Fragment(R.layout.fragment_survey_q3) {
         val btnNext = view.findViewById<Button>(R.id.btnNext)
 
         val defaultColor =
-            ContextCompat.getColorStateList(requireContext(), R.color.white) // 하얀색
+            ContextCompat.getColorStateList(requireContext(), R.color.button_default_bg) // 하얀색
         val textDefaultColor =
-            ContextCompat.getColor(requireContext(), R.color.black)
+            ContextCompat.getColor(requireContext(), R.color.button_text_default)
         val selectedColor =
             ContextCompat.getColorStateList(requireContext(), R.color.confirm_active) // 파란색
         val textSelectedColor =

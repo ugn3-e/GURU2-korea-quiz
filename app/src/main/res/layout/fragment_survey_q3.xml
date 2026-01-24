@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF"
+    android:background="@color/white"
     tools:context=".SurveyQ3Fragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -13,20 +13,21 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/mainToolbar"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:background="#FFF"
+            android:background="@color/toolbar_color"
             android:paddingVertical="8dp"
             app:menu="@menu/menu_main"
             app:title="Quiz"
             app:titleTextAppearance="@style/ToolbarTitleBold"
             app:titleTextColor="@android:color/black" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -37,17 +38,19 @@
     <!--질문-->
     <TextView
         android:id="@+id/Q3TextView"
-        android:layout_width="226dp"
-        android:layout_height="58dp"
-        android:layout_marginBottom="40dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="80dp"
         android:text="헷갈리는 신조어 혹은 \n 줄임말에는 어떤 것들이 있나요?"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/editText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
     <!--직접 입력-->
 
@@ -57,33 +60,34 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
+        android:layout_marginTop="160dp"
         android:layout_marginEnd="40dp"
-        android:layout_marginBottom="255dp"
         android:background="@drawable/bg_edittext"
-        android:hint="평소 궁금했던 신조어 표현을 직접 입력해주세요."
+        android:hint="평소 궁금했던 신조어 표현을 \n직접 입력해주세요."
         android:padding="40dp"
         android:selectAllOnFocus="false"
         android:singleLine="false"
         android:textAlignment="center"
-        android:textSize="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnNext"
+        android:textColor="@color/button_text_default"
+        android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Q3TextView" />
 
     <Button
         android:id="@+id/btnNext"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="66dp"
+        android:layout_marginBottom="70dp"
         android:text="다음"
-        android:textColor="#323234"
-        app:backgroundTint="#FFF"
+        android:textColor="@color/button_text_default"
+        app:backgroundTint="@color/button_default_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="#B1B2B4"
+        app:strokeColor="@color/button_default_stroke"
         app:strokeWidth="1dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

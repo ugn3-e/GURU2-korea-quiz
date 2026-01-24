@@ -65,7 +65,7 @@ class SurveyQ1Fragment : Fragment(R.layout.fragment_survey_q1) {
 
         // 배경색 변수
         val defaultColor =
-            ContextCompat.getColorStateList(requireContext(), R.color.white) // 하얀색
+            ContextCompat.getColorStateList(requireContext(), R.color.button_default_bg) // 하얀색
         val selectedColor =
             ContextCompat.getColorStateList(requireContext(), R.color.confirm_active) // 파란색
         val selectedColorNext =
@@ -73,7 +73,7 @@ class SurveyQ1Fragment : Fragment(R.layout.fragment_survey_q1) {
 
         // 글자색 변수
         val textDefaultColor =
-            ContextCompat.getColor(requireContext(), R.color.black)
+            ContextCompat.getColor(requireContext(), R.color.button_text_default)
         val textSelectedColor =
             ContextCompat.getColor(requireContext(), R.color.white)
         val textSelectedColor2 =
@@ -81,7 +81,7 @@ class SurveyQ1Fragment : Fragment(R.layout.fragment_survey_q1) {
 
         // 테두리색 변수
         val strokeDefaultColor =
-            ContextCompat.getColorStateList(requireContext(), R.color.choice_selected_stroke)
+            ContextCompat.getColorStateList(requireContext(), R.color.button_default_stroke)
         val strokeSelectedColor =
             ContextCompat.getColorStateList(requireContext(), R.color.confirm_active)
 
