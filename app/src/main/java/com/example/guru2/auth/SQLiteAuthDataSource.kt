@@ -1,4 +1,4 @@
-package com.example.guru2.auth
+package com.example.guru2.db
 
 import android.content.ContentValues
 import android.content.Context
