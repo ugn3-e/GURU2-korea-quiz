@@ -28,6 +28,8 @@
     <color name="button_default_stroke">#B1B2B4</color>
     <color name="button_selected_stroke">#1E35CB</color>
 
+    <color name="toolbar_color">#FCFCFC</color>
+
     <!-- 선택지 텍스트 -->
 <!--    <color name="choice_text_default">#646568</color>-->
     <color name="choice_text_selected">#1E35CB</color>

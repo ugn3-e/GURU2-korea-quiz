@@ -21,12 +21,12 @@
             android:id="@+id/mainToolbar"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:background="@color/white"
+            android:background="@color/toolbar_color"
             android:paddingVertical="8dp"
-            app:title="Quiz"
-            app:titleTextColor="@android:color/black"
             app:menu="@menu/menu_main"
-            app:titleTextAppearance="@style/ToolbarTitleBold"/>
+            app:title="Quiz"
+            app:titleTextAppearance="@style/ToolbarTitleBold"
+            app:titleTextColor="@android:color/black" />
 
         <View
             android:layout_width="match_parent"
@@ -76,7 +76,7 @@
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="74dp"
 
         android:insetTop="0dp"
         android:insetBottom="0dp"
@@ -87,13 +87,13 @@
         android:textStyle="bold"
 
         app:backgroundTint="@color/confirm_active"
-        app:cornerRadius="60dp"
-        app:strokeWidth="1dp"
-        app:strokeColor="@color/button_selected_stroke"
-
+        app:cornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:strokeColor="@color/button_selected_stroke"
+        app:strokeWidth="1dp" />
 
     <!-- 홈으로 돌아가기 버튼 -->
     <com.google.android.material.button.MaterialButton
@@ -102,7 +102,7 @@
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="12dp"
 
         android:insetTop="0dp"
         android:insetBottom="0dp"

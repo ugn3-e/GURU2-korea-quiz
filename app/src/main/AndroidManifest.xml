@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GURU2">
-        <activity
-            android:name=".WrongBar"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".WrongBar"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".mypage.EditProfileActivity"
             android:exported="false" />

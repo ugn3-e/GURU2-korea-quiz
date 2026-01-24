@@ -43,15 +43,16 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
-        <TextView
-            android:id="@+id/btnGrammar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="맞춤법 퀴즈"
-            android:textStyle="bold"
-            android:textColor="#1E35CB"
-            android:background="@android:color/transparent"/>
+
+            <TextView
+                android:id="@+id/btnGrammar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="맞춤법 퀴즈"
+                android:textColor="@color/choice_text_selected"
+                android:textStyle="bold" />
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
@@ -64,15 +65,15 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/btnSlang"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="신조어 퀴즈"
-            android:textStyle="bold"
-            android:textColor="#555555"
-            android:background="@android:color/transparent"/>
+            <TextView
+                android:id="@+id/btnSlang"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="신조어 퀴즈"
+                android:textColor="@color/button_text_default"
+                android:textStyle="bold" />
         </FrameLayout>
     </LinearLayout>
 
@@ -80,23 +81,25 @@
         android:id="@+id/imgDog"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginEnd="245dp"
-        android:layout_marginBottom="88dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="-30dp"
         android:src="@drawable/content_dog"
-        app:layout_constraintBottom_toBottomOf="@+id/contentArea"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnBack"
         app:layout_constraintStart_toStartOf="parent" />
 
     <!-- 뒤로가기 버튼 -->
     <Button
         android:id="@+id/btnBack"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="70dp"
-        android:backgroundTint="#1E35CB"
+        android:backgroundTint="@color/confirm_active"
         android:text="뒤로가기"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -106,7 +109,6 @@
         android:id="@+id/contentArea"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -121,6 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="바른 표현"
+            android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -132,9 +135,9 @@
             android:id="@+id/imgPlaceholder"
             android:layout_width="0dp"
             android:layout_height="180dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvCorrect" />
@@ -144,9 +147,9 @@
             android:id="@+id/tvSentence"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="24dp"
             android:text="문장 예시"
             android:textAlignment="center"
             android:textColor="@color/black"
@@ -159,11 +162,11 @@
         <View
             android:id="@+id/dividerSentence"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="32dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="12dp"
-            android:layout_marginEnd="32dp"
-            android:background="#D3D3D3"
+            android:layout_marginEnd="24dp"
+            android:background="#E0E0E0"
             app:layout_constraintEnd_toEndOf="@id/tvSentence"
             app:layout_constraintStart_toStartOf="@id/tvSentence"
             app:layout_constraintTop_toBottomOf="@id/tvSentence" />
@@ -173,14 +176,13 @@
             android:id="@+id/tvIncorrectExp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="24dp"
             android:text="틀린 이유 설명"
             android:textAlignment="center"
-            android:textColor="#646568"
+            android:textColor="@color/button_text_default"
             android:textSize="14sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvSentence" />

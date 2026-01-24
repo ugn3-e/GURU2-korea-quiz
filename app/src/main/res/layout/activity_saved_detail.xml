@@ -20,13 +20,13 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/mainToolbar"
-            app:menu="@menu/menu_main"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:background="#FFFFFF"
+            android:background="@color/toolbar_color"
+            app:menu="@menu/menu_main"
             app:title="저장한 콘텐츠"
-            app:titleTextColor="#333333"
-            app:titleTextAppearance="@style/ToolbarTitleBold"/>
+            app:titleTextAppearance="@style/ToolbarTitleBold"
+            app:titleTextColor="@color/black" />
 
         <View
             android:layout_width="match_parent"
@@ -46,9 +46,11 @@
 
     <TextView
         android:id="@+id/saved_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
         android:text="TextView"
         android:textAlignment="center"
         android:textColor="@color/black"
@@ -61,7 +63,7 @@
     <ImageView
         android:id="@+id/saved_img"
         android:layout_width="0dp"
-        android:layout_height="180dp"
+        android:layout_height="200dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="24dp"
@@ -75,7 +77,7 @@
         android:id="@+id/saved_sentence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="TextView"
         android:textAlignment="center"
         android:textColor="@color/black"
@@ -92,7 +94,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="24dp"
         android:background="#E0E0E0"
         app:layout_constraintEnd_toEndOf="parent"
@@ -102,7 +104,7 @@
     <TextView
         android:id="@+id/saved_exp"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
@@ -111,20 +113,20 @@
         android:textColor="@color/button_text_default"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.566"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="70dp"
         android:backgroundTint="@color/confirm_active"
         android:text="뒤로 가기"
         android:textColor="@color/white"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
