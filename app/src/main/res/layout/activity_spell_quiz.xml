@@ -57,7 +57,7 @@
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="24dp"
-            android:text="다음 빈칸에 들어갈 단어의 올바른 맞춤법 표기를 선택하세요"
+            android:text="다음 빈칸에 들어갈 단어의 \n올바른 맞춤법 표기를 선택하세요"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
