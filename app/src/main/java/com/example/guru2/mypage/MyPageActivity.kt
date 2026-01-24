@@ -21,6 +21,14 @@ class MyPageActivity : AppCompatActivity() {
 
     lateinit var toolbar: Toolbar
 
+    // onResume에서 사용하기 위해 멤버 변수로 선언
+    lateinit var tvNickname: TextView
+    lateinit var tvNotice: TextView
+    lateinit var tvLevel: TextView
+    lateinit var tvProgress: TextView
+    lateinit var progressLevel: ProgressBar
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_page2)
@@ -31,11 +39,11 @@ class MyPageActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         // View 연결
-        val tvNickname = findViewById<TextView>(R.id.tvNickname)
-        val tvNotice = findViewById<TextView>(R.id.tvNotice)
-        val tvLevel = findViewById<TextView>(R.id.tvLevel)
-        val tvProgress = findViewById<TextView>(R.id.tvProgress)
-        val progressLevel = findViewById<ProgressBar>(R.id.progressLevel)
+        tvNickname = findViewById<TextView>(R.id.tvNickname)
+        tvNotice = findViewById<TextView>(R.id.tvNotice)
+        tvLevel = findViewById<TextView>(R.id.tvLevel)
+        tvProgress = findViewById<TextView>(R.id.tvProgress)
+        progressLevel = findViewById<ProgressBar>(R.id.progressLevel)
 
         val btnHome = findViewById<Button>(R.id.btnHome)
         val cardEditProfile = findViewById<View>(R.id.cardEditProfile)
@@ -52,7 +60,40 @@ class MyPageActivity : AppCompatActivity() {
             return
         }
 
-        // Firestore → 메인과 동일한 레벨 / 게이지 계산
+        // 최초 진입 시 데이터 로드
+        loadMyPageData()
+
+        // 홈으로 이동
+        btnHome.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+            finish()
+        }
+
+        // 로그아웃
+        btnLogout.setOnClickListener {
+            auth.signOut()
+            getSharedPreferences("auth", MODE_PRIVATE).edit().clear().apply()
+            goLogin(clearTask = true)
+        }
+
+        // 프로필 수정 화면으로 이동
+        cardEditProfile.setOnClickListener {
+            startActivity(Intent(this, EditProfileActivity::class.java))
+        }
+    }
+
+    // 프로필 수정 후 돌아올 때도 최신 정보 반영
+    override fun onResume() {
+        super.onResume()
+        loadMyPageData()
+    }
+
+    // Firestore → 메인과 동일한 레벨 / 게이지 계산
+    private fun loadMyPageData() {
+        val uid = auth.currentUser?.uid ?: return
+
         firestore.collection("users").document(uid).get()
             .addOnSuccessListener { doc ->
                 if (!doc.exists()) {
@@ -88,26 +129,6 @@ class MyPageActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-
-        // 홈으로 이동
-        btnHome.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            startActivity(intent)
-            finish()
-        }
-
-        // 로그아웃
-        btnLogout.setOnClickListener {
-            auth.signOut()
-            getSharedPreferences("auth", MODE_PRIVATE).edit().clear().apply()
-            goLogin(clearTask = true)
-        }
-
-        // 프로필 수정 화면으로 이동
-        cardEditProfile.setOnClickListener {
-            startActivity(Intent(this, EditProfileActivity::class.java))
-        }
     }
 
     // 로그인 화면으로 이동
