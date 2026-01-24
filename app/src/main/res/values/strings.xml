@@ -3,7 +3,6 @@
     <string name="btnQuiz1" translatable="false">맞춤법 퀴즈</string>
     <string name="btnQuiz2" translatable="false">신조어 퀴즈</string>
     <string name="action_survey" translatable="false">설문조사</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 
     <string-array name="genders">

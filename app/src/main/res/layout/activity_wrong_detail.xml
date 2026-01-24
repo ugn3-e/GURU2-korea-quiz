@@ -20,7 +20,7 @@
         app:titleTextColor="@color/black"
         app:titleTextAppearance="@style/ToolbarTitleBold"/>
 
-    <!-- 서브 바 (퀴즈 유형 선택) -->
+    <!-- 서브 바 (퀴즈 선택) -->
     <LinearLayout
         android:id="@+id/subBar"
         android:layout_width="0dp"

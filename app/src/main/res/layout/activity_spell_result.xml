@@ -12,7 +12,7 @@
         android:background="#FFF"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <!-- ================= 상단 AppBar ================= -->
+        <!-- 상단 AppBar -->
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
             android:layout_width="0dp"
@@ -179,14 +179,13 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!--☑️ 스크롤 뷰 추가 (긴 문장 때문에) -->
+    <!-- 스크롤 뷰 추가  -->
 
     <FrameLayout
         android:id="@+id/bubbleOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" >
-        <!--tools:visibility="visible"-->
 
         <FrameLayout
             android:id="@+id/bubbleContainer"

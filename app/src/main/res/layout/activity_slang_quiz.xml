@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
-    <!-- ================= 상단 AppBar ================= -->
+    <!-- 상단 AppBar -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="0dp"
@@ -57,10 +57,7 @@
         app:strokeColor="@color/button_text_default"
         app:strokeWidth="1dp" />
 
-
-
-
-    <!-- ================= 콘텐츠 영역 ================= -->
+    <!-- 콘텐츠 영역 -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contentArea"
         android:layout_width="0dp"
@@ -216,7 +213,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnChoice4" />
 
-        <!-- 상황 예시 이미지 (결과 화면과 동일 크기) -->
+        <!-- 상황 예시 이미지 -->
         <ImageView
             android:id="@+id/DogImage"
             android:layout_width="100dp"

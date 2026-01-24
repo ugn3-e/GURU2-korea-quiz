@@ -7,7 +7,6 @@
     android:background="@color/white"
     tools:context=".SurveyQ1Fragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="0dp"

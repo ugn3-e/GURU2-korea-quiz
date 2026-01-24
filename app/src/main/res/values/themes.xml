@@ -1,13 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.GURU2" parent="Theme.Material3.DayNight.NoActionBar">
-<!--        다른 분들 애뮬레이터에서 뭔가 잘 나오면 삭제 하거나 다른 방법 찾아보기,,, -->
         <item name="android:windowLightStatusBar">true</item>
 
         <item name="android:windowTranslucentStatus">false</item>
 
         <item name="popupMenuBackground">@android:color/transparent</item>
         <item name="android:itemBackground">#E9ECFF</item>
+
         <!-- Customize your light theme here. -->
     </style>
 

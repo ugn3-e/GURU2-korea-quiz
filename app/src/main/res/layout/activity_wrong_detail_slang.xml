@@ -29,7 +29,7 @@
         android:background="#7D7E82"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- SubBar (탭 영역) -->
+    <!-- SubBar (퀴즈 선택) -->
     <LinearLayout
         android:id="@+id/subBar"
         android:layout_width="0dp"

@@ -7,10 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-<!--    상단바 -->
-
-    <!--    슈니님 파트-->
-
+<!-- 상단바 -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="0dp"
@@ -45,6 +42,7 @@
             android:background="#E0E0E0" />
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- 슈니님 파트-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -63,18 +61,6 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
-
-<!--        <TextView-->
-<!--            android:id="@+id/level"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="16dp"-->
-<!--            android:layout_marginTop="32dp"-->
-<!--            android:text="레벨"-->
-<!--            android:textSize="16sp"-->
-<!--            android:textStyle="bold"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/appBar" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,6 +89,7 @@
 
         </LinearLayout>
 
+<!--        강아지 파트-->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="220dp"
@@ -163,7 +150,7 @@
             android:orientation="vertical"
             android:padding="15dp">
 
-            <!--        여기서부터 학습하기 -->
+            <!-- 학습하기 파트 -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

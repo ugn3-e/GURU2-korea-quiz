@@ -2,10 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-<!--    <color name="choice_default">#D3C5FA</color>   &lt;!&ndash; 기본 &ndash;&gt;-->
-<!--    <color name="choice_selected">#6851A5</color>  &lt;!&ndash; 선택됨 &ndash;&gt;-->
-<!--    <color name="confirm_default">#D3C5FA</color>  &lt;!&ndash; 비활성 &ndash;&gt;-->
-<!--    <color name="confirm_active">#6851A5</color>   &lt;!&ndash; 활성 &ndash;&gt;-->
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
@@ -13,14 +9,12 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
 
-    <color name="choice_default">#E9ECFF</color>   <!-- 기본 -->
-    <color name="choice_selected">#6851A5</color>  <!-- 선택됨 -->
-    <color name="confirm_default">#D3C5FA</color>  <!-- 비활성 -->
-    <color name="confirm_active">#1E35CB</color>   <!-- 활성-->
+    <color name="choice_default">#E9ECFF</color>
+    <color name="choice_selected">#6851A5</color>
+    <color name="confirm_default">#D3C5FA</color>
+    <color name="confirm_active">#1E35CB</color>
     <color name="choice_selected_stroke">#B1B2B4</color>
 
-
-    <!-- 디미 유진 추가 -->
     <color name="choice_selected_bg">#E9ECFF</color>
 
     <color name="button_default_bg">#F4F4F4</color>
@@ -31,22 +25,20 @@
     <color name="toolbar_color">#FCFCFC</color>
 
     <!-- 선택지 텍스트 -->
-<!--    <color name="choice_text_default">#646568</color>-->
     <color name="choice_text_selected">#1E35CB</color>
 
     <!-- 확인 텍스트 -->
-<!--    <color name="confirm_text_disabled">#646568</color>-->
     <color name="confirm_text_active">#FFFFFF</color>
 
     <color name="choice_defalut_button">#FF000000</color>
     <color name="choice_selected_button">#FFF</color>
 
-    <color name="point_color">#ED3B64</color> <!-- 마이페이지에서 로그아웃 버튼 색상 -->
+    <!-- 마이페이지에서 로그아웃 버튼 색상 -->
+    <color name="point_color">#ED3B64</color>
 
     <color name="spell_defalut_text">#646568</color>
     <color name="spell_default_stroke">#CBCBCD</color>
     <color name="spell_defalut_bg">#FAFAFA</color>
-
 
 
 </resources>

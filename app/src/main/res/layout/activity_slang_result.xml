@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
-    <!-- ================= 상단 AppBar ================= -->
+    <!-- 상단 AppBar -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="0dp"
@@ -33,13 +33,9 @@
             android:background="#E0E0E0" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- ===============================
-         하단 버튼
-    =============================== -->
+    <!--  하단 버튼-->
 
-    <!-- ===============================
-         콘텐츠 영역 (중요!)
-    =============================== -->
+    <!-- 콘텐츠 영역 -->
 
     <ImageView
         android:id="@+id/imgDog2"
@@ -107,7 +103,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imgExample" />
 
-        <!-- 상황 예시 이미지 (두 번째 레이아웃 방식) -->
+        <!-- 상황 예시 이미지 -->
         <ImageView
             android:id="@+id/imgExample"
             android:layout_width="0dp"
