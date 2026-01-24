@@ -41,7 +41,7 @@ class SpellResultActivity : AppCompatActivity() {
         // ================= Intent 데이터 =================
         val isCorrect = intent.getBooleanExtra("isCorrect", false)
         val sentence = intent.getStringExtra("sentence") ?: ""
-        val correctExp = intent.getStringExtra("correct_exp") ?: ""
+        val correctExp = intent.getStringExtra("incorrect_exp") ?: ""
         val incorrectExp = intent.getStringExtra("incorrect_exp") ?: ""
         val imagePath = intent.getStringExtra("image_path") ?: ""
         val quizId = intent.getIntExtra("quiz_id", -1)
