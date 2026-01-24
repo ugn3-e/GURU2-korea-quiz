@@ -4,25 +4,26 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.guru2.R
-import com.example.guru2.auth.AuthRepository
-import com.example.guru2.auth.SQLiteAuthDataSource
 import android.content.Intent
-import com.example.guru2.login.LoginActivity
 import java.util.Locale
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
+// 회원가입 화면
 class SignupActivity : AppCompatActivity() {
 
+    // FirebaseAuth / Firestore 인스턴스
     private val auth by lazy { FirebaseAuth.getInstance() }
     private val db by lazy { FirebaseFirestore.getInstance() }
 
+    // username → email 변환
     private fun toEmail(username: String): String = "${username}@guru2.local"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
+        // 입력 UI 연결
         val etId = findViewById<EditText>(R.id.etId)
         val etPw = findViewById<EditText>(R.id.etPw)
         val etNick = findViewById<EditText>(R.id.etNickname)
@@ -30,7 +31,7 @@ class SignupActivity : AppCompatActivity() {
         val spGender = findViewById<Spinner>(R.id.spGender)
         val spCountry = findViewById<Spinner>(R.id.spCountry)
 
-        /* 국적 Spinner 세팅 */
+        // 국적 Spinner 세팅
         val countryList = Locale.getISOCountries()
             .map { code ->
                 Locale("", code).displayCountry
@@ -50,15 +51,19 @@ class SignupActivity : AppCompatActivity() {
         )
         spCountry.adapter = countryAdapter
 
+        // 회원가입 버튼 클릭
         findViewById<Button>(R.id.btnSignup).setOnClickListener {
+            // 입력값 가져오기
             val username = etId.text.toString().trim()
             val password = etPw.text.toString()
             val nickname = etNick.text.toString().trim()
             val ageText = etAge.text.toString().trim()
 
+            // Spinner 값 가져오기
             val gender = spGender.selectedItem.toString()
             val country = spCountry.selectedItem.toString()
 
+            // username → email 변환
             val email = toEmail(username)
 
             // 나이 숫자로 입력 받기
@@ -68,10 +73,13 @@ class SignupActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // Firebase 계정 생성
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener {
+                    // 생성된 유저 uid 가져오기
                     val uid = auth.currentUser?.uid ?: return@addOnSuccessListener
 
+                    // Firebase에 저장할 프로필 데이터 구성
                     val profile = hashMapOf(
                         "username" to username,
                         "nickname" to nickname,

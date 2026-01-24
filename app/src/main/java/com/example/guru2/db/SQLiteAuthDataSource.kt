@@ -4,7 +4,9 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.guru2.auth.User
 
+//SQLite 기반
 class SQLiteAuthDataSource(context: Context)
     : SQLiteOpenHelper(context, "auth.db", null, 1) {
 
@@ -59,7 +61,7 @@ class SQLiteAuthDataSource(context: Context)
         val user =
             if (cursor.moveToFirst()) {
                 User(
-                    id = cursor.getLong(0),       // Long 타입
+                    id = cursor.getLong(0),
                     username = cursor.getString(1),
                     password = cursor.getString(2),
                     nickname = cursor.getString(3),
@@ -75,7 +77,7 @@ class SQLiteAuthDataSource(context: Context)
     }
 
     // 문제 푼 개수 증가
-    fun increaseSolvedCount(userId: Long) {   //  Long 타입
+    fun increaseSolvedCount(userId: Long) {
         writableDatabase.execSQL(
             """
             UPDATE users
