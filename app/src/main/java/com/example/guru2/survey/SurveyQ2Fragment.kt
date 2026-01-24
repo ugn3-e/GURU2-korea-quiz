@@ -19,6 +19,7 @@ import com.example.guru2.R
 import com.example.guru2.mypage.MyPageActivity
 import com.google.android.material.button.MaterialButton
 
+// 설문 Q2 Fragment
 class SurveyQ2Fragment : Fragment(R.layout.fragment_survey_q2) {
     lateinit var toolbar: Toolbar
     private var selectedAnswer: String? = null
@@ -26,6 +27,7 @@ class SurveyQ2Fragment : Fragment(R.layout.fragment_survey_q2) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 선택지 버튼 + 추가 의견 입력창
         val btnHard1 = view.findViewById<Button>(R.id.btnHard1)
         val btnHard2 = view.findViewById<Button>(R.id.btnHard2)
         val btnHard3 = view.findViewById<Button>(R.id.btnHard3)
@@ -58,12 +60,10 @@ class SurveyQ2Fragment : Fragment(R.layout.fragment_survey_q2) {
         val strokeSelectedColor =
             ContextCompat.getColorStateList(requireContext(), R.color.confirm_active)
 
-        // 툴바
+        // 툴바 + 타이틀
         val toolbar = view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.mainToolbar)
         val activity = requireActivity() as? AppCompatActivity
         activity?.setSupportActionBar(toolbar)
-
-        // 만약 타이틀을 바꾸고 싶다면
         activity?.supportActionBar?.title = "Quiz"
 
         // 메뉴 연결
@@ -110,13 +110,14 @@ class SurveyQ2Fragment : Fragment(R.layout.fragment_survey_q2) {
                 }
             }
 
-            // 선택된 버튼만 색 변경
+            // 선택된 버튼만 색 변경(강조)
             selected.backgroundTintList = selectedColorNext
             selected.setTextColor(textSelectedColor2)
             if (selected is MaterialButton) {
                 selected.strokeColor = strokeSelectedColor
             }
 
+            // 선택된 답안 저장
             selectedAnswer = selected.text.toString()
 
             // Next 활성화
@@ -130,7 +131,7 @@ class SurveyQ2Fragment : Fragment(R.layout.fragment_survey_q2) {
         btnHard3.setOnClickListener { selectButton(btnHard3) }
         btnHard4.setOnClickListener { selectButton(btnHard4) }
 
-        // 넘어가기
+        // 다음으로 넘어가기
         btnNext.setOnClickListener {
             selectedAnswer?.let { choice ->
                 val extra = editText.text.toString().trim()

@@ -8,17 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.guru2.R
-import com.example.guru2.survey.SurveyQ1Fragment
-import com.example.guru2.survey.SurveyQ2Fragment
-import com.example.guru2.survey.SurveyQ3Fragment
-import com.example.guru2.survey.SurveyQ4Fragment
 import com.google.firebase.firestore.FirebaseFirestore
 
+// 설문조사 메인
 class SurveyActivity : AppCompatActivity() {
     lateinit var viewPager2: ViewPager2
     lateinit var progressBar: ProgressBar
 
-    // 파이어베이스
+    // 설문 응답 임시 저장용 Map
     val surveyAnswers = mutableMapOf<String, String>()
     val db = FirebaseFirestore.getInstance()
 
@@ -26,10 +23,11 @@ class SurveyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_survey)
 
+        // View 연결
         viewPager2 = findViewById<ViewPager2>(R.id.viewPager)
         progressBar = findViewById<ProgressBar>(R.id.progressBar)
 
-        // ViewPager과 Fragment 연결
+        // ViewPager에 설문 Fragment 연결
         viewPager2.adapter = SurveyPagerAdapter(this)
 
         // 설문 넘어갈 때마다 진행바 업데이트
@@ -42,12 +40,14 @@ class SurveyActivity : AppCompatActivity() {
         )
     }
 
+    // 설문 ViewPager 어댑터
     class SurveyPagerAdapter(activity: AppCompatActivity) :
         // ViewPager에 표시할 설문 관리
         FragmentStateAdapter(activity) {
 
         override fun getItemCount() = 4 // 설문 문항 수
 
+        // 페이지 위치에 따라 Fragment 반환
         override fun createFragment(position: Int): Fragment {
             return when (position) {
                 0 -> SurveyQ1Fragment()
@@ -65,11 +65,12 @@ class SurveyActivity : AppCompatActivity() {
         }
     }
 
-    // 파이어베이스
+    // 설문 응답 저장
     fun saveAnswer(key: String, value: String) {
         surveyAnswers[key] = value
     }
 
+    // 설문 결과 최종 제출
     fun submitSurvey() {
         val data = hashMapOf(
             "q1" to surveyAnswers["q1"],

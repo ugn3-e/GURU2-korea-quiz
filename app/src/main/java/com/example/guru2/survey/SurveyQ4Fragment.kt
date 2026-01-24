@@ -22,10 +22,9 @@ import com.example.guru2.R
 import com.example.guru2.home.MainActivity
 import com.example.guru2.mypage.MyPageActivity
 
+// 설문 Q4 Fragment
 class SurveyQ4Fragment : Fragment(R.layout.fragment_survey_q4) {
     lateinit var toolbar: Toolbar
-
-    private var selectedAnswer: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,6 +32,7 @@ class SurveyQ4Fragment : Fragment(R.layout.fragment_survey_q4) {
         val editText = view.findViewById<EditText>(R.id.editText)
         val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
 
+        // 버튼 색상
         val defaultColor =
             ContextCompat.getColorStateList(requireContext(), R.color.button_default_bg) // 하얀색
         val textDefaultColor =
@@ -42,15 +42,13 @@ class SurveyQ4Fragment : Fragment(R.layout.fragment_survey_q4) {
         val textSelectedColor =
             ContextCompat.getColor(requireContext(), R.color.white)
 
-        // 툴바
+        // 툴바 + 타이틀
         val toolbar = view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.mainToolbar)
         val activity = requireActivity() as? AppCompatActivity
         activity?.setSupportActionBar(toolbar)
-
-        // 만약 타이틀을 바꾸고 싶다면
         activity?.supportActionBar?.title = "Quiz"
 
-        // 메뉴 툴바 연결
+        // 메뉴 연결
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -97,7 +95,7 @@ class SurveyQ4Fragment : Fragment(R.layout.fragment_survey_q4) {
         })
 
 
-        // 마지막 설문 → 홈화면으로 돌아가기
+        // 마지막 설문 → 홈화면으로 돌아가기(Firestore 최종 저장)
         btnSubmit.setOnClickListener {
             // 제출 완료 토스트 문구
             val answer = editText.text.toString()
@@ -112,7 +110,9 @@ class SurveyQ4Fragment : Fragment(R.layout.fragment_survey_q4) {
                 Toast.LENGTH_SHORT
             ).show()
 
+            // 홈으로 이동
             startActivity(Intent(requireContext(), MainActivity::class.java))
+
             // 설문 액티비티 종료 (뒤로 가기 방지)
             requireActivity().finish()
         }

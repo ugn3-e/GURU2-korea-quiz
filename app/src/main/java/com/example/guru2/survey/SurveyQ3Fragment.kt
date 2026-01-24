@@ -20,6 +20,7 @@ import androidx.lifecycle.Lifecycle
 import com.example.guru2.R
 import com.example.guru2.mypage.MyPageActivity
 
+// 설문 Q3 Fragment
 class SurveyQ3Fragment : Fragment(R.layout.fragment_survey_q3) {
 
     lateinit var toolbar: Toolbar
@@ -30,6 +31,7 @@ class SurveyQ3Fragment : Fragment(R.layout.fragment_survey_q3) {
         val editText = view.findViewById<EditText>(R.id.editText)
         val btnNext = view.findViewById<Button>(R.id.btnNext)
 
+        // 버튼 색상
         val defaultColor =
             ContextCompat.getColorStateList(requireContext(), R.color.button_default_bg) // 하얀색
         val textDefaultColor =
@@ -39,12 +41,10 @@ class SurveyQ3Fragment : Fragment(R.layout.fragment_survey_q3) {
         val textSelectedColor =
             ContextCompat.getColor(requireContext(), R.color.white)
 
-        // 툴바
+        // 툴바 + 타이틀
         val toolbar = view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.mainToolbar)
         val activity = requireActivity() as? AppCompatActivity
         activity?.setSupportActionBar(toolbar)
-
-        // 만약 타이틀을 바꾸고 싶다면
         activity?.supportActionBar?.title = "Quiz"
 
         // 메뉴 연결
@@ -53,7 +53,6 @@ class SurveyQ3Fragment : Fragment(R.layout.fragment_survey_q3) {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_main, menu)
             }
-
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_mypage -> {
@@ -94,6 +93,7 @@ class SurveyQ3Fragment : Fragment(R.layout.fragment_survey_q3) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
+        // 다음으로 넘어가기
         btnNext.setOnClickListener {
             val answer = editText.text.toString()
 

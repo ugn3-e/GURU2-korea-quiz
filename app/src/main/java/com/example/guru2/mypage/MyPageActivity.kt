@@ -2,7 +2,6 @@ package com.example.guru2.mypage
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -14,6 +13,7 @@ import com.example.guru2.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
+// 마이페이지 화면
 class MyPageActivity : AppCompatActivity() {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -52,10 +52,11 @@ class MyPageActivity : AppCompatActivity() {
             return
         }
 
-        // Firestore → 메인과 동일한 레벨 / 게이지 로직
+        // Firestore → 메인과 동일한 레벨 / 게이지 계산
         firestore.collection("users").document(uid).get()
             .addOnSuccessListener { doc ->
                 if (!doc.exists()) {
+                    // 기본값
                     tvNickname.text = "-"
                     tvLevel.text = "Lv.1"
                     tvProgress.text = "0%"
@@ -65,10 +66,11 @@ class MyPageActivity : AppCompatActivity() {
 
                 val nickname = doc.getString("nickname") ?: "사용자"
 
-                // 메인 기준 적용
+                // 레벨, 푼 문제 수(누적)
                 val level = doc.getLong("level") ?: 1L
                 val totalSolved = doc.getLong("totalSolved") ?: 0L
 
+                // 진행률 계산 (50문제 = 100%)
                 val progressPercent =
                     if (totalSolved >= 50) 100
                     else ((totalSolved / 50.0) * 100).toInt()
@@ -87,8 +89,6 @@ class MyPageActivity : AppCompatActivity() {
                 ).show()
             }
 
-        // 버튼 이벤트
-
         // 홈으로 이동
         btnHome.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
@@ -104,12 +104,13 @@ class MyPageActivity : AppCompatActivity() {
             goLogin(clearTask = true)
         }
 
-        // 프로필 수정
+        // 프로필 수정 화면으로 이동
         cardEditProfile.setOnClickListener {
             startActivity(Intent(this, EditProfileActivity::class.java))
         }
     }
 
+    // 로그인 화면으로 이동
     private fun goLogin(clearTask: Boolean = false) {
         val intent = Intent(this, LoginActivity::class.java)
         if (clearTask) {
@@ -125,17 +126,12 @@ class MyPageActivity : AppCompatActivity() {
         return true
     }
 
+    // 메뉴 클릭
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_survey -> {
                 val intent = Intent(this, SurveyActivity::class.java)
                 startActivity(intent)
-                return true
-            }
-
-            // 마이페이지
-            R.id.action_mypage -> {
-                startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
                 return true
             }
         }

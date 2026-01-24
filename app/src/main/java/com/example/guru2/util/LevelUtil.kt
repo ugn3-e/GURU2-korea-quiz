@@ -1,7 +1,7 @@
 package com.example.guru2.util
 
 object LevelUtil {
-
+// 사용자가 푼 문제 수 → 레벨 계산
     fun calculateLevel(solvedCount: Int): Int {
         return when {
             solvedCount >= 60 -> 7

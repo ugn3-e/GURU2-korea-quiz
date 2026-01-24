@@ -18,14 +18,15 @@ import com.example.guru2.R
 import com.example.guru2.mypage.MyPageActivity
 import com.google.android.material.button.MaterialButton
 
+// 설문 Q1 Fragment
 class SurveyQ1Fragment : Fragment(R.layout.fragment_survey_q1) {
     lateinit var toolbar: Toolbar
-
-    private var selectedAnswer: String? = null
+    private var selectedAnswer: String? = null // 현재 선택된 답안
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 선택지 버튼 + 리스트화
         val btnStudy1 = view.findViewById<Button>(R.id.btnStudy1)
         val btnStudy2 = view.findViewById<Button>(R.id.btnStudy2)
         val btnStudy3 = view.findViewById<Button>(R.id.btnStudy3)
@@ -35,12 +36,10 @@ class SurveyQ1Fragment : Fragment(R.layout.fragment_survey_q1) {
         // 다음 설문으로 넘어가기
         val btnNext = view.findViewById<Button>(R.id.btnNext)
 
-        // 툴바
+        // 툴바 + 타이틀
         val toolbar = view.findViewById<Toolbar>(R.id.mainToolbar)
         val activity = requireActivity() as? AppCompatActivity
         activity?.setSupportActionBar(toolbar)
-
-        // 만약 타이틀을 바꾸고 싶다면
         activity?.supportActionBar?.title = "Quiz"
 
         // 메뉴 연결
@@ -49,7 +48,6 @@ class SurveyQ1Fragment : Fragment(R.layout.fragment_survey_q1) {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_main, menu)
             }
-
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_mypage -> {
@@ -94,7 +92,7 @@ class SurveyQ1Fragment : Fragment(R.layout.fragment_survey_q1) {
             it.backgroundTintList = defaultColor
         }
 
-        // Next 버튼 비활성
+        // Next 비활성화
         btnNext.isEnabled = false
         btnNext.backgroundTintList = defaultColor
 
@@ -109,13 +107,14 @@ class SurveyQ1Fragment : Fragment(R.layout.fragment_survey_q1) {
                 }
             }
 
-            // 선택된 버튼만 색 변경
+            // 선택된 버튼만 색 변경(강조)
             selected.backgroundTintList = selectedColorNext
             selected.setTextColor(textSelectedColor2)
             if (selected is MaterialButton) {
                 selected.strokeColor = strokeSelectedColor
             }
 
+            // 선택된 답안 저장
             selectedAnswer = selected.text.toString()
 
             // Next 활성화
@@ -124,6 +123,7 @@ class SurveyQ1Fragment : Fragment(R.layout.fragment_survey_q1) {
             btnNext.setTextColor(textSelectedColor)
         }
 
+        // 선택지 클릭
         btnStudy1.setOnClickListener { selectButton(btnStudy1) }
         btnStudy2.setOnClickListener { selectButton(btnStudy2) }
         btnStudy3.setOnClickListener { selectButton(btnStudy3) }
