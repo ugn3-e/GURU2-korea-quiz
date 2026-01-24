@@ -6,7 +6,7 @@ package com.example.guru2.wrong
 // 날짜 그룹
 data class WrongDateGroup(
     val date: String,  // 오답 발생 날짜
-    val items: List<WrongItem>  // 해당 날짜에 틀린 오답 문제 목록 -> 가로 RecyclerView에서 사용
+    val items: List<WrongItem>  // 해당 날짜에 틀린 오답 문제 목록 → 가로 RecyclerView에서 사용
 )
 
 // 가로 RecyclerView에 표시되는 오답 카드 하나

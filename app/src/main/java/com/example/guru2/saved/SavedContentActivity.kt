@@ -17,21 +17,22 @@ import com.example.guru2.mypage.MyPageActivity
 import com.example.guru2.spellquiz.SpellDBManager
 import com.example.guru2.survey.SurveyActivity
 
+// 저장된 콘텐츠 목록 화면
 class SavedContentActivity : AppCompatActivity() {
 
     lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // 레이아웃 설정
         setContentView(R.layout.activity_saved_content)
 
         // 툴바
         val mainToolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.mainToolbar)
         setSupportActionBar(mainToolbar)
 
-        // DB 가져오기
+        // 로컬 DB (퀴즈 데이터)
         val spellDbManager = SpellDBManager(this)
+        // Firestore (저장 기록)
         val store = FirestoreSavedContent()
 
         // 홈으로 이동 버튼
@@ -44,9 +45,10 @@ class SavedContentActivity : AppCompatActivity() {
             finish()
         }
 
+        // Firestore에서 저장된 콘텐츠 불러오기
         store.loadSpell(
             onResult = { savedList ->
-                // firestore에서 받은 quizId로 로컬 DB 가져오기
+                // quizId를 통해 로컬 DB에서 퀴즈 데이터 조회
                 val quizzes = savedList.mapNotNull { item ->
                     val q = spellDbManager.getQuizById(item.quizId) ?: return@mapNotNull null
                     // Firestore의 savedDate를 화면에 쓰려면 saved_date를 덮어쓴 복사본 생성 필요함
@@ -55,6 +57,7 @@ class SavedContentActivity : AppCompatActivity() {
 
                 Log.d("DB_CHECK", "Firestore 저장 데이터 개수: ${quizzes.size}")
 
+                // 저장된 데이터가 있을 경우
                 if (quizzes.isNotEmpty()) {
                     val grouped = quizzes.groupBy { it.saved_date ?: "Unknown" }
                     val displayList = grouped.map { (date, list) ->
@@ -74,12 +77,13 @@ class SavedContentActivity : AppCompatActivity() {
         )
     }
 
-    // 메뉴 연결
+    // 상단 메뉴 연결
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
+    // 상단 메뉴 클릭
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_survey -> {

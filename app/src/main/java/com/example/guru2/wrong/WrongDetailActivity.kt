@@ -70,7 +70,7 @@ class WrongDetailActivity : AppCompatActivity() {
                 imgExample.visibility = View.GONE
             }
 
-            // 뒤로 가기 버튼 -> 현재 Activity만 종료 -> 오답 목록 화면
+            // 뒤로 가기 버튼 → 현재 Activity만 종료 → 오답 목록 화면
             findViewById<Button>(R.id.btnBack).setOnClickListener {
                 finish()
             }

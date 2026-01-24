@@ -16,7 +16,6 @@ import com.example.guru2.fire.WrongRecord
 // 오답 목록 Fragment
 // ViewPager / TabLayout 안에서 사용됨
 // 신조어 / 맞춤법 오답 목록을 동일한 Fragment로 처리
-// ARG_TYPE 값에 따라 조회 DB 및 화면 내용 분리
 class WrongListFragment : Fragment(R.layout.fragment_wrong_list) {
 
     companion object {
@@ -87,8 +86,10 @@ class WrongListFragment : Fragment(R.layout.fragment_wrong_list) {
                     }
                 }
 
+                // 날짜 그룹 리스트로 변환
                 val groups = map.map { WrongDateGroup(it.key, it.value) }
 
+                // Adapter 연결
                 recycler.adapter = WrongDateAdapter(groups) { quizId ->
                     startActivity(
                         Intent(requireContext(), WrongDetailActivity::class.java)

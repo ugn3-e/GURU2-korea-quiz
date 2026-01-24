@@ -14,7 +14,7 @@ class WrongQuizAdapter(
     // 가로로 나열될 오답 문제 리스트
     private val list: List<WrongItem>,
 
-    // 오답 단어 클릭 시 호출되는 콜백 -> 선택된 WrongItem 전체를 상위로 전달
+    // 오답 단어 클릭 시 호출되는 콜백 → 선택된 WrongItem 전체를 상위로 전달
     private val onClick: (WrongItem) -> Unit
 ) : RecyclerView.Adapter<WrongQuizAdapter.VH>() {
 

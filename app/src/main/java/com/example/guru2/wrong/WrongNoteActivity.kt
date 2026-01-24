@@ -20,7 +20,8 @@ import com.example.guru2.survey.SurveyActivity
 // 신조어 / 맞춤법 오답 탭 전환 및 초기화 기능 담당
 
 class WrongNoteActivity : AppCompatActivity() {
-    private var currentType: String = "slang"
+    // 현재 선택된 타임 ("slang" / "spell")
+    private var currentType: String = "spell"
 
     lateinit var toolbar: Toolbar
 
@@ -32,6 +33,7 @@ class WrongNoteActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
+        // ActionBar 타이틀 설정
         supportActionBar?.apply {
             title = "오답" // 타이틀 설정
         }
@@ -49,7 +51,7 @@ class WrongNoteActivity : AppCompatActivity() {
         // ViewPager 어댑터 설정 (신조어 / 맞춤법 Fragment)
         viewPager.adapter = WrongPagerAdapter(this)
 
-        // 사용자 스와이프로 페이지 이동 금지 -> 탭 버튼 클릭으로만 전환
+        // 사용자 스와이프로 페이지 이동 금지 → 탭 버튼 클릭으로만 전환
         viewPager.isUserInputEnabled = false
 
         // 신조어 탭 클릭
@@ -75,11 +77,13 @@ class WrongNoteActivity : AppCompatActivity() {
         selectTab(true)
     }
 
+    // 상단 메뉴
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
+    // 상단 메뉴 클릭
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_survey -> {

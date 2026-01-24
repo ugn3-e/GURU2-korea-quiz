@@ -3,7 +3,6 @@ package com.example.guru2.wrong
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.guru2.wrong.WrongListFragment
 
 // 오답 노트 ViewPager용 어댑터
 // 신조어 / 맞춤법 오답 Fragment를 페이지로 관리
