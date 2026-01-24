@@ -13,6 +13,7 @@ import com.google.android.material.button.MaterialButton
 import android.content.res.ColorStateList
 import com.example.guru2.fire.FirestoreLevelStore
 import com.example.guru2.fire.FirestoreWrongNote
+import com.example.guru2.fire.FirestoreProgress // ⭐ 추가
 import com.google.firebase.auth.FirebaseAuth
 
 class SpellQuizActivity : AppCompatActivity() {
@@ -37,7 +38,9 @@ class SpellQuizActivity : AppCompatActivity() {
 
     // ================= 상태 =================
     private var currentQuizId = 1        // 🔥 전역 문제 ID
-    private var solvedInSet = 0           // 🔥 이번 세트에서 푼 문제 수
+    //private var solvedInSet = 0           // 🔥 이번 세트에서 푼 문제 수
+    //private var displayQNumber = 0   // ⭐ UI 전용 (항상 1부터)
+
     private var selectedAnswer = ""
 
     private var correctAnswer = ""
@@ -48,11 +51,14 @@ class SpellQuizActivity : AppCompatActivity() {
     private var totalCount = 0
     private var correctCount = 0
 
+    // ⭐ Firestore Progress
+    private val progressStore by lazy { FirestoreProgress() }
+
     // 🔥 slang과 동일한 SharedPreferences
-    private val pref by lazy {
-        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: "guest"
-        getSharedPreferences("spell_quiz_$uid", MODE_PRIVATE)
-    }
+//    private val pref by lazy {
+//        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: "guest"
+//        getSharedPreferences("spell_quiz_$uid", MODE_PRIVATE)
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,12 +69,43 @@ class SpellQuizActivity : AppCompatActivity() {
         supportActionBar?.title = "Quiz"
 
         bindViews()
-
-        // ================= 이어서 학습 복원 =================
-        currentQuizId = pref.getInt("currentQuizId", 1)
-        solvedInSet = pref.getInt("solvedInSet", 0)
-
         setClickListeners()
+//        // ================= 이어서 학습 복원 =================
+//        currentQuizId = pref.getInt("currentQuizId", 1)
+//        solvedInSet = pref.getInt("solvedInSet", 0)
+
+        // ⭐ slang과 동일: 이어하기 여부
+//        val isContinue = intent.getBooleanExtra("continue", false)
+//
+//        // ================= ⭐ 진행 상태 복원 =================
+//        progressStore.loadSpellProgress(
+//            onResult = { nextId, solved ->
+//                currentQuizId = nextId
+//                solvedInSet = if (isContinue) 0 else solved
+//                //displayQNumber = 0   // ⭐⭐⭐ 추가
+//
+//                if (!isContinue && solvedInSet >= SET_SIZE) {
+//                    moveToFinalResult()
+//                } else {
+//                    loadQuiz()
+//                }
+//            },
+//            onError = {
+//                // fallback (비로그인 / 네트워크 오류)
+//                loadQuiz()
+//            }
+//        )
+        // ✅ Firestore에서 다음 문제 ID만 복원
+        progressStore.loadSpellNextQuizId(
+            onResult = { nextId ->
+                currentQuizId = nextId
+                loadQuiz()
+            },
+            onError = {
+                currentQuizId = 1
+                loadQuiz()
+            }
+        )
 
         onBackPressedDispatcher.addCallback(
             this,
@@ -82,8 +119,6 @@ class SpellQuizActivity : AppCompatActivity() {
                 }
             }
         )
-
-        loadQuiz()
     }
 
     // ================= View =================
@@ -118,11 +153,11 @@ class SpellQuizActivity : AppCompatActivity() {
     // ================= 문제 로딩 =================
     private fun loadQuiz() {
 
-        // 🔥 세트 종료
-        if (solvedInSet >= SET_SIZE) {
-            moveToFinalResult()
-            return
-        }
+//        // 🔥 세트 종료
+//        if (solvedInSet >= SET_SIZE) {
+//            moveToFinalResult()
+//            return
+//        }
 
         val dbManager = SpellDBManager(this)
         val db = dbManager.readableDatabase
@@ -139,8 +174,16 @@ class SpellQuizActivity : AppCompatActivity() {
             return
         }
 
+        //displayQNumber++
+        //tvQNumber.text = "Q$displayQNumber"
+
         // Q번호 (🔥 slang 동일)
-        tvQNumber.text = "Q${solvedInSet + 1}"
+        //tvQNumber.text = "Q${solvedInSet + 1}"
+        // DB 기준 문제 번호 그대로 표시
+        //tvQNumber.text = "Q$currentQuizId"
+
+        val qNumber = ((currentQuizId - 1) % 5) + 1
+        tvQNumber.text = "Q$qNumber"
 
         tvQuestion.text = cursor.getString(cursor.getColumnIndexOrThrow("sentence"))
 
@@ -242,22 +285,30 @@ class SpellQuizActivity : AppCompatActivity() {
         }
 
         // 🔥 핵심: 상태 증가 + 저장
-        solvedInSet++
+        //solvedInSet++
         currentQuizId++
 
-        pref.edit()
-            .putInt("currentQuizId", currentQuizId)
-            .putInt("solvedInSet", solvedInSet)
-            .apply()
+//        pref.edit()
+//            .putInt("currentQuizId", currentQuizId)
+//            .putInt("solvedInSet", solvedInSet)
+//            .apply()
+
+        // 🔥 Firestore에는 다음 문제 ID만 저장
+        progressStore.saveSpellNextQuizId(currentQuizId)
+
+        val qNumber = ((currentQuizId - 2) % 5) + 1
+        // ✅ Q가 5번이면 무조건 세트 종료
+        val isEndOfSet = ((currentQuizId - 1) % SET_SIZE) == 0
 
         val intent = Intent(this, SpellResultActivity::class.java).apply {
             putExtra("isCorrect", isCorrect)
             putExtra("sentence", tvQuestion.text.toString())
+            putExtra("correctAnswer", correctAnswer)
             putExtra("correct_exp", correctExp)
             putExtra("incorrect_exp", incorrectExp)
             putExtra("image_path", imagePath)
             putExtra("quiz_id", currentQuizId - 1)
-            putExtra("isEndOfPart", solvedInSet == SET_SIZE)
+            putExtra("isEndOfPart", isEndOfSet)
         }
 
         startActivityForResult(intent, REQ_RESULT)
@@ -284,9 +335,9 @@ class SpellQuizActivity : AppCompatActivity() {
         )
 
         // 🔥 다음 세트를 위해 초기화
-        pref.edit()
-            .putInt("solvedInSet", 0)
-            .apply()
+//        pref.edit()
+//            .putInt("solvedInSet", 0)
+//            .apply()
 
         finish()
     }

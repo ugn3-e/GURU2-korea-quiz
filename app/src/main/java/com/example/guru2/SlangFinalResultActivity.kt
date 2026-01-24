@@ -20,6 +20,7 @@ class SlangFinalResultActivity : AppCompatActivity() {
     private lateinit var btnKeep: MaterialButton
     private lateinit var btnHome: MaterialButton
 
+    private val progressStore by lazy { FirestoreProgress() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,12 +41,13 @@ class SlangFinalResultActivity : AppCompatActivity() {
 
         // 디미 유진_이어서 학습하기 버튼
         btnKeep = findViewById(R.id.btnQKeep)
+        btnKeep.isEnabled = false
 
         // 디미 유진_홈으로 돌아가기 버튼
         btnHome = findViewById(R.id.btnHome)
 
-        val total = intent.getIntExtra("totalCount", 0)
-        val correct = intent.getIntExtra("correctCount", 0)
+//        val total = intent.getIntExtra("totalCount", 0)
+//        val correct = intent.getIntExtra("correctCount", 0)
 
         // 디미 유진_퀴즈 결과 요약 메세지
         sSummary.text = """
@@ -55,43 +57,49 @@ class SlangFinalResultActivity : AppCompatActivity() {
             한 번 더 학습할 수 있습니다!
         """.trimIndent()
 
+        progressStore.loadSlangNextQuizId(
+            onResult = { nextId ->
+                val nextQuiz = try {
+                    val slangDb = SlangDBManager(this)
+                    slangDb.getQuizById(nextId)
+                } catch (e: Exception) {
+                    null
+                }
+
+                // 문제 다 풀었을 때 토스트 문구
+                if (nextQuiz == null) {
+                    runOnUiThread {
+                        Toast.makeText(this, "모든 신조어 학습을 완료하였습니다!", Toast.LENGTH_SHORT).show()
+                    }
+                    btnKeep.isEnabled = false
+                    return@loadSlangNextQuizId
+                }
+                else{
+                    // ⭐ 다음 문제가 있을 때만 활성화
+                    btnKeep.isEnabled = true
+                }
+            },
+            onError = {
+                Toast.makeText(this, "진행 정보를 불러올 수 없어요.", Toast.LENGTH_SHORT).show()
+            }
+        )
+
         // 디미 유진_이어서 학습하기 버튼
+        // ⭐ 클릭 시에는 그냥 Quiz로 이동만
         btnKeep.setOnClickListener {
-            // 로그인 때 저장해둔 user_id 꺼내오기
-//            val userId = getSharedPreferences("auth", MODE_PRIVATE)
-//                .getLong("user_id", -1L)
 
-            val progressStore = FirestoreProgress()
-            progressStore.loadSlangNextQuizId(
-                onResult = { nextId ->
-                    val nextQuiz = try {
-                        val slangDb = SlangDBManager(this)
-                        slangDb.getQuizById(nextId)
-                    } catch (e: Exception) {
-                        null
-                    }
+            // ⭐⭐⭐ 핵심 추가: Firestore 세트 상태 초기화
+//            progressStore.saveSlangProgress(
+//                nextQuizId = -1,   // 값은 Quiz에서 다시 덮어씀
+//                solvedInSet = 0
+//            )
 
-                    // 문제 다 풀었을 때 토스트 문구
-                    if (nextQuiz == null) {
-                        runOnUiThread {
-                            Toast.makeText(this, "모든 학습을 완료하였습니다!", Toast.LENGTH_SHORT).show()
-                        }
-                        return@loadSlangNextQuizId
-                    }
-                    val intent = Intent(this, SlangQuizActivity::class.java).apply {
-                        putExtra("startQuizId", nextId)   // 다음에 풀 문제
-                    }
-                    startActivity(intent)
-                    finish()
-                },
-                onError = {
-                    val intent = Intent(this, SlangQuizActivity::class.java).apply {
-                        putExtra("startQuizId", 1)
-                    }
-                    startActivity(intent)
-                    finish()
+            startActivity(
+                Intent(this, SlangQuizActivity::class.java).apply {
+                    //putExtra("continue", true)
                 }
             )
+            finish()
         }
 
         // 디미 유진_(수정) MainActivity로 이동 (뒤로 가기 눌러도 이전 퀴즈 화면으로 돌아가지 않음)

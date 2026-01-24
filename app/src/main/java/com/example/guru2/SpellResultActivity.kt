@@ -41,6 +41,7 @@ class SpellResultActivity : AppCompatActivity() {
         // ================= Intent 데이터 =================
         val isCorrect = intent.getBooleanExtra("isCorrect", false)
         val sentence = intent.getStringExtra("sentence") ?: ""
+        val correctAnswer = intent.getStringExtra("correctAnswer") ?: ""
         val correctExp = intent.getStringExtra("correct_exp") ?: ""
         val incorrectExp = intent.getStringExtra("incorrect_exp") ?: ""
         val imagePath = intent.getStringExtra("image_path") ?: ""
@@ -57,7 +58,15 @@ class SpellResultActivity : AppCompatActivity() {
             )
         )
 
-        tvQuizText.text = sentence
+        val filledSentence =
+            if (sentence.contains("____")) {
+                sentence.replace("____", correctAnswer)
+            } else {
+                sentence
+            }
+
+        tvQuizText.text = filledSentence
+
         tvAnswer.text = incorrectExp
 
         // ================= 이미지 표시 (🔥 누락 해결) =================

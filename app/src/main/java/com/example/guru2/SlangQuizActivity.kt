@@ -35,16 +35,14 @@ class SlangQuizActivity : AppCompatActivity() {
         private const val SET_SIZE = 5 // 🔥 일일 퀴즈 개수
     }
 
-    // 디미 유진_유저 아이디 받기
-    //private var userId: Long = -1L
-
     // 디미 유진_전체 결과 누적 변수
     private var totalCount = 0
     private var correctCount = 0
 
     // 디미 유진_Q 번호
     private var currentQuizId = 1  // 🔥 전역 문제 ID (DB 기준)
-    private var solvedInSet = 0         // 🔥 이번 세트에서 푼 문제 수 (0~5)
+    //private var solvedInSet = 0         // 🔥 이번 세트에서 푼 문제 수 (0~5)
+    //private var displayQNumber = 0         // ⭐⭐ UI용 Q 번호 (항상 1부터)
     private lateinit var tvQNumber: TextView
 
     // 디미 유진_문제
@@ -70,12 +68,15 @@ class SlangQuizActivity : AppCompatActivity() {
     private var selectedAnswer = ""
     private lateinit var currentQuiz: SlangQuizData
 
-    // 🔥 SharedPreferences
-    // ===============================
-    private val pref by lazy {
-        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: "guest"
-        getSharedPreferences("slang_quiz_$uid", MODE_PRIVATE)
-    }
+//    // 🔥 SharedPreferences
+//    // ===============================
+//    private val pref by lazy {
+//        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: "guest"
+//        getSharedPreferences("slang_quiz_$uid", MODE_PRIVATE)
+//    }
+
+    // ⭐ Firestore 진행 상태 (핵심)
+    private val progressStore by lazy { FirestoreProgress() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,42 +92,36 @@ class SlangQuizActivity : AppCompatActivity() {
             // setDisplayHomeAsUpEnabled(true)
         }
 
-        // 디미 유진_유저 아이디 연결
-        //userId = intent.getLongExtra("user_id", -1L)
+        bindViews()
+        setClickListeners()
 
-        // 이어서 학습하기
-//        val startId = intent.getIntExtra("startQuizId", -1)
-//        val progressStore = FirestoreProgress()
-//
-//        if (startId != -1) {
-//            // Final → 이어하기
-//            currentQuizId = startId
-//            loadQuizFromDB()
-//        } else {
-//            // 홈 → 퀴즈 버튼
-//            progressStore.loadSlangNextQuizId(
-//                onResult = { nextId ->
-//                    currentQuizId = nextId
-//                    loadQuizFromDB()
-//                },
-//                onError = {
-//                    currentQuizId = 1
-//                    loadQuizFromDB()
-//                }
-//            )
-//        }
+        // ✅ Firestore에서 nextQuizId만 복원
+        progressStore.loadSlangNextQuizId(
+            onResult = { nextId ->
+                currentQuizId = nextId
+                loadQuizFromDB()
+            },
+            onError = {
+                loadQuizFromDB()
+            }
+        )
 
-        // ⭐ 핵심 1: startQuizId 우선 적용
-        // =====================================================
-        if (intent.hasExtra("startQuizId")) {
-            currentQuizId = intent.getIntExtra("startQuizId", 1)
-            solvedInSet = 0   // ⭐ 새 세트 시작
-        } else {
-            // 홈 → 자동 이어하기
-            currentQuizId = pref.getInt("currentQuizId", 1)
-            solvedInSet = pref.getInt("solvedInSet", 0)
-        }
-        // 디미 유진_View 연결
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    Toast.makeText(
+                        this@SlangQuizActivity,
+                        "퀴즈를 완료해야 홈으로 돌아갈 수 있어요!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        )
+    }
+
+    // ================= View =================
+    private fun bindViews() {
         tvQNumber = findViewById(R.id.QText)
         tvQuestion = findViewById(R.id.tvQuestion)
 
@@ -143,19 +138,18 @@ class SlangQuizActivity : AppCompatActivity() {
 
         choiceButtons = listOf(btn1, btn2, btn3, btn4)
 
-        // 디미 유진_초기 UI 상태 (확인버튼, 상황 예시 이미지 X)
         resetChoiceButtons()
-        //btnConfirm.isEnabled = false
         disableConfirmButton()
         imgExample.visibility = View.GONE
+    }
 
-        // 디미 유진_선택지 클릭 이벤트
+    // ================= 클릭 =================
+    private fun setClickListeners() {
         btn1.setOnClickListener { onChoiceSelected(btn1) }
         btn2.setOnClickListener { onChoiceSelected(btn2) }
         btn3.setOnClickListener { onChoiceSelected(btn3) }
         btn4.setOnClickListener { onChoiceSelected(btn4) }
 
-        // 디미 유진_상황 예시 이미지 보기
         btnShowExample.setOnClickListener {
             imgExample.visibility = View.VISIBLE
             dogImage.visibility = View.GONE
@@ -166,26 +160,7 @@ class SlangQuizActivity : AppCompatActivity() {
             dogImage.visibility = View.VISIBLE
         }
 
-        // 디미 유진_정답 확인 -> 결과 화면 이동
-        btnConfirm.setOnClickListener {
-            moveToResultPage()
-        }
-
-        // 디미 유진_뒤로가기 막기
-        onBackPressedDispatcher.addCallback(
-            this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    Toast.makeText(
-                        this@SlangQuizActivity,
-                        "퀴즈를 완료해야 홈으로 돌아갈 수 있어요!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        )
-
-        loadQuizFromDB()
+        btnConfirm.setOnClickListener { moveToResultPage() }
     }
 
     // 메뉴 연결
@@ -214,32 +189,30 @@ class SlangQuizActivity : AppCompatActivity() {
 
     // 디미 유진_DB에서 문제 1개 가져오기
     private fun loadQuizFromDB() {
+        val quiz = SlangDBManager(this).getQuizById(currentQuizId)
 
-        // 🔥 방어 코드 (혹시 꼬였을 경우)
-        if (solvedInSet >= SET_SIZE) {
-            moveToFinalResultPage()
-            return
-        }
-
-        val dbManager = SlangDBManager(this)
-        val quiz = dbManager.getQuizById(currentQuizId)
-
-        // Q1~5만 반복 ☑️
-        //val qNumber = ((currentQuizId - 1) % 5) + 1
-
+        // ✅ 문제 없으면 종료
         // 디미 유진_문제 다 풀었을 경우
         // >> (수정) 마지막 문제 안내 페이지로 연결
         if (quiz == null) {
-            //Toast.makeText(this, "모든 문제를 풀었습니다 🎉", Toast.LENGTH_SHORT).show()
             moveToFinalResultPage()
             return
         }
 
         currentQuiz = quiz
 
+        // ⭐⭐⭐ UI 번호 증가 (DB랑 무관)
+        //displayQNumber++
+        //tvQNumber.text = "Q$displayQNumber"
+
         // 디미 유진_불러온 Q 번호
         //tvQNumber.text = "Q$qNumber"
-        tvQNumber.text = "Q${solvedInSet + 1}"
+        //tvQNumber.text = "Q${solvedInSet + 1}"
+        // DB 기준 문제 번호 그대로 표시
+        //tvQNumber.text = "Q$currentQuizId"
+
+        val qNumber = ((currentQuizId - 1) % 5) + 1
+        tvQNumber.text = "Q$qNumber"
 
         // 디미 유진_불러온 문제 & 선택지
         tvQuestion.text = quiz.question
@@ -252,15 +225,6 @@ class SlangQuizActivity : AppCompatActivity() {
         // 디미 유진_선택지 섞기
         setShuffledChoices(quiz)
 
-
-        // 디미 유진_불러온 문제의 상황 예시 이미지
-        // 🔥 Glide로 assets/slang_image 이미지 로딩
-//        imgExample.visibility = View.GONE
-//        val imgPath = quiz.exampleImage + ".png"
-//
-//        Glide.with(this)
-//            .load("file:///android_asset/slang_image/$imgPath")
-//            .into(imgExample)
         imgExample.visibility = View.GONE // 상황 이미지느 안나오게
         dogImage.visibility = View.VISIBLE // 강아지 다시 나오게
 
@@ -272,29 +236,14 @@ class SlangQuizActivity : AppCompatActivity() {
             .load("file:///android_asset/slang_image/$imgPath")
             .into(imgExample)
 
-
-
-//        val imageResId = resources.getIdentifier(
-//            quiz.exampleImage,
-//            "drawable",
-//            packageName
-//        )
-//
-//        imgExample.visibility = View.GONE
-//        if (imageResId != 0) {
-//            imgExample.setImageResource(imageResId)
-//        }
-
         // 디미 유진_선택지, 확인 버튼 초기화
         resetChoiceButtons()
-        //btnConfirm.isEnabled = false
         disableConfirmButton()
     }
 
 
     // 디미 유진_선택지 클릭 처리
     // ======================= UI 제어 =======================
-
     private fun onChoiceSelected(selected: MaterialButton) {
         resetChoiceButtons()
 
@@ -404,64 +353,22 @@ class SlangQuizActivity : AppCompatActivity() {
         }
 
         // 🔥 이번 세트에서 푼 문제 증가
-        solvedInSet++
+        //solvedInSet++
         currentQuizId++
+        progressStore.saveSlangNextQuizId(currentQuizId)
 
-        // 🔥 상태 저장 (앱 종료 대비)
-        pref.edit()
-            .putInt("currentQuizId", currentQuizId)
-            .putInt("solvedInSet", solvedInSet)
-            .apply()
+        // ✅ Q가 5번이면 무조건 세트 종료
+        val isEndOfSet = ((currentQuizId - 1) % SET_SIZE) == 0
 
-        val isEndOfSet = solvedInSet == SET_SIZE
-
-        // 디미 유진_유저 레벨, solvedCount +1
-//        if (userId != -1L) {
-//            val authRepo = AuthRepository(SQLiteAuthDataSource(this))
-//            authRepo.increaseSolvedCount(userId)
-//        } else {
-//            Log.e("LEVEL_CHECK", "SlangQuiz userId == -1L, 증가 실패")
-//        }
-
-//        try {
-//            FirestoreLevelStore().addSolved1(
-//                onSuccess = { level, totalSolved ->
-//                    Log.d("FIRE_LEVEL", "slang +1 -> totalSolved=$totalSolved, level=$level")
-//                },
-//                onFail = { e ->
-//                    Log.e("FIRE_LEVEL", "slang update failed", e)
-//                }
-//            )
-//        } catch (e: Exception) {
-//            Log.e("FIRE_LEVEL", "slang auth null?", e)
-//        }
-
-
-        // 다음에 풀 문제 ID 저장 ☑️
-//        val progressStore = FirestoreProgress()
-//        progressStore.saveSlangNextQuizId(currentQuizId + 1)
-//
-//        val intent = Intent(this, SlangResultActivity::class.java).apply {
-//            putExtra("isCorrect", isCorrect)
-//            putExtra("explanation", currentQuiz.explanation)
-//            putExtra("notice", currentQuiz.notice)
-//            putExtra("exampleImage", currentQuiz.exampleImage)
-//            putExtra("nextQuizId", currentQuizId + 1)
-//            // 5문제마다 최종 결과 화면으로 이동 ☑️
-//            //putExtra("isEndOfPart", totalCount % 5 == 0)
-//            putExtra("isEndOfPart", isEndOfSet) // 🔥 핵심 판단 기준
-//        }
-//
-//        startActivityForResult(intent, REQ_RESULT)
         // 🔥 Firestore에는 이미 증가된 ID 저장
-        FirestoreProgress().saveSlangNextQuizId(currentQuizId)
+        //FirestoreProgress().saveSlangNextQuizId(currentQuizId)
 
         val intent = Intent(this, SlangResultActivity::class.java).apply {
             putExtra("isCorrect", isCorrect)
             putExtra("explanation", currentQuiz.explanation)
             putExtra("notice", currentQuiz.notice)
             putExtra("exampleImage", currentQuiz.exampleImage)
-            putExtra("nextQuizId", currentQuizId)
+            //putExtra("nextQuizId", currentQuizId)
             putExtra("isEndOfPart", isEndOfSet) // 🔥 최종 판단 기준
         }
 
@@ -483,12 +390,6 @@ class SlangQuizActivity : AppCompatActivity() {
             else{
                 loadQuizFromDB()
             }
-
-//            currentQuizId =
-//                data?.getIntExtra("nextQuizId", currentQuizId + 1)
-//                    ?: (currentQuizId + 1)
-//
-//            loadQuizFromDB()
         }
     }
 
@@ -502,14 +403,14 @@ class SlangQuizActivity : AppCompatActivity() {
         }
 
         startActivity(intent)
+//
+//        // ✅ 2. 그 다음에 다음 세트를 위한 초기화
+//        totalCount = 0
+//        correctCount = 0
 
-        // ✅ 2. 그 다음에 다음 세트를 위한 초기화
-        totalCount = 0
-        correctCount = 0
-
-        pref.edit()
-            .putInt("solvedInSet", 0)
-            .apply()
+//        pref.edit()
+//            .putInt("solvedInSet", 0)
+//            .apply()
 
         finish()
     }

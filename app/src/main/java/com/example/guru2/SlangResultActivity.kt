@@ -115,14 +115,22 @@ class SlangResultActivity : AppCompatActivity() {
         }
 
         // 디미 유진_결과 화면 -> 다음 퀴즈 이동
+//        btnNext.setOnClickListener {
+//            val resultIntent = Intent().apply {
+//                putExtra("nextQuizId", nextQuizId)
+//                putExtra("isEndOfPart", isEndOfPart) // ☑️
+//            }
+//            setResult(RESULT_OK, resultIntent)
+//            finish()
+//        }
         btnNext.setOnClickListener {
             val resultIntent = Intent().apply {
-                putExtra("nextQuizId", nextQuizId)
-                putExtra("isEndOfPart", isEndOfPart) // ☑️
+                putExtra("isEndOfPart", isEndOfPart)
             }
             setResult(RESULT_OK, resultIntent)
             finish()
         }
+
 
 //        // 디미 유진_콘텐츠 저장 (임시)
 //        btnSave.setOnClickListener {
