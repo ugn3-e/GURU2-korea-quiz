@@ -25,7 +25,7 @@
       android:elevation="10dp"
       android:max="4"
       android:progress="1"
-      android:progressTint="#646568"
+      android:progressTint="@color/confirm_active"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />

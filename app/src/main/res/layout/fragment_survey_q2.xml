@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF"
+    android:background="@color/white"
     tools:context=".SurveyQ2Fragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -13,20 +13,21 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/mainToolbar"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:background="#FFF"
+            android:background="@color/toolbar_color"
             android:paddingVertical="8dp"
             app:menu="@menu/menu_main"
-            app:titleTextAppearance="@style/ToolbarTitleBold"
             app:title="Quiz"
+            app:titleTextAppearance="@style/ToolbarTitleBold"
             app:titleTextColor="@android:color/black" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -37,18 +38,20 @@
     <!--질문-->
     <TextView
         android:id="@+id/Q2TextView"
-        android:layout_width="249dp"
-        android:layout_height="57dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="80dp"
         android:text="한국어 학습에 있어 \n 가장 어려운 점은 무엇인가요?"
         android:textAlignment="center"
         android:textAllCaps="false"
+        android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/btnHard1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
     <!--선택지-->
     <Button
@@ -56,68 +59,68 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="80dp"
-        android:layout_marginBottom="16dp"
         android:text="문법이 어렵다"
-        android:textColor="#323234"
-        app:backgroundTint="#FFF"
-        app:strokeWidth="1dp"
-        app:strokeColor="#B1B2B4"
-        app:layout_constraintBottom_toTopOf="@+id/btnHard2"
+        android:textColor="@color/button_text_default"
+        app:backgroundTint="@color/button_default_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Q2TextView"
+        app:strokeColor="@color/button_default_stroke"
+        app:strokeWidth="1dp" />
 
     <Button
         android:id="@+id/btnHard2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="80dp"
-        android:layout_marginBottom="16dp"
         android:text="억양이 어렵다"
-        android:textColor="#323234"
-        app:backgroundTint="#FFF"
-        app:strokeWidth="1dp"
-        app:strokeColor="#B1B2B4"
-        app:layout_constraintBottom_toTopOf="@+id/btnHard3"
+        android:textColor="@color/button_text_default"
+        app:backgroundTint="@color/button_default_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnHard1"
+        app:strokeColor="@color/button_default_stroke"
+        app:strokeWidth="1dp" />
 
     <Button
         android:id="@+id/btnHard3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="80dp"
-        android:layout_marginBottom="16dp"
         android:text="맞춤법이 어렵다"
-        android:textColor="#323234"
-        app:backgroundTint="#FFF"
-        app:strokeWidth="1dp"
-        app:strokeColor="#B1B2B4"
-        app:layout_constraintBottom_toTopOf="@+id/btnHard4"
+        android:textColor="@color/button_text_default"
+        app:backgroundTint="@color/button_default_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnHard2"
+        app:strokeColor="@color/button_default_stroke"
+        app:strokeWidth="1dp" />
 
     <Button
         android:id="@+id/btnHard4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="80dp"
-        android:layout_marginBottom="30dp"
         android:text="존대 표현이 어렵다"
-        android:textColor="#323234"
-        app:backgroundTint="#FFF"
-        app:strokeWidth="1dp"
-        app:strokeColor="#B1B2B4"
-        app:layout_constraintBottom_toTopOf="@+id/editText"
+        android:textColor="@color/button_text_default"
+        app:backgroundTint="@color/button_default_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnHard3"
+        app:strokeColor="@color/button_default_stroke"
+        app:strokeWidth="1dp" />
 
     <!-- 기타 의견 -->
 
@@ -128,32 +131,33 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="40dp"
-        android:layout_marginBottom="55dp"
+        android:background="@drawable/bg_edittext"
         android:hint="다른 의견이 있다면 직접 입력해주세요."
-        android:textSize="13dp"
         android:padding="40dp"
         android:textAlignment="center"
-        android:background="@drawable/bg_edittext"
-        app:layout_constraintBottom_toTopOf="@+id/btnNext"
+        android:textColor="@color/button_text_default"
+        android:textSize="13dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnHard4" />
 
     <Button
         android:id="@+id/btnNext"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="66dp"
+        android:layout_marginBottom="70dp"
         android:text="다음"
-        android:textColor="#323234"
-        app:backgroundTint="#FFF"
+        android:textColor="@color/button_text_default"
+        app:backgroundTint="@color/button_default_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="#B1B2B4"
+        app:strokeColor="@color/button_default_stroke"
         app:strokeWidth="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

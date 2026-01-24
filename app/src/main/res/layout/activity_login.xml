@@ -17,7 +17,7 @@
         android:layout_marginBottom="48dp"
         android:text="Koready에 오신 것을 환영합니다."
         android:textColor="@color/black"
-        android:textSize="12sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/etId"
         app:layout_constraintEnd_toEndOf="parent"

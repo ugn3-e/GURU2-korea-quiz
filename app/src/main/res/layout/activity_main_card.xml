@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16.dp"
             android:text="맞춤법 퀴즈"
-            android:textColor="#323234"
+            android:textColor="@color/black"
             android:textSize="15sp"
             android:textStyle="bold" />
 
