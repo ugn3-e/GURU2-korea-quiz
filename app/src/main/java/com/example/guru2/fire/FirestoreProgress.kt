@@ -3,17 +3,19 @@ package com.example.guru2.fire
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
+// "이어서 학습" 진행상황 저장/불러오기
 class FirestoreProgress (
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     ) {
+    // 현재 로그인된 유저 uid 가져오기
     private fun uid(): String {
         return auth.currentUser?.uid
             ?: throw IllegalStateException("로그인된 사용자가 없습니다")
     }
 
-    // 맞춤법 퀴즈 -> 이어서 학습 불러오기
+    // 맞춤법 퀴즈_이어서 학습 불러오기(nextQuizId)
     fun loadSpellNextQuizId(
         onResult: (Int) -> Unit,
         onError: () -> Unit
@@ -33,7 +35,7 @@ class FirestoreProgress (
             }
     }
 
-    // 맞춤법 퀴즈 -> 이어서 학습 저장
+    // 맞춤법 퀴즈_이어서 학습 저장(nextQuizId)
     fun saveSpellNextQuizId(
         nextQuizId: Int,
         onSuccess: () -> Unit = {},
@@ -53,7 +55,7 @@ class FirestoreProgress (
             .addOnFailureListener { e -> onFail(e) }
     }
 
-    // 신조어 퀴즈 -> 이어서 학습 불러오기
+    // 신조어 퀴즈_이어서 학습 불러오기(nextQuizId)
     fun loadSlangNextQuizId(
         onResult: (Int) -> Unit,
         onError: () -> Unit
@@ -72,7 +74,7 @@ class FirestoreProgress (
             }
     }
 
-    // 신조어 퀴즈 -> 이어서 학습 저장
+    // 신조어 퀴즈_이어서 학습 저장(nextQuizId)
     fun saveSlangNextQuizId(nextQuizId: Int) {
         val data = hashMapOf(
             "nextQuizId" to nextQuizId,

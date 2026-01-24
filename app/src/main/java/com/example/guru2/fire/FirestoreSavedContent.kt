@@ -3,6 +3,7 @@ package com.example.guru2.fire
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
+// "저장한 콘텐츠" 저장/불러오기
 data class SavedSpellItem(
     val quizId: Int = 0,
     val savedDate: String = "",
@@ -13,12 +14,14 @@ class FirestoreSavedContent (
     private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 ) {
+    // 현재 로그인된 유저 uid 불러오기
     private fun uid(): String {
         return auth.currentUser?.uid
             ?: throw IllegalStateException("로그인된 사용자가 없습니다")
     }
 
-    // 저장
+    // 맞춤법 퀴즈 저장
+    // quizId → 중복 저장 방지
     fun saveSpell(
         quizId: Int, savedDate: String,
         onSuccess: () -> Unit = {},
@@ -36,13 +39,13 @@ class FirestoreSavedContent (
             .collection("saved")
             .document("spell")
             .collection("items")
-            .document(quizId.toString())     // quizId를 문서 id로 쓰면 중복 저장 방지됨
+            .document(quizId.toString()) // 중복 저장 방지
             .set(data)
             .addOnSuccessListener { onSuccess() }
             .addOnFailureListener { e -> onFail(e) }
     }
 
-    // 맞춤법 퀴즈 저장목록
+    // 맞춤법 퀴즈 저장 목록 불러오기
     fun loadSpell(
         onResult: (List<SavedSpellItem>) -> Unit,
         onFail: (Exception) -> Unit = {}
@@ -52,7 +55,7 @@ class FirestoreSavedContent (
             .collection("saved")
             .document("spell")
             .collection("items")
-            .orderBy("savedAt") // 최신순은 아래에서 reversed 하거나 내림차순 쿼리도 가능
+            .orderBy("savedAt")
             .get()
             .addOnSuccessListener { snap ->
                 val list = snap.documents.mapNotNull { doc ->

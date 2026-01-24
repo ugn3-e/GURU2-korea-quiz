@@ -9,11 +9,12 @@ data class WrongRecord(
     val wrongAt: Long = 0L,
     val wrongDate: String = ""
 )
-
+// "오답" 저장/불러오기
 class FirestoreWrongNote(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 ) {
+    // 현재 로그인된 유저 uid 불러오기
     private fun uid(): String =
         auth.currentUser?.uid ?: throw IllegalStateException("로그인된 사용자가 없습니다")
 
@@ -41,9 +42,9 @@ class FirestoreWrongNote(
         db.collection("users")
             .document(uid())
             .collection("wrong")
-            .document(type)              // "spell" / "slang"
+            .document(type) // "spell" or "slang"
             .collection("records")
-            .add(data)                   // 여러 번 틀린 기록을 남기고 싶으면 add()
+            .add(data)
             .addOnSuccessListener { onSuccess() }
             .addOnFailureListener { e -> onFail(e) }
     }
@@ -70,28 +71,6 @@ class FirestoreWrongNote(
                     WrongRecord(quizId, userAnswer, wrongAt, wrongDate)
                 }
                 onResult(list)
-            }
-            .addOnFailureListener { e -> onFail(e) }
-    }
-
-    // 전체 초기화 (type 한 종류만 지움)
-    fun clearAll(
-        type: String,
-        onSuccess: () -> Unit = {},
-        onFail: (Exception) -> Unit = {}
-    ) {
-        db.collection("users")
-            .document(uid())
-            .collection("wrong")
-            .document(type)
-            .collection("records")
-            .get()
-            .addOnSuccessListener { snap ->
-                val batch = db.batch()
-                snap.documents.forEach { batch.delete(it.reference) }
-                batch.commit()
-                    .addOnSuccessListener { onSuccess() }
-                    .addOnFailureListener { e -> onFail(e) }
             }
             .addOnFailureListener { e -> onFail(e) }
     }

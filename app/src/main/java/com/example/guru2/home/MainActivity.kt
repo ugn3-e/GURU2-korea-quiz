@@ -24,7 +24,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
+    // 툴바
     lateinit var toolbar: Toolbar
+    // 홈 화면 버튼
     lateinit var btnQuiz1: View
     lateinit var btnQuiz2: View
     lateinit var btnSaved: View
@@ -33,22 +35,21 @@ class MainActivity : AppCompatActivity() {
     // 뒤로가기 시간 체크 변수
     private var backPressedTime = 0L
 
-    private lateinit var levelText: TextView       // 레벨 텍스트
-    private lateinit var progressBar: ProgressBar   // 파란색 게이지
-    private lateinit var tvUserName: TextView      // 닉네임
+    private lateinit var levelText: TextView // 레벨 텍스트
+    private lateinit var progressBar: ProgressBar // 파란색 게이지
+    private lateinit var tvUserName: TextView // 닉네임
     private lateinit var tvCharacterPercent: TextView // 퍼센트
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val userLevel = intent.getStringExtra("user_level") ?: "Lv.1"
-
         // 툴바를 액션바로 연결
         toolbar = findViewById<Toolbar>(R.id.mainToolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false) // 기존 AppName 없애기
 
+        // UI 요소 연결
         levelText = findViewById(R.id.tvCharacterLevel)
         progressBar = findViewById(R.id.levelProgressBar)
         tvUserName = findViewById(R.id.tvUserName)
@@ -76,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        // 저장
+        // 저장한 콘텐츠
         btnSaved = findViewById(R.id.btnSaved)
         btnSaved.findViewById<TextView>(R.id.tvTitle).text = "저장한 콘텐츠"
         btnSaved.findViewById<TextView>(R.id.tvSubTitle).text = "Saved Content"
@@ -94,9 +95,6 @@ class MainActivity : AppCompatActivity() {
         btnWrong.setOnClickListener {
             startActivity(Intent(this, WrongNoteActivity::class.java))
         }
-
-        // 레벨 뷰 연결
-        levelText= findViewById(R.id.tvCharacterLevel)
 
         // 뒤로가기 두 번 누르면 앱 종료
         onBackPressedDispatcher.addCallback(
@@ -128,6 +126,7 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    // 상단 메뉴 클릭
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_survey -> {
@@ -166,6 +165,7 @@ class MainActivity : AppCompatActivity() {
     // 레벨 표시
     private fun loadLevelFromFirestoreAndUpdateUI() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
+        // 로그인 안된 상태면 기본값 표시
         if (uid == null) { // 기본값
             levelText.text = "Lv.1"
             tvUserName.text = "슈니님"
@@ -188,7 +188,7 @@ class MainActivity : AppCompatActivity() {
                 // 레벨 표시
                 levelText.text = "Lv.$level"
 
-                // 게이지 표시 (50문제=100%)
+                // 진행률 퍼센트 계산 (50문제=100%)
                 val progressPercent = if (totalSolved >= 50) 100 else ((totalSolved / 50.0) * 100).toInt()
                 progressBar.setProgress(progressPercent, true)
                 tvCharacterPercent.text = "$progressPercent%"
