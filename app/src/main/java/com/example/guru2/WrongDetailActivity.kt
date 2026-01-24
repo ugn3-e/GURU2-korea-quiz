@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 // 오답 상세 화면 Activity
 // 오답 노트에서 문제 클릭 시 진입
 // 신조어 / 맞춤법 타입에 따라 서로 다른 레이아웃 사용
-// quiz_id를 통해 원본 문제 정보를 DB에서 조회
+// quiz_id를 통해 문제 정보를 DB에서 조회
 
 class WrongDetailActivity : AppCompatActivity() {
     lateinit var toolbar: Toolbar
@@ -22,31 +22,30 @@ class WrongDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 디미 유진_이전 화면에서 전달받은 데이터
+        // 이전 화면에서 전달받은 데이터
         // quiz_type: "slang" / "spelling"
         // quiz_id: 클릭한 문제의 ID
         val type = intent.getStringExtra("quiz_type") ?: "slang"
         val quizId = intent.getIntExtra("quiz_id", -1)
 
-        // 디미 유진_신조어 오답 상세 화면
+        // 신조어 오답 상세 화면
         if (type == "slang") {
             setContentView(R.layout.activity_wrong_detail_slang)
 
-            //디미 유진_신조어 DB에서 해당 quiz_id 문제 조회
+            // 신조어 DB에서 해당 quiz_id 문제 조회
             val quiz = SlangDBManager(this).getQuizById(quizId) ?: return
 
-            // 디미 유진_신조어 단어 표시
+            // 신조어 단어 표시
             findViewById<TextView>(R.id.tvSlangWord).text = quiz.slangWord
 
-            // 디미 유진_설명(해설) 표시
+            // 해설 표시
             findViewById<TextView>(R.id.tvExplanation).text = quiz.explanation
 
-            // 디미 유진_주의사항 표시
+            // 주의사항 표시
             findViewById<TextView>(R.id.tvNotice).text = quiz.notice
 
-            // 디미 유진_예시 이미지 표시
+            // 이미지 표시
             val imgExample = findViewById<ImageView>(R.id.ivExample)
-            // 🔥 이미지 파일명 자동 보정
             val rawImage = quiz.exampleImage ?: ""
             val imageFile = if (rawImage.isNotBlank() && !rawImage.contains(".")) {
                 "$rawImage.png"
@@ -65,42 +64,28 @@ class WrongDetailActivity : AppCompatActivity() {
                 imgExample.visibility = View.GONE
             }
 
-            //디미 유진_뒤로 가기 버튼
-            // -> 현재 Activity만 종료 -> 오답 목록 화면
+            // 뒤로 가기 버튼 -> 현재 Activity만 종료 -> 오답 목록 화면
             findViewById<Button>(R.id.btnBack).setOnClickListener {
                 finish()
             }
 
-            //디미 유진_메인 화면으로 이동 코드 (시용 X)
-//            val backClick = View.OnClickListener {
-//                val intent = Intent(this, MainActivity::class.java)
-//                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-//                startActivity(intent)
-//                finish()
-//            }
-//
-//            findViewById<Button>(R.id.btnBack).setOnClickListener(backClick)
-
-        // 디미 유진_맞춤법 오답 상세 화면
+        // 맞춤법 오답 상세 화면
         } else {
             setContentView(R.layout.activity_wrong_detail_spelling)
 
-            // 디미 유진_맞춤법 DB에서 문제 조회
+            // 맞춤법 DB에서 문제 조회
             val quiz = SpellDBManager(this).getQuizById(quizId) ?: return
 
-            // 디미 유진_정답 단어 표시
+            // 정답 단어 표시
             findViewById<TextView>(R.id.tvCorrect).text = quiz.correct
 
-            // 빈칸("____")을 정답으로 치환
+            // 빈칸 부분에 정답 넣기
             val filledSentence = quiz.sentence.replace("____", quiz.correct)
 
-            // 문장 TextView에 표시
+            // 문장 표시
             findViewById<TextView>(R.id.tvSentence).text = filledSentence
 
-            // 디미 유진_문장 예시 표시
-            //findViewById<TextView>(R.id.tvSentence).text = quiz.sentence
-
-            // 디미 유진_오답 설명 표시
+            // 오답 해설 표시
             findViewById<TextView>(R.id.tvIncorrectExp).text = quiz.incorrect_exp
 
             // Glide로 asset에서 이미지 가져오기
@@ -115,7 +100,7 @@ class WrongDetailActivity : AppCompatActivity() {
                 imageView.setImageResource(R.drawable.ic_launcher_foreground)
             }
 
-            // 디미 유진_뒤로 가기 버튼
+            // 뒤로 가기 버튼
             findViewById<Button>(R.id.btnBack).setOnClickListener {
                 finish()
             }
@@ -127,11 +112,10 @@ class WrongDetailActivity : AppCompatActivity() {
 
         supportActionBar?.apply {
             title = "오답" // 타이틀 설정
-            // 만약 뒤로가기 버튼이 필요하면
-            // setDisplayHomeAsUpEnabled(true)
         }
     }
 
+    // 메뉴 연결
     override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -139,13 +123,14 @@ class WrongDetailActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            // 설문조사로 이동
             R.id.action_survey -> {
                 val intent = Intent(this, SurveyActivity::class.java)
                 startActivity(intent)
                 return true
             }
 
-            // 디미 유진_마이페이지
+            // 마이페이지 이동
             R.id.action_mypage -> {
                 startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
                 return true

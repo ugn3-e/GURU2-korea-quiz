@@ -62,6 +62,7 @@ class SurveyQ2Fragment : Fragment(R.layout.fragment_survey_q2) {
         // 만약 타이틀을 바꾸고 싶다면
         activity?.supportActionBar?.title = "Quiz"
 
+        // 메뉴 연결
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -85,29 +86,29 @@ class SurveyQ2Fragment : Fragment(R.layout.fragment_survey_q2) {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        // 선택지 초기 상태 (색 없음)
+        // 선택지 초기 상태
         buttons.forEach {
             it.backgroundTintList = defaultColor
         }
 
-        // Next 버튼 초기 비활성
+        // Next 버튼 비활성 상태
         btnNext.isEnabled = false
         btnNext.backgroundTintList = defaultColor
 
         fun selectButton(selected: Button) {
             // 모든 버튼 초기화
             buttons.forEach { selected ->
-                selected.backgroundTintList = defaultColor // 하얀색
-                selected.setTextColor(textDefaultColor) // 검은색
+                selected.backgroundTintList = defaultColor
+                selected.setTextColor(textDefaultColor)
 
                 if (selected is com.google.android.material.button.MaterialButton) {
-                    selected.strokeColor = strokeDefaultColor // 회색(기본) 테두리로 복구
+                    selected.strokeColor = strokeDefaultColor // 테두리 설정
                 }
             }
 
             // 선택된 버튼만 색 변경
-            selected.backgroundTintList = selectedColorNext // 연한 파랭이
-            selected.setTextColor(textSelectedColor2) // 파랭이
+            selected.backgroundTintList = selectedColorNext
+            selected.setTextColor(textSelectedColor2)
             if (selected is com.google.android.material.button.MaterialButton) {
                 selected.strokeColor = strokeSelectedColor
             }
@@ -125,8 +126,7 @@ class SurveyQ2Fragment : Fragment(R.layout.fragment_survey_q2) {
         btnHard3.setOnClickListener { selectButton(btnHard3) }
         btnHard4.setOnClickListener { selectButton(btnHard4) }
 
-
-
+        // 넘어가기
         btnNext.setOnClickListener {
             selectedAnswer?.let { choice ->
                 val extra = editText.text.toString().trim()
@@ -141,7 +141,6 @@ class SurveyQ2Fragment : Fragment(R.layout.fragment_survey_q2) {
                 activity.saveAnswer("q2", finalAnswer)
                 activity.goNextPage()
             }
-            //(requireActivity() as SurveyActivity).goNextPage()
         }
     }
 }

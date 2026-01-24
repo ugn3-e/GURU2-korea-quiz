@@ -1,7 +1,7 @@
 package com.example.guru2.auth
 
 data class User(
-    val id: Long,               // ✅ Long
+    val id: Long,               //  Long 타입
     val username: String,
     val password: String,
     val nickname: String,

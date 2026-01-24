@@ -25,7 +25,6 @@ class LoginActivity : AppCompatActivity() {
 
         // FirebaseAuth 초기화
         auth = FirebaseAuth.getInstance()
-        //val repo = AuthRepository(SQLiteAuthDataSource(this))
 
         val etId = findViewById<EditText>(R.id.etId)
         val etPw = findViewById<EditText>(R.id.etPw)

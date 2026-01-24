@@ -48,7 +48,7 @@ class FirestoreWrongNote(
             .addOnFailureListener { e -> onFail(e) }
     }
 
-    // 오답 불러오기 (최근순)
+    // 오답 불러오기 (최신순)
     fun loadWrongs(
         type: String,
         onResult: (List<WrongRecord>) -> Unit,

@@ -17,22 +17,22 @@ class SpellFinalResultActivity : AppCompatActivity() {
     private lateinit var btnKeep: MaterialButton
     private lateinit var btnHome: MaterialButton
 
-    // ⭐ Firestore 진행 상태
+    // 파이어베이스 진행 상태
     private val progressStore by lazy { FirestoreProgress() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spell_final_result)
 
-        // ================= View =================
+        // View
         tvSummary = findViewById(R.id.SpellSummary)
         btnKeep = findViewById(R.id.btnQKeep)
         btnHome = findViewById(R.id.btnHome)
 
-        // ⭐ 기본 비활성화
+        // 기본 비활성화
         btnKeep.isEnabled = false
 
-        // ================= 결과 데이터 =================
+        // 내가 푼 문제 결과
         val total = intent.getIntExtra("totalSCount", 0)
         val correct = intent.getIntExtra("correctSCount", 0)
 
@@ -43,7 +43,7 @@ class SpellFinalResultActivity : AppCompatActivity() {
             한 번 더 학습할 수 있습니다!
         """.trimIndent()
 
-        // ================= ⭐ 다음 문제 존재 여부 확인 =================
+        // 다음 문제 존재 여부 확인
         progressStore.loadSpellNextQuizId(
             onResult = { nextId ->
                 val nextQuiz = try {
@@ -62,7 +62,7 @@ class SpellFinalResultActivity : AppCompatActivity() {
                 }
 
                 if (!nextQuiz) {
-                    // ❌ 더 이상 풀 문제가 없음
+                    // 더 이상 풀 문제가 없는 경우
                     Toast.makeText(
                         this,
                         "모든 맞춤법 학습을 완료하였습니다!",
@@ -70,7 +70,7 @@ class SpellFinalResultActivity : AppCompatActivity() {
                     ).show()
                     btnKeep.isEnabled = false
                 } else {
-                    // ✅ 다음 문제가 있음 → 이어하기 활성화
+                    // 다음 문제가 있는 경우 -> 다음 학습하기 활성화
                     btnKeep.isEnabled = true
                 }
             },
@@ -83,30 +83,23 @@ class SpellFinalResultActivity : AppCompatActivity() {
             }
         )
 
-        // ================= 이어서 학습 =================
+        // 이어서 학습하는 경우
         btnKeep.setOnClickListener {
-
-            // ⭐⭐⭐ 핵심 추가: spell 세트 상태 초기화
-//            progressStore.saveSpellProgress(
-//                nextQuizId = -1,   // Quiz에서 다시 덮어씀
-//                solvedInSet = 0
-//            )
 
             startActivity(
                 Intent(this, SpellQuizActivity::class.java).apply {
-                    //putExtra("continue", true)   // slang과 동일
                 }
             )
             finish()
         }
 
-        // ================= 홈으로 =================
+        // 홈으로 이동하는 경우
         btnHome.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
 
-        // ================= 뒤로가기 막기 =================
+        // 푸는 도중에 뒤로가기 막기
         onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -121,27 +114,4 @@ class SpellFinalResultActivity : AppCompatActivity() {
         )
 
     }
-
-//    // ================= 메뉴 =================
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.menu_main, menu)
-//        return true
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            R.id.action_survey -> {
-//                startActivity(Intent(this, SurveyActivity::class.java))
-//                return true
-//            }
-//            R.id.action_mypage -> {
-//                startActivity(
-//                    Intent(this, com.example.guru2.mypage.MyPageActivity::class.java)
-//                )
-//                return true
-//            }
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
-
 }

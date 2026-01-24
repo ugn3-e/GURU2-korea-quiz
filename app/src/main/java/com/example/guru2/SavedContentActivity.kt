@@ -15,7 +15,7 @@ class SavedContentActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // 레이아웃 설정(합치기)
+        // 레이아웃 설정
         setContentView(R.layout.activity_saved_content)
 
         // 툴바
@@ -26,7 +26,7 @@ class SavedContentActivity : AppCompatActivity() {
         val spellDbManager = SpellDBManager(this)
         val store = com.example.guru2.fire.FirestoreSavedContent()
 
-        // 🔹 홈으로 이동 버튼
+        // 홈으로 이동 버튼
         val btnGoHome = findViewById<Button>(R.id.btnGoHome)
         btnGoHome.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java).apply {
@@ -38,10 +38,10 @@ class SavedContentActivity : AppCompatActivity() {
 
         store.loadSpell(
             onResult = { savedList ->
-                // Firestore에서 받은 quizId로 로컬 DB에서 상세 가져오기
+                // firestore에서 받은 quizId로 로컬 DB 가져오기
                 val quizzes = savedList.mapNotNull { item ->
                     val q = spellDbManager.getQuizById(item.quizId) ?: return@mapNotNull null
-                    // Firestore의 savedDate를 화면에 쓰려면 saved_date를 덮어쓴 복사본 생성
+                    // Firestore의 savedDate를 화면에 쓰려면 saved_date를 덮어쓴 복사본 생성 필요함
                     q.copy(saved_date = item.savedDate, is_saved = 1)
                 }
 
@@ -65,6 +65,8 @@ class SavedContentActivity : AppCompatActivity() {
             }
         )
     }
+
+    // 메뉴 연결
     override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -78,7 +80,6 @@ class SavedContentActivity : AppCompatActivity() {
                 return true
             }
 
-            // 디미 유진_마이페이지
             R.id.action_mypage -> {
                 startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
                 return true

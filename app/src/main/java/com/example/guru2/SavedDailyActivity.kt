@@ -1,4 +1,4 @@
-// 안쓰는 파일인데 혹시 몰라서 일단 냅둠
+// 액티비티만 쓰고 안쓰는 파일인데 혹시 몰라서 일단 냅둠
 package com.example.guru2
 
 import android.os.Bundle

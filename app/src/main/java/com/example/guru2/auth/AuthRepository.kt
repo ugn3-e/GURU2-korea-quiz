@@ -19,7 +19,7 @@ class AuthRepository(
         return dataSource.login(username, password)
     }
 
-    // ✅ userId = Long 으로 통일
+    // userId = Long 으로 통일
     fun increaseSolvedCount(userId: Long) {
         dataSource.increaseSolvedCount(userId)
     }
@@ -28,7 +28,7 @@ class AuthRepository(
         return dataSource.getSolvedCount(userId)
     }
 
-    // 유빈_추가 (닉네임 얻기 위해)
+    // 닉네임 얻기
     fun getNickname(userId: Long): String {
         return dataSource.getNickname(userId)
     }

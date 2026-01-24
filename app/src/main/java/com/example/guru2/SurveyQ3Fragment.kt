@@ -44,6 +44,7 @@ class SurveyQ3Fragment : Fragment(R.layout.fragment_survey_q3) {
         // 만약 타이틀을 바꾸고 싶다면
         activity?.supportActionBar?.title = "Quiz"
 
+        // 메뉴 연결
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -69,10 +70,10 @@ class SurveyQ3Fragment : Fragment(R.layout.fragment_survey_q3) {
 
         // 처음에는 Next 비활성화
         btnNext.isEnabled = false
-        btnNext.backgroundTintList = defaultColor // 하얀색
-        btnNext.setTextColor(textDefaultColor) // 검은색
+        btnNext.backgroundTintList = defaultColor
+        btnNext.setTextColor(textDefaultColor)
 
-        // EditText 입력 감지
+        // EditText 입력
         editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val hasText = !s.isNullOrBlank()
@@ -96,7 +97,6 @@ class SurveyQ3Fragment : Fragment(R.layout.fragment_survey_q3) {
             val activity = requireActivity() as SurveyActivity
             activity.saveAnswer("q3", answer)
             activity.goNextPage()
-            //(requireActivity() as SurveyActivity).goNextPage()
         }
     }
 }

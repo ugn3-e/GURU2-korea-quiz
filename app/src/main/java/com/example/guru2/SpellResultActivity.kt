@@ -18,7 +18,7 @@ class SpellResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spell_result)
 
-        // ================= View =================
+        // View
         val tvResult = findViewById<TextView>(R.id.ResultText)
         val tvQuizText = findViewById<TextView>(R.id.QuizText)
         val tvAnswer = findViewById<TextView>(R.id.QuizAnswer)
@@ -33,7 +33,7 @@ class SpellResultActivity : AppCompatActivity() {
         val infoText = findViewById<TextView>(R.id.infoText)
         val imgDog = findViewById<ImageView>(R.id.imgDog)
 
-        // ================= Intent 데이터 =================
+        // Intent 받는 데이터
         val isCorrect = intent.getBooleanExtra("isCorrect", false)
         val sentence = intent.getStringExtra("sentence") ?: ""
         val correctAnswer = intent.getStringExtra("correctAnswer") ?: ""
@@ -43,7 +43,7 @@ class SpellResultActivity : AppCompatActivity() {
         val quizId = intent.getIntExtra("quiz_id", -1)
         val isEndOfPart = intent.getBooleanExtra("isEndOfPart", false)
 
-        // ================= 결과 표시 =================
+        // 결과 표시
         tvResult.text = if (isCorrect) "정답!" else "오답"
         tvResult.setTextColor(
             ContextCompat.getColor(
@@ -53,6 +53,7 @@ class SpellResultActivity : AppCompatActivity() {
             )
         )
 
+        // 빈칸 채우기
         val filledSentence =
             if (sentence.contains("____")) {
                 sentence.replace("____", correctAnswer)
@@ -64,7 +65,7 @@ class SpellResultActivity : AppCompatActivity() {
 
         tvAnswer.text = incorrectExp
 
-        // ================= 이미지 표시 (🔥 누락 해결) =================
+        // 이미지 표시
         if (imagePath.isNotBlank()) {
             Glide.with(this)
                 .load("file:///android_asset/images/$imagePath")
@@ -74,7 +75,7 @@ class SpellResultActivity : AppCompatActivity() {
             imgResult.visibility = View.GONE
         }
 
-        // ================= 콘텐츠 정보 말풍선 =================
+        // 콘텐츠 정보 말풍선
         btnInfo.setOnClickListener {
             btnInfo.visibility = View.GONE
             bubbleOverlay.visibility = View.VISIBLE
@@ -94,7 +95,7 @@ class SpellResultActivity : AppCompatActivity() {
             btnInfo.visibility = View.VISIBLE
         }
 
-        // ================= 다음 문제 (🔥 slang 구조 동일) =================
+        // 다음 문제
         btnNext.setOnClickListener {
             val resultIntent = Intent().apply {
                 putExtra("isEndOfPart", isEndOfPart)
@@ -103,7 +104,7 @@ class SpellResultActivity : AppCompatActivity() {
             finish()
         }
 
-        // ================= 콘텐츠 저장 (🔥 quiz_id 연결 복구) =================
+        // 콘텐츠 저장
         btnSave.setOnClickListener {
             if (quizId == -1) {
                 Toast.makeText(this, "저장할 수 없는 문제입니다.", Toast.LENGTH_SHORT).show()
@@ -127,7 +128,7 @@ class SpellResultActivity : AppCompatActivity() {
             )
         }
 
-        // ================= 뒤로가기 차단 =================
+        //  문제 푸는 도중에 뒤로가기 차단
         onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -141,26 +142,4 @@ class SpellResultActivity : AppCompatActivity() {
             }
         )
     }
-
-//    // ================= 메뉴 =================
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.menu_main, menu)
-//        return true
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return when (item.itemId) {
-//            R.id.action_survey -> {
-//                startActivity(Intent(this, SurveyActivity::class.java))
-//                true
-//            }
-//            R.id.action_mypage -> {
-//                startActivity(
-//                    Intent(this, com.example.guru2.mypage.MyPageActivity::class.java)
-//                )
-//                true
-//            }
-//            else -> super.onOptionsItemSelected(item)
-//        }
-//    }
 }

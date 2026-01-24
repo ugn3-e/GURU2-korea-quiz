@@ -18,7 +18,7 @@ class FirestoreSavedContent (
             ?: throw IllegalStateException("로그인된 사용자가 없습니다")
     }
 
-    // ✅ 저장(스펠링)
+    // 저장
     fun saveSpell(
         quizId: Int, savedDate: String,
         onSuccess: () -> Unit = {},
@@ -65,25 +65,4 @@ class FirestoreSavedContent (
             }
             .addOnFailureListener { e -> onFail(e) }
     }
-
-    // 초기화(전부 삭제)
-    //fun clearSpell(
-    //    onSuccess: () -> Unit = {},
-    //    onFail: (Exception) -> Unit = {}
-    //) {
-    //  db.collection("users")
-    //        .document(uid())
-    //        .collection("saved")
-    //        .document("spell")
-    //        .collection("items")
-    //        .get()
-    //        .addOnSuccessListener { snap ->
-    //            val batch = db.batch()
-    //            for (d in snap.documents) batch.delete(d.reference)
-    //            batch.commit()
-    //                .addOnSuccessListener { onSuccess() }
-    //                .addOnFailureListener { e -> onFail(e) }
-    //        }
-    //        .addOnFailureListener { e -> onFail(e) }
-    //}
 }

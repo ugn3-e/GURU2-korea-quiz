@@ -24,20 +24,17 @@ class SlangFinalResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_slang_final_result)
 
-        // 디미 유진_결과 요약 텍스트
+        // 결과 요약 텍스트
         sSummary = findViewById<TextView>(R.id.SlangSummary)
 
-        // 디미 유진_이어서 학습하기 버튼
+        // 이어서 학습하기 버튼
         btnKeep = findViewById(R.id.btnQKeep)
         btnKeep.isEnabled = false
 
-        // 디미 유진_홈으로 돌아가기 버튼
+        // 홈으로 돌아가기 버튼
         btnHome = findViewById(R.id.btnHome)
 
-//        val total = intent.getIntExtra("totalCount", 0)
-//        val correct = intent.getIntExtra("correctCount", 0)
-
-        // 디미 유진_퀴즈 결과 요약 메세지
+        // 퀴즈 결과 요약 메세지
         sSummary.text = """
             수고하셨습니다!
             
@@ -63,7 +60,7 @@ class SlangFinalResultActivity : AppCompatActivity() {
                     return@loadSlangNextQuizId
                 }
                 else{
-                    // ⭐ 다음 문제가 있을 때만 활성화
+                    // 다음 문제가 있을 때만 활성화
                     btnKeep.isEnabled = true
                 }
             },
@@ -72,15 +69,8 @@ class SlangFinalResultActivity : AppCompatActivity() {
             }
         )
 
-        // 디미 유진_이어서 학습하기 버튼
-        // ⭐ 클릭 시에는 그냥 Quiz로 이동만
+        // 이어서 학습하기 버튼
         btnKeep.setOnClickListener {
-
-            // ⭐⭐⭐ 핵심 추가: Firestore 세트 상태 초기화
-//            progressStore.saveSlangProgress(
-//                nextQuizId = -1,   // 값은 Quiz에서 다시 덮어씀
-//                solvedInSet = 0
-//            )
 
             startActivity(
                 Intent(this, SlangQuizActivity::class.java).apply {
@@ -90,7 +80,7 @@ class SlangFinalResultActivity : AppCompatActivity() {
             finish()
         }
 
-        // 디미 유진_(수정) MainActivity로 이동 (뒤로 가기 눌러도 이전 퀴즈 화면으로 돌아가지 않음)
+        // MainActivity 홈으로 이동
         btnHome.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -100,7 +90,7 @@ class SlangFinalResultActivity : AppCompatActivity() {
 
         }
 
-        // 디미 유진_뒤로가기 막기
+        // 뒤로가기 막기
         onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {

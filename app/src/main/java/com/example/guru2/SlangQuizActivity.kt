@@ -27,26 +27,24 @@ import com.bumptech.glide.Glide
 
 class SlangQuizActivity : AppCompatActivity() {
 
-    // 디미 유진_결과 화면 -> 다음 문제 화면으로 넘어갈 때 확인을 위한 번호
+    // 결과 화면 -> 다음 문제 화면으로 넘어갈 때 확인을 위한 번호
     companion object {
         private const val REQ_RESULT = 1001
-        private const val SET_SIZE = 5 // 🔥 일일 퀴즈 개수
+        private const val SET_SIZE = 5 // 일일 퀴즈 개수
     }
 
-    // 디미 유진_전체 결과 누적 변수
+    // 전체 결과 누적 변수
     private var totalCount = 0
     private var correctCount = 0
 
-    // 디미 유진_Q 번호
-    private var currentQuizId = 1  // 🔥 전역 문제 ID (DB 기준)
-    //private var solvedInSet = 0         // 🔥 이번 세트에서 푼 문제 수 (0~5)
-    //private var displayQNumber = 0         // ⭐⭐ UI용 Q 번호 (항상 1부터)
+    // Q 번호
+    private var currentQuizId = 1  // 문제 ID (DB 기준)
     private lateinit var tvQNumber: TextView
 
-    // 디미 유진_문제
+    // 문제
     private lateinit var tvQuestion: TextView
 
-    // 디미 유진_선택지 버튼
+    // 선택지 버튼
     // MaterialButton으로 변경
     private lateinit var btn1: MaterialButton
     private lateinit var btn2: MaterialButton
@@ -54,26 +52,19 @@ class SlangQuizActivity : AppCompatActivity() {
     private lateinit var btn4: MaterialButton
     private lateinit var choiceButtons: List<MaterialButton>
 
-    // 디미 유진_상황 예시 이미지
+    // 상황 예시 이미지
     private lateinit var btnShowExample: TextView
     private lateinit var imgExample: ImageView
     private lateinit var dogImage: ImageView
 
-    // 디미 유진_확인 버튼
+    // 확인 버튼
     private lateinit var btnConfirm: MaterialButton
 
-    // 디미 유진_선택지 값
+    // 선택지 값
     private var selectedAnswer = ""
     private lateinit var currentQuiz: SlangQuizData
 
-//    // 🔥 SharedPreferences
-//    // ===============================
-//    private val pref by lazy {
-//        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: "guest"
-//        getSharedPreferences("slang_quiz_$uid", MODE_PRIVATE)
-//    }
-
-    // ⭐ Firestore 진행 상태 (핵심)
+    // Firestore 진행 상태
     private val progressStore by lazy { FirestoreProgress() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,7 +74,7 @@ class SlangQuizActivity : AppCompatActivity() {
         bindViews()
         setClickListeners()
 
-        // ✅ Firestore에서 nextQuizId만 복원
+        // Firestore에서 nextQuizId만 복원
         progressStore.loadSlangNextQuizId(
             onResult = { nextId ->
                 currentQuizId = nextId
@@ -108,7 +99,7 @@ class SlangQuizActivity : AppCompatActivity() {
         )
     }
 
-    // ================= View =================
+    // View
     private fun bindViews() {
         tvQNumber = findViewById(R.id.QText)
         tvQuestion = findViewById(R.id.tvQuestion)
@@ -131,7 +122,7 @@ class SlangQuizActivity : AppCompatActivity() {
         imgExample.visibility = View.GONE
     }
 
-    // ================= 클릭 =================
+    // 클릭
     private fun setClickListeners() {
         btn1.setOnClickListener { onChoiceSelected(btn1) }
         btn2.setOnClickListener { onChoiceSelected(btn2) }
@@ -151,37 +142,11 @@ class SlangQuizActivity : AppCompatActivity() {
         btnConfirm.setOnClickListener { moveToResultPage() }
     }
 
-//    // 메뉴 연결
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.menu_main, menu)
-//        return true
-//    }
-//
-//    // 디미 유진_(추가)마이페이지 추가
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            R.id.action_survey -> {
-//                val intent = Intent(this, SurveyActivity::class.java)
-//                startActivity(intent)
-//                return true
-//            }
-//
-//            // 디미 유진_마이페이지
-//            R.id.action_mypage -> {
-//                startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
-//                return true
-//            }
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
-
-    // 디미 유진_DB에서 문제 1개 가져오기
+    // DB에서 문제 1개 가져오기
     private fun loadQuizFromDB() {
         val quiz = SlangDBManager(this).getQuizById(currentQuizId)
 
-        // ✅ 문제 없으면 종료
-        // 디미 유진_문제 다 풀었을 경우
-        // >> (수정) 마지막 문제 안내 페이지로 연결
+        // 문제 다 풀었을 경우
         if (quiz == null) {
             moveToFinalResultPage()
             return
@@ -189,28 +154,18 @@ class SlangQuizActivity : AppCompatActivity() {
 
         currentQuiz = quiz
 
-        // ⭐⭐⭐ UI 번호 증가 (DB랑 무관)
-        //displayQNumber++
-        //tvQNumber.text = "Q$displayQNumber"
-
-        // 디미 유진_불러온 Q 번호
-        //tvQNumber.text = "Q$qNumber"
-        //tvQNumber.text = "Q${solvedInSet + 1}"
-        // DB 기준 문제 번호 그대로 표시
-        //tvQNumber.text = "Q$currentQuizId"
-
         val qNumber = ((currentQuizId - 1) % 5) + 1
         tvQNumber.text = "Q$qNumber"
 
-        // 디미 유진_불러온 문제 & 선택지
+        // 불러온 문제 + 선택지
         tvQuestion.text = quiz.question
 
-        // 디미 유진_원본 선택지 로그
+        // 원본 선택지 로그
         Log.d("Clog", "Q${quiz.id} 원본 보기 = ${listOf(
             quiz.choice1, quiz.choice2, quiz.choice3, quiz.choice4
         )}")
 
-        // 디미 유진_선택지 섞기
+        // 선택지 섞기
         setShuffledChoices(quiz)
 
         imgExample.visibility = View.GONE // 상황 이미지느 안나오게
@@ -224,14 +179,13 @@ class SlangQuizActivity : AppCompatActivity() {
             .load("file:///android_asset/slang_image/$imgPath")
             .into(imgExample)
 
-        // 디미 유진_선택지, 확인 버튼 초기화
+        // 선택지, 확인 버튼 초기화
         resetChoiceButtons()
         disableConfirmButton()
     }
 
 
-    // 디미 유진_선택지 클릭 처리
-    // ======================= UI 제어 =======================
+    // 선택지 클릭 시 ui 변화
     private fun onChoiceSelected(selected: MaterialButton) {
         resetChoiceButtons()
 
@@ -284,7 +238,7 @@ class SlangQuizActivity : AppCompatActivity() {
     }
 
 
-    // 디미 유진_선택지 섞기
+    // 선택지 섞기
     private fun setShuffledChoices(quiz: SlangQuizData) {
         val choices = mutableListOf(
             quiz.choice1,
@@ -295,7 +249,7 @@ class SlangQuizActivity : AppCompatActivity() {
 
         choices.shuffle()
 
-        // 디미 유진_섞인 결과 로그
+        // 섞인 결과 로그
         Log.d("Clog", "Q${quiz.id} 섞인 보기 = $choices")
 
         val answerIndex = choices.indexOf(quiz.answer)
@@ -307,11 +261,11 @@ class SlangQuizActivity : AppCompatActivity() {
         btn4.text = choices[3]
     }
 
-    // 디미 유진_결과 화면 이동
+    // 결과 화면 이동
     private fun moveToResultPage() {
         val isCorrect = selectedAnswer == currentQuiz.answer
 
-        // 디미 유진_결과 누적
+        // 결과 누적
         totalCount++
         if (isCorrect) correctCount++
 
@@ -328,11 +282,10 @@ class SlangQuizActivity : AppCompatActivity() {
             }
         )
 
-        // 디미 유진_오답일 경우 현재 퀴즈 질문과 선택한 답 db에 저장하기
+        // 오답일 경우 현재 퀴즈 질문과 선택한 답 db에 저장하기
         if (!isCorrect) {
-            //WrongDBManager(this) .saveSlangWrong(this, currentQuiz.id, selectedAnswer)
 
-            // Firestore ☑️
+            // Firestore
             FirestoreWrongNote().addWrong(
                 type = "slang",
                 quizId = currentQuiz.id,
@@ -340,35 +293,28 @@ class SlangQuizActivity : AppCompatActivity() {
             )
         }
 
-        // 🔥 이번 세트에서 푼 문제 증가
-        //solvedInSet++
         currentQuizId++
         progressStore.saveSlangNextQuizId(currentQuizId)
 
-        // ✅ Q가 5번이면 무조건 세트 종료
+        // Q가 5번이면 무조건 세트 종료
         val isEndOfSet = ((currentQuizId - 1) % SET_SIZE) == 0
-
-        // 🔥 Firestore에는 이미 증가된 ID 저장
-        //FirestoreProgress().saveSlangNextQuizId(currentQuizId)
 
         val intent = Intent(this, SlangResultActivity::class.java).apply {
             putExtra("isCorrect", isCorrect)
             putExtra("explanation", currentQuiz.explanation)
             putExtra("notice", currentQuiz.notice)
             putExtra("exampleImage", currentQuiz.exampleImage)
-            //putExtra("nextQuizId", currentQuizId)
-            putExtra("isEndOfPart", isEndOfSet) // 🔥 최종 판단 기준
+            putExtra("isEndOfPart", isEndOfSet) // 최종 판단 기준
         }
 
         startActivityForResult(intent, REQ_RESULT)
     }
 
-    // 디미 유진_결과 화면 -> 다음 문제 화면을 위해 돌아왔을 경우
+    // 결과 화면 -> 다음 문제 화면을 위해 돌아왔을 경우
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQ_RESULT && resultCode == RESULT_OK) {
-            // finalresult 이동 판단 ☑️
             val isEndOfPart = data?.getBooleanExtra("isEndOfPart", false) ?: false
 
             if (isEndOfPart) {
@@ -381,24 +327,16 @@ class SlangQuizActivity : AppCompatActivity() {
         }
     }
 
-    // 디미 유진_최종 결과 화면 이동
+    // 최종 결과 화면 이동
     private fun moveToFinalResultPage() {
 
-        // ✅ 1. 먼저 결과 화면으로 전달 (초기화 ❌)
+        // 먼저 결과 화면으로 전달 (초기화 X)
         val intent = Intent(this, SlangFinalResultActivity::class.java).apply {
             putExtra("totalCount", totalCount)
             putExtra("correctCount", correctCount)
         }
 
         startActivity(intent)
-//
-//        // ✅ 2. 그 다음에 다음 세트를 위한 초기화
-//        totalCount = 0
-//        correctCount = 0
-
-//        pref.edit()
-//            .putInt("solvedInSet", 0)
-//            .apply()
 
         finish()
     }

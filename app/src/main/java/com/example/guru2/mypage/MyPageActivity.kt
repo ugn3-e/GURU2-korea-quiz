@@ -30,7 +30,7 @@ class MyPageActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        // ===== View 연결 =====
+        // View 연결
         val tvNickname = findViewById<TextView>(R.id.tvNickname)
         val tvNotice = findViewById<TextView>(R.id.tvNotice)
         val tvLevel = findViewById<TextView>(R.id.tvLevel)
@@ -41,20 +41,18 @@ class MyPageActivity : AppCompatActivity() {
         val cardEditProfile = findViewById<View>(R.id.cardEditProfile)
         val btnLogout = findViewById<TextView>(R.id.btnLogout)
 
-        // ===== 기본 안내 문구 =====
+        // 기본 안내 문구
         tvNotice.text =
             "꾸준한 학습 기록이 레벨을 유지합니다.\nKoready가 당신의 한국어 학습을 응원합니다!"
 
-        // ===== 로그인 유저 확인 =====
+        // 로그인 유저 확인
         val uid = auth.currentUser?.uid
         if (uid == null) {
             goLogin(clearTask = true)
             return
         }
 
-        // =====================================================
-        // ✅ Firestore → 메인과 동일한 레벨 / 게이지 로직
-        // =====================================================
+        // Firestore → 메인과 동일한 레벨 / 게이지 로직
         firestore.collection("users").document(uid).get()
             .addOnSuccessListener { doc ->
                 if (!doc.exists()) {
@@ -67,7 +65,7 @@ class MyPageActivity : AppCompatActivity() {
 
                 val nickname = doc.getString("nickname") ?: "사용자"
 
-                // ✅ [메인 기준 적용]
+                // 메인 기준 적용
                 val level = doc.getLong("level") ?: 1L
                 val totalSolved = doc.getLong("totalSolved") ?: 0L
 
@@ -75,7 +73,7 @@ class MyPageActivity : AppCompatActivity() {
                     if (totalSolved >= 50) 100
                     else ((totalSolved / 50.0) * 100).toInt()
 
-                // ===== UI 반영 =====
+                // UI 반영
                 tvNickname.text = nickname
                 tvLevel.text = "Lv.$level"
                 tvProgress.text = "$progressPercent%"
@@ -89,7 +87,7 @@ class MyPageActivity : AppCompatActivity() {
                 ).show()
             }
 
-        // ===== 버튼 이벤트 =====
+        // 버튼 이벤트
 
         // 홈으로 이동
         btnHome.setOnClickListener {
@@ -135,7 +133,7 @@ class MyPageActivity : AppCompatActivity() {
                 return true
             }
 
-            // 디미 유진_마이페이지
+            // 마이페이지
             R.id.action_mypage -> {
                 startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
                 return true

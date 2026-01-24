@@ -6,12 +6,9 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.viewpager2.widget.ViewPager2
-import com.example.guru2.fire.FirestoreWrongNote
 import androidx.constraintlayout.widget.ConstraintSet
 
 // 오답 노트 메인 화면 Activity
@@ -32,46 +29,44 @@ class WrongNoteActivity : AppCompatActivity() {
 
         supportActionBar?.apply {
             title = "오답" // 타이틀 설정
-            // 만약 뒤로가기 버튼이 필요하면
-            // setDisplayHomeAsUpEnabled(true)
         }
 
-        // 디미 유진_상단 탭 버튼 (TextView 사용)
+        // 상단 탭 버튼
         val btnSlang = findViewById<TextView>(R.id.btnSlang)
         val btnGrammar = findViewById<TextView>(R.id.btnGrammar)
 
-        // 디미 유진_홈으로 돌아가기 버튼
+        // 홈으로 돌아가기 버튼
         val btnGoHome = findViewById<Button>(R.id.btnGoHome)
 
-        // 디미 유진_오답 목록을 보여줄 ViewPager
+        // 오답 목록을 보여줄 ViewPager
         val viewPager = findViewById<ViewPager2>(R.id.viewPager)
 
-        // 디미 유진_ViewPager 어댑터 설정 (신조어 / 맞춤법 Fragment)
+        // ViewPager 어댑터 설정 (신조어 / 맞춤법 Fragment)
         viewPager.adapter = WrongPagerAdapter(this)
 
-        // 디미 유진_사용자 스와이프로 페이지 이동 금지 -> 탭 버튼 클릭으로만 전환
+        // 사용자 스와이프로 페이지 이동 금지 -> 탭 버튼 클릭으로만 전환
         viewPager.isUserInputEnabled = false
 
-        // 디미 유진_신조어 탭 클릭
+        // 신조어 탭 클릭
         btnSlang.setOnClickListener {
             currentType = "slang"
             viewPager.setCurrentItem(0, false)
             selectTab(true)
         }
 
-        // 디미 유진_맞춤법 탭 클릭
+        // 맞춤법 탭 클릭
         btnGrammar.setOnClickListener {
             currentType = "spell"
             viewPager.setCurrentItem(1, false)
             selectTab(false)
         }
 
-        // 디미 유진_홈으로 돌아가기
+        // 홈으로 돌아가기
         btnGoHome.setOnClickListener {
             finish()
         }
 
-        // 디미 유진_최초 진입 시 신조어 탭 선택 상태로 설정
+        // 처음 접속하면 신조어 탭이 선택되도록 설정
         selectTab(true)
     }
 
@@ -88,7 +83,7 @@ class WrongNoteActivity : AppCompatActivity() {
                 return true
             }
 
-            // 디미 유진_마이페이지
+            // 마이페이지
             R.id.action_mypage -> {
                 startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
                 return true
@@ -97,19 +92,19 @@ class WrongNoteActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    // 디미 유진_선택된 탭에 따라 텍스트 색상 변경
+    // 선택된 탭에 따라 텍스트 색상 변경
     private fun selectTab(isSlang: Boolean) {
         val btnSlang = findViewById<TextView>(R.id.btnSlang)
         val btnGrammar = findViewById<TextView>(R.id.btnGrammar)
         val mainLayout = findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.mainLayout)
 
 
-        // 디미 유진_신조어 탭 선택 상태
+        // 신조어 탭 선택 상태
         if (isSlang) {
             btnSlang.setTextColor(Color.parseColor("#1E35CB"))
             btnGrammar.setTextColor(Color.parseColor("#7D7E82"))
 
-        // 디미 유진_신조어 탭 선택 상태
+        // 신조어 탭 선택 상태
         } else {
             btnSlang.setTextColor(Color.parseColor("#555555"))
             btnGrammar.setTextColor(Color.parseColor("#1E35CB"))
@@ -129,6 +124,4 @@ class WrongNoteActivity : AppCompatActivity() {
         }
         constraintSet.applyTo(mainLayout)
     }
-
-
 }

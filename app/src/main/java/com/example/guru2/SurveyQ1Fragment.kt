@@ -39,6 +39,7 @@ class SurveyQ1Fragment : Fragment(R.layout.fragment_survey_q1) {
         // 만약 타이틀을 바꾸고 싶다면
         activity?.supportActionBar?.title = "Quiz"
 
+        // 메뉴 연결
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -84,29 +85,29 @@ class SurveyQ1Fragment : Fragment(R.layout.fragment_survey_q1) {
         val strokeSelectedColor =
             ContextCompat.getColorStateList(requireContext(), R.color.confirm_active)
 
-        // 선택지 초기 상태 (색 없음)
+        // 선택지 초기 상태
         buttons.forEach {
             it.backgroundTintList = defaultColor
         }
 
-        // Next 버튼 초기 비활성
+        // Next 버튼 비활성
         btnNext.isEnabled = false
         btnNext.backgroundTintList = defaultColor
 
         fun selectButton(selected: Button) {
             // 모든 버튼 초기화
             buttons.forEach { selected ->
-                selected.backgroundTintList = defaultColor // 하얀색
-                selected.setTextColor(textDefaultColor) // 검은색
+                selected.backgroundTintList = defaultColor
+                selected.setTextColor(textDefaultColor)
 
                 if (selected is com.google.android.material.button.MaterialButton) {
-                    selected.strokeColor = strokeDefaultColor // 회색(기본) 테두리로 복구
+                    selected.strokeColor = strokeDefaultColor
                 }
             }
 
             // 선택된 버튼만 색 변경
-            selected.backgroundTintList = selectedColorNext // 연한 파랭이
-            selected.setTextColor(textSelectedColor2) // 파랭이
+            selected.backgroundTintList = selectedColorNext
+            selected.setTextColor(textSelectedColor2)
             if (selected is com.google.android.material.button.MaterialButton) {
                 selected.strokeColor = strokeSelectedColor
             }
@@ -124,13 +125,13 @@ class SurveyQ1Fragment : Fragment(R.layout.fragment_survey_q1) {
         btnStudy3.setOnClickListener { selectButton(btnStudy3) }
         btnStudy4.setOnClickListener { selectButton(btnStudy4) }
 
+        // 다음으로 넘어가기
         btnNext.setOnClickListener {
             selectedAnswer?.let {
                 val activity = requireActivity() as SurveyActivity
                 activity.saveAnswer("q1", it)
                 activity.goNextPage()
             }
-            //(requireActivity() as SurveyActivity).goNextPage()
         }
     }
 

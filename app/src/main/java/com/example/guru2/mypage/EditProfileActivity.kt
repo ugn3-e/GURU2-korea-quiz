@@ -17,13 +17,13 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
 
-        /* ===== AppBar ===== */
+        /* AppBar*/
         val toolbar = findViewById<com.google.android.material.appbar.MaterialToolbar>(R.id.mainToolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener { finish() }
 
-        /* ===== View ===== */
+        /* View */
         val etNickname = findViewById<EditText>(R.id.etNickname)
         val etAge = findViewById<EditText>(R.id.etAge)
         val spGender = findViewById<Spinner>(R.id.spGender)
@@ -36,7 +36,7 @@ class EditProfileActivity : AppCompatActivity() {
             return
         }
 
-        /* ===== 🌍 국가 Spinner 세팅 ===== */
+        /* 국가 Spinner 세팅 */
         val countryList = Locale.getISOCountries()
             .map { Locale("", it).displayCountry }
             .filter { it.isNotBlank() }
@@ -51,7 +51,7 @@ class EditProfileActivity : AppCompatActivity() {
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spCountry.adapter = countryAdapter
 
-        /* ===== 🔹 Firestore → 기존 정보 prefill ===== */
+        /*  Firestore → 기존 정보 prefill  */
         firestore.collection("users").document(uid).get()
             .addOnSuccessListener { doc ->
                 if (!doc.exists()) return@addOnSuccessListener
@@ -61,11 +61,11 @@ class EditProfileActivity : AppCompatActivity() {
                 val gender = doc.getString("gender") ?: ""
                 val country = doc.getString("country") ?: ""
 
-                // ✅ EditText prefill
+                // EditText prefill
                 etNickname.setText(nickname)
                 etAge.setText(age)
 
-                // ✅ Spinner prefill
+                // Spinner 국가 prefill
                 val genderAdapter = spGender.adapter as ArrayAdapter<String>
                 val genderPos = genderAdapter.getPosition(gender)
                 if (genderPos >= 0) spGender.setSelection(genderPos)
@@ -74,7 +74,7 @@ class EditProfileActivity : AppCompatActivity() {
                 if (countryPos >= 0) spCountry.setSelection(countryPos)
             }
 
-        /* ===== 💾 저장 ===== */
+        /* 저장 */
         btnSave.setOnClickListener {
             val nickname = etNickname.text.toString().trim()
             val ageText = etAge.text.toString().trim()

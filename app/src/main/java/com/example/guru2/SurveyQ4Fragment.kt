@@ -46,6 +46,7 @@ class SurveyQ4Fragment : Fragment(R.layout.fragment_survey_q4) {
         // 만약 타이틀을 바꾸고 싶다면
         activity?.supportActionBar?.title = "Quiz"
 
+        // 메뉴 툴바 연결
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -72,9 +73,9 @@ class SurveyQ4Fragment : Fragment(R.layout.fragment_survey_q4) {
         // 처음에는 Submit 비활성화
         btnSubmit.isEnabled = false
         btnSubmit.backgroundTintList = defaultColor
-        btnSubmit.setTextColor(textDefaultColor) // 검은색
+        btnSubmit.setTextColor(textDefaultColor)
 
-        // EditText 입력 감지
+        // EditText 입력
         editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val hasText = !s.isNullOrBlank()

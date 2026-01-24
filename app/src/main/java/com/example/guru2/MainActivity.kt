@@ -26,23 +26,19 @@ class MainActivity : AppCompatActivity() {
     lateinit var btnSaved: android.view.View
     lateinit var btnWrong: android.view.View
 
-    // 디미 유진_뒤로가기 시간 체크 변수
+    // 뒤로가기 시간 체크 변수
     private var backPressedTime = 0L
 
     private lateinit var levelText: TextView       // 레벨 텍스트
     private lateinit var progressBar: ProgressBar   // 파란색 게이지
-    private lateinit var tvUserName: TextView      // 사용자 이름
-    private lateinit var tvCharacterPercent: TextView // 유빈_추가(% UI 추가)
+    private lateinit var tvUserName: TextView      // 닉네임
+    private lateinit var tvCharacterPercent: TextView // 퍼센트
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //userId = intent.getIntExtra("user_id", -1).toLong()
         val userLevel = intent.getStringExtra("user_level") ?: "Lv.1"
-
-        // 확인용 토스트 (삭제 예정)
-        //Toast.makeText(this, "환영합니다! ID: $userId, 레벨: $userLevel", Toast.LENGTH_SHORT).show()
 
         // 툴바를 액션바로 연결
         toolbar = findViewById<Toolbar>(R.id.mainToolbar)
@@ -52,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         levelText = findViewById(R.id.tvCharacterLevel)
         progressBar = findViewById(R.id.levelProgressBar)
         tvUserName = findViewById(R.id.tvUserName)
-        tvCharacterPercent = findViewById(R.id.tvCharacterPercent) // 유빈_추가(레벨 말고 % Ui 추가함)
+        tvCharacterPercent = findViewById(R.id.tvCharacterPercent)
 
         // 맞춤법 퀴즈
         btnQuiz1 = findViewById(R.id.btnQuiz1)
@@ -61,10 +57,8 @@ class MainActivity : AppCompatActivity() {
         btnQuiz1.findViewById< ImageView>(R.id.ivIcon).setImageResource(R.drawable.ic_spelling)
         btnQuiz1.setOnClickListener {
             val intent = Intent(this, SpellQuizActivity::class.java)
-            //intent.putExtra("continue", true)   // ⭐⭐⭐ 핵심
             startActivity(intent)
         }
-
 
 
         // 신조어 퀴즈
@@ -74,7 +68,6 @@ class MainActivity : AppCompatActivity() {
         btnQuiz2.findViewById< ImageView>(R.id.ivIcon).setImageResource(R.drawable.ic_slang)
         btnQuiz2.setOnClickListener {
             val intent = Intent(this, SlangQuizActivity::class.java)
-            //intent.putExtra("continue", true)   // ⭐⭐⭐ 핵심
             startActivity(intent)
         }
 
@@ -98,10 +91,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, WrongNoteActivity::class.java))
         }
 
-        // 디미 유진_레벨 뷰 연결 (유빈 추가 수정 level -> tvCharacterLevel)
+        // 레벨 뷰 연결
         levelText= findViewById(R.id.tvCharacterLevel)
 
-        // 디미 유진_뒤로가기 두 번 누르면 앱 종료
+        // 뒤로가기 두 번 누르면 앱 종료
         onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -109,13 +102,10 @@ class MainActivity : AppCompatActivity() {
                     val currentTime = System.currentTimeMillis()
 
                     if (currentTime - backPressedTime < 2000) {
-                        // 디미 유진_2초 이내 두 번째 뒤로가기 -> 앱 종료
+                        // 2초 이내 두 번째 뒤로가기 -> 앱 종료
                         finish()
-
-                        // 디미 유진_앱 완전 종료
-                        //finishAffinity()
                     } else {
-                        // 디미 유진_첫 번째 뒤로가기
+                        // 첫 번째 뒤로가기
                         backPressedTime = currentTime
                         Toast.makeText(
                             this@MainActivity,
@@ -128,14 +118,12 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-
     // 메인화면과 메뉴 연결
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
-    // 디미 유진_(추가)마이페이지 추가
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_survey -> {
@@ -144,7 +132,6 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
 
-            // 디미 유진_마이페이지
             R.id.action_mypage -> {
                 startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
                 return true
@@ -165,18 +152,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // 디미 유진_화면 돌아올 때마다 레벨 갱신
+    // 화면 돌아올 때마다 레벨 갱신
     override fun onResume() {
         super.onResume()
-        loadLevelFromFirestoreAndUpdateUI() // 🔥 수정: Firebase 기준 통일
+        loadLevelFromFirestoreAndUpdateUI()
     }
 
-    // 🔥 Firebase uid 기준으로 메인 레벨/닉네임 로드
-
-    // 레벨 표시 ☑️
+    // Firebase uid 기준으로 레벨/닉네임 로드
+    // 레벨 표시
     private fun loadLevelFromFirestoreAndUpdateUI() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
-        if (uid == null) {
+        if (uid == null) { // 기본값
             levelText.text = "Lv.1"
             tvUserName.text = "슈니님"
             tvCharacterPercent.text = "0%"
@@ -193,12 +179,12 @@ class MainActivity : AppCompatActivity() {
                 val totalSolved = snap.getLong("totalSolved") ?: 0L
                 val nickname = snap.getString("nickname") ?: "게스트"
 
-                // 디미 유진_닉네임 표시
+                // 닉네임 표시
                 tvUserName.text = "${nickname}님"
-                // ✅ 레벨 표시
+                // 레벨 표시
                 levelText.text = "Lv.$level"
 
-                // ✅ 게이지 표시(너가 쓰던 방식 그대로: 60문제=100%)
+                // 게이지 표시 (50문제=100%)
                 val progressPercent = if (totalSolved >= 50) 100 else ((totalSolved / 50.0) * 100).toInt()
                 progressBar.setProgress(progressPercent, true)
                 tvCharacterPercent.text = "$progressPercent%"
@@ -214,6 +200,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+    // 뒤로 가기
     private fun setupBackPressed() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

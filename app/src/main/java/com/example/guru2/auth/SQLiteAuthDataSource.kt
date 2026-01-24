@@ -27,7 +27,7 @@ class SQLiteAuthDataSource(context: Context)
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
 
-    // 🔹 회원가입
+    // 회원가입
     fun signup(
         username: String,
         password: String,
@@ -49,7 +49,7 @@ class SQLiteAuthDataSource(context: Context)
         return writableDatabase.insert("users", null, values) != -1L
     }
 
-    // 🔹 로그인
+    // 로그인
     fun login(username: String, password: String): User? {
         val cursor = readableDatabase.rawQuery(
             "SELECT * FROM users WHERE username=? AND password=?",
@@ -59,7 +59,7 @@ class SQLiteAuthDataSource(context: Context)
         val user =
             if (cursor.moveToFirst()) {
                 User(
-                    id = cursor.getLong(0),              // ✅ Long
+                    id = cursor.getLong(0),       // Long 타입
                     username = cursor.getString(1),
                     password = cursor.getString(2),
                     nickname = cursor.getString(3),
@@ -74,8 +74,8 @@ class SQLiteAuthDataSource(context: Context)
         return user
     }
 
-    // 🔹 문제 푼 개수 증가 ⭐ 핵심
-    fun increaseSolvedCount(userId: Long) {   // ✅ Long
+    // 문제 푼 개수 증가
+    fun increaseSolvedCount(userId: Long) {   //  Long 타입
         writableDatabase.execSQL(
             """
             UPDATE users
@@ -99,10 +99,10 @@ class SQLiteAuthDataSource(context: Context)
         return count
     }
 
-    // 유빈_추가 (닉네임 얻기 위해)
+    // 닉네임 얻기
     fun getNickname(userId: Long): String {
         val db = readableDatabase
-        var nickname = "슈니"
+        var nickname = "슈니" // 기본값
         val cursor = db.rawQuery("SELECT nickname FROM users WHERE id = ?", arrayOf(userId.toString()))
         if (cursor.moveToFirst()) {
             nickname = cursor.getString(0)

@@ -15,13 +15,7 @@ class SavedDetail : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //enableEdgeToEdge()
         setContentView(R.layout.activity_saved_detail)
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
 
         // 툴바
         val mainToolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.mainToolbar)
@@ -37,9 +31,11 @@ class SavedDetail : AppCompatActivity() {
         val quizId = intent.getIntExtra("quiz_id", -1)
 
         if(quizId != -1) {
+            // 전달받은 ID로 DB에서 문제 객체 가져옴
             val spellDbManager = SpellDBManager(this)
             val quiz = spellDbManager.getQuizById(quizId)
 
+            // DB 가져오기
             quiz?.let {
                 android.util.Log.d("IMG_CHECK", "DB에서 가져온 파일명: ${it.image_path}")
                 tvTitle.text = it.source ?: "출처 정보 없음"
@@ -60,14 +56,13 @@ class SavedDetail : AppCompatActivity() {
             }
         }
 
-        // (수정) 뒤로 가기
+        // 뒤로 가기
         btnHome.setOnClickListener {
-//            val intent = Intent(this, MainActivity::class.java)
-//            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP //?
-//            startActivity(intent)
             finish()
         }
     }
+
+    // 메뉴 연결
     override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -81,7 +76,6 @@ class SavedDetail : AppCompatActivity() {
                 return true
             }
 
-            // 디미 유진_마이페이지
             R.id.action_mypage -> {
                 startActivity(Intent(this, com.example.guru2.mypage.MyPageActivity::class.java))
                 return true

@@ -23,8 +23,6 @@ class SignupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
-        //val repo = AuthRepository(SQLiteAuthDataSource(this))
-
         val etId = findViewById<EditText>(R.id.etId)
         val etPw = findViewById<EditText>(R.id.etPw)
         val etNick = findViewById<EditText>(R.id.etNickname)
@@ -32,7 +30,7 @@ class SignupActivity : AppCompatActivity() {
         val spGender = findViewById<Spinner>(R.id.spGender)
         val spCountry = findViewById<Spinner>(R.id.spCountry)
 
-        /* 국적 Spinner 동적 세팅 */
+        /* 국적 Spinner 세팅 */
         val countryList = Locale.getISOCountries()
             .map { code ->
                 Locale("", code).displayCountry

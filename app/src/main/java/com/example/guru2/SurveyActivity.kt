@@ -23,13 +23,7 @@ class SurveyActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //enableEdgeToEdge()
         setContentView(R.layout.activity_survey)
-        //ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            //val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            //v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            //insets
-        //}
 
         viewPager2 = findViewById<ViewPager2>(R.id.viewPager)
         progressBar = findViewById<ProgressBar>(R.id.progressBar)
@@ -48,10 +42,10 @@ class SurveyActivity : AppCompatActivity() {
     }
 
     class SurveyPagerAdapter(activity: AppCompatActivity) :
-    // ViewPager에 표시할 설문(Fragment) 관리
+        // ViewPager에 표시할 설문 관리
         FragmentStateAdapter(activity) {
 
-        override fun getItemCount() = 4 // 설문 문항
+        override fun getItemCount() = 4 // 설문 문항 수
 
         override fun createFragment(position: Int): Fragment {
             return when (position) {

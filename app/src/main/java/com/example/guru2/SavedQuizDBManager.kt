@@ -15,7 +15,7 @@ class SavedQuizDBManager(private val quizList: List<QuizData>) :
         val img: ImageView = view.findViewById(R.id.content_img)
         val title: TextView = view.findViewById(R.id.content_title)
         val ref: TextView = view.findViewById(R.id.content_ref)
-        val root: View = view // 클릭을 위해 전체 레이아웃 추가함
+        val root: View = view // 클릭을 위한 전체 레이아웃
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
