@@ -219,6 +219,7 @@
                 android:lineSpacingExtra="4dp"
                 android:padding="12dp"
                 android:text="infoText"
+                android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 android:translationY="-10dp" />
