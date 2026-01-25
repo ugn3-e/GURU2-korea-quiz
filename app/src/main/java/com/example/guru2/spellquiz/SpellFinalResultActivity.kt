@@ -70,7 +70,7 @@ class SpellFinalResultActivity : AppCompatActivity() {
                     // 더 이상 풀 문제가 없는 경우
                     Toast.makeText(
                         this,
-                        "모든 맞춤법 학습을 완료하였습니다!",
+                        "모든 맞춤법 학습을 완료하였습니다! \n설문조사를 통해 의견을 남겨주세요!",
                         Toast.LENGTH_SHORT
                     ).show()
                     btnKeep.isEnabled = false // 버튼 비활성화 유지
