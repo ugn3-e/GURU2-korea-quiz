@@ -74,6 +74,8 @@ class WrongNoteActivity : AppCompatActivity() {
         }
 
         // 처음 접속하면 맞춤법 탭이 선택되도록 설정
+        currentType = "spell"
+        viewPager.setCurrentItem(1, false)
         selectTab(false)
     }
 
