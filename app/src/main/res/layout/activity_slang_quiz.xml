@@ -72,9 +72,9 @@
         <!-- Q 번호 -->
         <TextView
             android:id="@+id/QText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="56dp"
             android:layout_marginTop="32dp"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -87,15 +87,16 @@
             android:id="@+id/tvQuestion"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="56dp"
             android:layout_marginTop="7dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="56dp"
+            android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/QText"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/QText"
-            tools:text="신조어 '저메추'의 뜻은?" />
+            tools:text="신조어 '저메추의 뜻은?" />
 
         <!-- 선택지 1 -->
         <com.google.android.material.button.MaterialButton
