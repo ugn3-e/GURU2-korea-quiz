@@ -12,6 +12,7 @@
         android:background="#FFF"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
     <!-- 상단 AppBar -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
@@ -31,6 +32,8 @@
             app:title="Quiz"
             app:titleTextAppearance="@style/ToolbarTitleBold"
             app:titleTextColor="@android:color/black" />
+
+        <!-- 구분선 -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -39,6 +42,7 @@
 
     <!-- 하단 확인 버튼 -->
 
+        <!-- Q번호 -->
         <TextView
             android:id="@+id/QuizNum"
             android:layout_width="wrap_content"
@@ -51,6 +55,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
+        <!-- 문제 -->
         <TextView
             android:id="@+id/Question"
             android:layout_width="0dp"
@@ -64,6 +69,7 @@
             app:layout_constraintStart_toEndOf="@+id/QuizNum"
             app:layout_constraintTop_toTopOf="@id/QuizNum" />
 
+        <!-- 콘텐츠 이미지 -->
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="0dp"
@@ -76,6 +82,7 @@
             app:layout_constraintTop_toBottomOf="@+id/Question"
             tools:srcCompat="@tools:sample/avatars" />
 
+        <!-- 퀴즈 문장 -->
         <TextView
             android:id="@+id/QuizText"
             android:layout_width="0dp"
@@ -92,6 +99,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
+        <!-- 구분선 -->
         <View
             android:id="@+id/divider"
             android:layout_width="0dp"
@@ -104,6 +112,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/QuizText" />
 
+        <!-- 선택지1 -->
         <Button
             android:id="@+id/btnChoice1"
             android:layout_width="0dp"
@@ -122,6 +131,7 @@
             app:strokeColor="@color/button_default_stroke"
             app:strokeWidth="1dp" />
 
+        <!-- 선택지2 -->
         <Button
             android:id="@+id/btnChoice2"
             android:layout_width="0dp"
@@ -138,6 +148,7 @@
             app:strokeColor="@color/button_default_stroke"
             app:strokeWidth="1dp" />
 
+        <!-- 선택지3 -->
         <Button
             android:id="@+id/btnChoice3"
             android:layout_width="0dp"
@@ -165,6 +176,7 @@
             app:layout_constraintBottom_toTopOf="@id/btnSub"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- 확인 버튼 -->
         <Button
             android:id="@+id/btnSub"
             android:layout_width="0dp"

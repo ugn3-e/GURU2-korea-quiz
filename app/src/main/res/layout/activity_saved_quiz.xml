@@ -9,6 +9,7 @@
     android:focusable="true"
     android:background="?android:attr/selectableItemBackground">
 
+    <!-- 콘텐츠 이미지 -->
     <ImageView
         android:id="@+id/content_img"
         android:layout_width="157dp"
@@ -18,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <!-- 저장한 콘텐츠 제목 -->
     <TextView
         android:id="@+id/content_title"
         android:layout_width="0dp"
@@ -32,6 +34,7 @@
         app:layout_constraintStart_toStartOf="@+id/content_img"
         app:layout_constraintTop_toBottomOf="@+id/content_img" />
 
+    <!-- 저장한 콘텐츠 문제 -->
     <TextView
         android:id="@+id/content_ref"
         android:layout_width="0dp"

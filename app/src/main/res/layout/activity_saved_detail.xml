@@ -8,6 +8,7 @@
     tools:context=".saved.SavedDetail"
     android:background="#FFFFFF">
 
+    <!-- 상단바 -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="0dp"
@@ -28,12 +29,14 @@
             app:titleTextAppearance="@style/ToolbarTitleBold"
             app:titleTextColor="@color/black" />
 
+        <!-- 구분선 -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#E0E0E0" />
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- 강아지 이미지 -->
     <ImageView
         android:id="@+id/imgDog2"
         android:layout_width="100dp"
@@ -44,6 +47,7 @@
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- 문제 콘텐츠 제목 -->
     <TextView
         android:id="@+id/saved_title"
         android:layout_width="0dp"
@@ -60,6 +64,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
+    <!-- 문제 이미지 -->
     <ImageView
         android:id="@+id/saved_img"
         android:layout_width="0dp"
@@ -73,6 +78,7 @@
         app:layout_constraintTop_toBottomOf="@+id/saved_title"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <!-- 문제  -->
     <TextView
         android:id="@+id/saved_sentence"
         android:layout_width="0dp"
@@ -102,6 +108,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/saved_sentence" />
 
+    <!-- 콘텐츠 설명 -->
     <TextView
         android:id="@+id/saved_exp"
         android:layout_width="0dp"
@@ -117,6 +124,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
+    <!-- 뒤로 가기 버튼 -->
     <Button
         android:id="@+id/button2"
         android:layout_width="0dp"

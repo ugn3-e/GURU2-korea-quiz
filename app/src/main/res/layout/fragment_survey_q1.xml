@@ -7,6 +7,7 @@
     android:background="@color/white"
     tools:context=".survey.SurveyQ1Fragment">
 
+    <!--  상단 AppBar -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="0dp"
@@ -27,6 +28,7 @@
             app:titleTextAppearance="@style/ToolbarTitleBold"
             app:titleTextColor="@android:color/black" />
 
+        <!-- 구분선 -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -35,8 +37,6 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <!--질문-->
-
-    <!--선택지-->
     <TextView
         android:id="@+id/Q1TextView"
         android:layout_width="wrap_content"
@@ -50,6 +50,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
+    <!-- 선택지 1 -->
     <Button
         android:id="@+id/btnStudy4"
         android:layout_width="0dp"
@@ -67,6 +68,7 @@
         app:strokeColor="@color/button_default_stroke"
         app:strokeWidth="1dp" />
 
+    <!-- 선택지2  -->
     <Button
         android:id="@+id/btnStudy3"
         android:layout_width="0dp"
@@ -84,6 +86,7 @@
         app:strokeColor="@color/button_default_stroke"
         app:strokeWidth="1dp" />
 
+    <!-- 선택지3 -->
     <Button
         android:id="@+id/btnStudy2"
         android:layout_width="0dp"
@@ -101,6 +104,7 @@
         app:strokeColor="@color/button_default_stroke"
         app:strokeWidth="1dp" />
 
+    <!-- 선택지4 -->
     <Button
         android:id="@+id/btnStudy1"
         android:layout_width="0dp"

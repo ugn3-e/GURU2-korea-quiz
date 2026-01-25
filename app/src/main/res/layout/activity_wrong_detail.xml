@@ -32,6 +32,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- 맞춤법 탭 -->
         <TextView
             android:id="@+id/btnGrammar"
             android:layout_width="0dp"
@@ -43,6 +44,7 @@
             android:textColor="#555555"
             android:textStyle="bold" />
 
+        <!-- 신조어 탭 -->
         <TextView
             android:id="@+id/btnSlang"
             android:layout_width="0dp"
@@ -69,6 +71,7 @@
         app:layout_constraintTop_toBottomOf="@id/subBar"
         app:layout_constraintVertical_bias="0.0">
 
+        <!-- 틀린 문제 -->
         <TextView
             android:id="@+id/tvQuestion"
             android:layout_width="0dp"
@@ -84,6 +87,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- 틀린 문제 이미지(콘텐츠 or 상황 예시) -->
         <ImageView
             android:id="@+id/imgExample"
             android:layout_width="0dp"
@@ -97,6 +101,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvExplanation" />
 
+        <!-- 해설 -->
         <TextView
             android:id="@+id/tvExplanation"
             android:layout_width="0dp"
@@ -111,6 +116,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvQuestion" />
 
+        <!-- 참고 사항 -->
         <TextView
             android:id="@+id/tvNotice"
             android:layout_width="0dp"

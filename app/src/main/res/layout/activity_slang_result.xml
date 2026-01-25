@@ -27,16 +27,15 @@
             app:titleTextAppearance="@style/ToolbarTitleBold"
             app:titleTextColor="@android:color/black" />
 
+        <!-- 구분선 -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#E0E0E0" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!--  하단 버튼-->
 
     <!-- 콘텐츠 영역 -->
-
     <ImageView
         android:id="@+id/imgDog2"
         android:layout_width="100dp"
@@ -47,6 +46,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btnNext"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <!--  하단 버튼-->
     <Button
         android:id="@+id/btnNext"
         android:layout_width="0dp"
@@ -130,6 +130,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvExplanation" />
 
+        <!-- 주의 사항 -->
         <TextView
             android:id="@+id/noticetext"
             android:layout_width="139dp"
@@ -146,7 +147,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider" />
 
-        <!-- 주의 사항 -->
+        <!-- 주의 사항 설명 -->
         <TextView
             android:id="@+id/tvNotice"
             android:layout_width="0dp"

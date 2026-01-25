@@ -6,6 +6,7 @@
     android:background="?attr/selectableItemBackground"
     android:padding="12dp">
 
+    <!-- 상단바 -->
     <TextView
         android:id="@+id/tvQuestion"
         android:layout_width="match_parent"

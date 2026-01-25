@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
+    <!-- 오답 단어를 감쌀 테두리 레이아웃 -->
     <TextView
         android:id="@+id/tvWord"
         android:layout_width="wrap_content"

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
+    <!-- 상단바  -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="0dp"
@@ -26,12 +27,14 @@
             app:titleTextAppearance="@style/ToolbarTitleBold"
             app:titleTextColor="@color/black" />
 
+        <!-- 구분선 -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#E0E0E0" />
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- 홈으로 이동 버튼 -->
     <Button
         android:id="@+id/btnGoHome"
         android:layout_width="0dp"
@@ -48,6 +51,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- 나열될 저장된 퀴즈 목록 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_main_vertical"
         android:layout_width="0dp"

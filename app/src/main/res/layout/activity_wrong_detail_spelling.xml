@@ -20,6 +20,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- 구분선 -->
     <View
         android:id="@+id/dividerLine"
         android:layout_width="match_parent"
@@ -39,6 +41,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- 맞춤법 퀴즈 탭 -->
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -53,13 +56,16 @@
                 android:text="맞춤법 퀴즈"
                 android:textColor="@color/choice_text_selected"
                 android:textStyle="bold" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_gravity="bottom"
-            android:background="#1E35CB"/>
-    </FrameLayout>
 
+            <!-- 탭 위치를 알 수 있는 표시바 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_gravity="bottom"
+                android:background="#1E35CB"/>
+        </FrameLayout>
+
+        <!-- 신조어 퀴즈 탭 -->
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -77,6 +83,7 @@
         </FrameLayout>
     </LinearLayout>
 
+    <!-- 강아지 이미지 -->
     <ImageView
         android:id="@+id/imgDog"
         android:layout_width="100dp"
@@ -130,7 +137,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- 이미지 영역 (placeholder) -->
+        <!-- 이미지 영역 -->
         <ImageView
             android:id="@+id/imgPlaceholder"
             android:layout_width="0dp"
@@ -142,7 +149,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvCorrect" />
 
-        <!-- 문장 -->
+        <!-- 퀴즈 문장 -->
         <TextView
             android:id="@+id/tvSentence"
             android:layout_width="0dp"
@@ -159,6 +166,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imgPlaceholder" />
 
+        <!-- 구분선 -->
         <View
             android:id="@+id/dividerSentence"
             android:layout_width="0dp"

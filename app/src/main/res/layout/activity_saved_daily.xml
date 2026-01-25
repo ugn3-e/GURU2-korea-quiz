@@ -7,6 +7,7 @@
     android:layout_height="wrap_content"
     android:background="#FFFFFF">
 
+    <!-- 날짜 -->
     <TextView
         android:id="@+id/saved_date"
         android:layout_width="60dp"
@@ -21,6 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- 구분선 -->
     <View
         android:id="@+id/line_vertical"
         android:layout_width="2dp"
@@ -31,6 +33,7 @@
         app:layout_constraintStart_toStartOf="@id/saved_date"
         app:layout_constraintTop_toBottomOf="@id/saved_date" />
 
+    <!-- 중첩 리사이클링뷰 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/saved_cards"
         android:layout_width="0dp"

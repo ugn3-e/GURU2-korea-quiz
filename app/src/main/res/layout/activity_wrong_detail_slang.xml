@@ -21,6 +21,7 @@
         app:titleTextAppearance="@style/ToolbarTitleBold"
         app:titleTextColor="@android:color/black" />
 
+    <!-- 구분선 -->
     <View
         android:id="@+id/dividerLine"
         android:layout_width="match_parent"
@@ -40,6 +41,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
+        <!-- 맞춤법 퀴즈 탭 -->
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -57,6 +59,7 @@
                 android:textStyle="bold" />
         </FrameLayout>
 
+        <!-- 신조어 퀴즈 탭 -->
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -73,6 +76,7 @@
                 android:textColor="@color/choice_text_selected"
                 android:textStyle="bold" />
 
+            <!-- 탭 위치를 알 수 있는 구분선 -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
@@ -81,6 +85,7 @@
         </FrameLayout>
     </LinearLayout>
 
+    <!-- 강아지 이미지 -->
     <ImageView
         android:id="@+id/imgDog"
         android:layout_width="100dp"
@@ -134,8 +139,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- 설명 -->
-
-        <!-- 예시 이미지 -->
         <TextView
             android:id="@+id/tvExplanation"
             android:layout_width="0dp"
@@ -153,6 +156,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivExample" />
 
+        <!-- 구분선 -->
         <View
             android:id="@+id/dividerSentence"
             android:layout_width="0dp"
@@ -165,8 +169,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvExplanation" />
 
-        <!-- 참고 -->
-
+        <!-- 상황 예시 이미지 -->
         <ImageView
             android:id="@+id/ivExample"
             android:layout_width="0dp"
@@ -180,6 +183,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvSlangWord" />
 
+        <!-- 주의 사항 설명 -->
         <TextView
             android:id="@+id/tvNotice"
             android:layout_width="0dp"
@@ -196,6 +200,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/notice" />
 
+        <!-- 주의 사항 -->
         <TextView
             android:id="@+id/notice"
             android:layout_width="wrap_content"

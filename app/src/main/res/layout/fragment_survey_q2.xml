@@ -7,6 +7,7 @@
     android:background="@color/white"
     tools:context=".survey.SurveyQ2Fragment">
 
+    <!-- 상단바 -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="0dp"
@@ -27,6 +28,7 @@
             app:titleTextAppearance="@style/ToolbarTitleBold"
             app:titleTextColor="@android:color/black" />
 
+        <!-- 구분선 -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -52,7 +54,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
-    <!--선택지-->
+    <!--선택지1 -->
     <Button
         android:id="@+id/btnHard1"
         android:layout_width="0dp"
@@ -70,6 +72,7 @@
         app:strokeColor="@color/button_default_stroke"
         app:strokeWidth="1dp" />
 
+    <!-- 선택지2 -->
     <Button
         android:id="@+id/btnHard2"
         android:layout_width="0dp"
@@ -87,6 +90,7 @@
         app:strokeColor="@color/button_default_stroke"
         app:strokeWidth="1dp" />
 
+    <!-- 선택지3 -->
     <Button
         android:id="@+id/btnHard3"
         android:layout_width="0dp"
@@ -104,6 +108,7 @@
         app:strokeColor="@color/button_default_stroke"
         app:strokeWidth="1dp" />
 
+    <!-- 선택지4 -->
     <Button
         android:id="@+id/btnHard4"
         android:layout_width="0dp"
@@ -122,9 +127,6 @@
         app:strokeWidth="1dp" />
 
     <!-- 기타 의견 -->
-
-    <!--다음-->
-
     <EditText
         android:id="@+id/editText"
         android:layout_width="0dp"
@@ -143,6 +145,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnHard4" />
 
+    <!-- 다음 버튼 -->
     <Button
         android:id="@+id/btnNext"
         android:layout_width="match_parent"

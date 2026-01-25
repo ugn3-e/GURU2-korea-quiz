@@ -12,6 +12,7 @@
         android:background="#FFF"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <!-- 상단 AppBar -->
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
@@ -32,6 +33,8 @@
                 app:title="Quiz"
                 app:titleTextAppearance="@style/ToolbarTitleBold"
                 app:titleTextColor="@android:color/black" />
+
+            <!-- 구분선 -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -53,6 +56,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
+        <!-- 스크롤뷰 -->
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="0dp"
@@ -71,6 +75,7 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
+                <!-- 콘텐츠 이미지 -->
                 <ImageView
                     android:id="@+id/resultImg"
                     android:layout_width="match_parent"
@@ -80,6 +85,7 @@
                     android:layout_marginBottom="17dp"
                     tools:srcCompat="@tools:sample/avatars" />
 
+                <!-- 퀴즈 문제 -->
                 <TextView
                     android:id="@+id/QuizText"
                     android:layout_width="match_parent"
@@ -93,6 +99,7 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
+                <!-- 구분선 -->
                 <View
                     android:id="@+id/divider"
                     android:layout_width="match_parent"
@@ -102,7 +109,7 @@
                     android:layout_marginRight="24dp"
                     android:background="#E0E0E0" />
 
-
+                <!-- 맞춤법 설명 -->
                 <TextView
                     android:id="@+id/QuizAnswer"
                     android:layout_width="match_parent"
@@ -118,6 +125,7 @@
             </LinearLayout>
         </ScrollView>
 
+        <!-- 콘텐츠 정보 보기 버튼 -->
         <TextView
             android:id="@+id/btnInfo"
             android:layout_width="wrap_content"
@@ -132,6 +140,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- 강아지 이미지 -->
         <ImageView
             android:id="@+id/imgDog"
             android:layout_width="97dp"
@@ -142,6 +151,7 @@
             app:layout_constraintBottom_toTopOf="@+id/btnSave"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- 콘텐트 저장 버튼 -->
         <Button
             android:id="@+id/btnSave"
             android:layout_width="0dp"
@@ -160,7 +170,7 @@
             app:strokeColor="@color/button_selected_stroke"
             app:strokeWidth="1dp" />
 
-        <!--콘텐츠 저장-->
+        <!--다음 문제 버튼 -->
         <Button
             android:id="@+id/btnNext"
             android:layout_width="0dp"
@@ -179,7 +189,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- 스크롤 뷰 추가  -->
+    <!-- 스크롤 뷰  -->
 
     <FrameLayout
         android:id="@+id/bubbleOverlay"

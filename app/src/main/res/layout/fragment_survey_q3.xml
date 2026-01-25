@@ -7,6 +7,7 @@
     android:background="@color/white"
     tools:context=".survey.SurveyQ3Fragment">
 
+    <!-- 상단바 -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="0dp"
@@ -27,6 +28,7 @@
             app:titleTextAppearance="@style/ToolbarTitleBold"
             app:titleTextColor="@android:color/black" />
 
+        <!-- 구분선 -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -52,8 +54,6 @@
         app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
     <!--직접 입력-->
-
-    <!--다음-->
     <EditText
         android:id="@+id/editText"
         android:layout_width="0dp"
@@ -74,6 +74,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Q3TextView" />
 
+    <!-- 다음 버튼 -->
     <Button
         android:id="@+id/btnNext"
         android:layout_width="match_parent"
