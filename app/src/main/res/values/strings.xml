@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">AppName</string>
+    <string name="app_name" translatable="false">Koready</string>
     <string name="btnQuiz1" translatable="false">맞춤법 퀴즈</string>
     <string name="btnQuiz2" translatable="false">신조어 퀴즈</string>
     <string name="action_survey" translatable="false">설문조사</string>
