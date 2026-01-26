@@ -53,7 +53,7 @@ class SlangFinalResultActivity : AppCompatActivity() {
                 // 문제 다 풀었을 때 토스트 문구
                 if (nextQuiz == null) {
                     runOnUiThread {
-                        Toast.makeText(this, "모든 신조어 학습을 완료하였습니다! \n설문조사를 통해 의견을 남겨주세요!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "모든 신조어 학습을 완료하였습니다! \n설문조사에 개선 의견을 남겨주세요!", Toast.LENGTH_SHORT).show()
                     }
                     btnKeep.isEnabled = false
                     return@loadSlangNextQuizId
